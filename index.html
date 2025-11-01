@@ -1,67 +1,145 @@
 <!doctype html>
-opened.add(day); saveState(); popConfetti(el);
-}
-el.classList.add('opened'); el.classList.remove('locked');
-});
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Laughing All the Way</title>
+  <meta name="theme-color" content="#699eb0" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon-192.png" sizes="192x192" />
+  <style>
+    :root {
+      --teal: #699eb0;
+      --cream: #fffcf5;
+      --red: #c0392b;
+      --green: #2d6a4f;
+      --ink: #1f2a35;
+      --card: #ffffff;
+      --shadow: rgba(0,0,0,0.12);
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, var(--cream), #fff);
+      color: var(--ink);
+    }
+    header { padding: 18px 16px 8px; text-align: center; }
+    .title { font-size: 1.6rem; font-weight: 800; letter-spacing: .3px; color: var(--teal); }
+    .subtitle { font-size: .95rem; opacity: .8; margin-top: 4px; }
+    .controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 12px 0; }
+    .pill { background: var(--card); border: 1px solid #e9eef2; padding: 8px 12px; border-radius: 999px; box-shadow: 0 2px 6px var(--shadow); font-size: .9rem; display: inline-flex; align-items: center; gap: 8px; }
+    .toggle { cursor: pointer; user-select: none; }
+    .toggle input { display: none; }
+    .switch { width: 44px; height: 26px; background: #d7e3ea; border-radius: 999px; position: relative; transition: .2s ease; }
+    .knob { width: 20px; height: 20px; background: #fff; border-radius: 999px; position: absolute; top: 3px; left: 3px; box-shadow: 0 2px 4px var(--shadow); transition: .2s ease; }
+    .toggle input:checked + .switch { background: var(--teal); }
+    .toggle input:checked + .switch .knob { left: 21px; }
 
+    .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; padding: 14px; max-width: 760px; margin: 12px auto 110px; }
+    .door { aspect-ratio: 1/1; position: relative; border-radius: 16px; overflow: hidden; background: var(--card); border: 1px solid #e9eef2; box-shadow: 0 3px 10px var(--shadow); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.2rem; color: var(--teal); cursor: pointer; }
+    .door.locked { cursor: default; color: #a6b7c0; }
+    .door.opened { color: var(--red); }
 
-return el;
-}
+    .flap { position: absolute; inset: 0; background: linear-gradient(135deg, #f7fafb, #eef5f8); transition: transform .6s cubic-bezier(.2,.8,.2,1), opacity .6s; transform-origin: left center; }
+    .door.opened .flap { transform: rotateY(-95deg); opacity: 0.02; pointer-events: none; }
 
+    .idea { position: absolute; inset: 0; padding: 14px; display: flex; align-items: center; justify-content: center; text-align: center; font-size: .9rem; line-height: 1.4; color: var(--ink); opacity: 0; transform: scale(.98); transition: .25s ease; }
+    .door.opened .idea { opacity: 1; transform: scale(1); }
 
-function render() {
-grid.innerHTML = '';
-for (let i = 0; i < 25; i++) grid.appendChild(makeDoor(i));
-}
+    footer { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(255,255,255,.9); backdrop-filter: blur(6px); border-top: 1px solid #e9eef2; padding: 10px 14px; display: flex; justify-content: center; font-size: .85rem; }
 
+    #snow { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    main { position: relative; z-index: 1; }
+  </style>
+</head>
+<body>
+  <canvas id="snow"></canvas>
+  <header>
+    <div class="title">Laughing All the Way</div>
+    <div class="subtitle">25 playful prompts for cozy holiday connection</div>
+    <div class="controls">
+      <label class="pill toggle">
+        <input id="freePlay" type="checkbox" />
+        <span class="switch"><span class="knob"></span></span>
+        <span>Free Play</span>
+      </label>
+      <button class="pill" id="resetBtn">Reset</button>
+      <button class="pill" id="installBtn" hidden>Install</button>
+    </div>
+  </header>
 
-freePlayToggle.addEventListener('change', render);
-resetBtn.addEventListener('click', () => { opened.clear(); saveState(); render(); });
+  <main><section class="grid" id="grid"></section></main>
+  <footer>Open one per day or toggle Free Play for anytime fun</footer>
 
+  <script>
+  const IDEAS = [
+    "Day 1 — Serious Santa: Put on your most serious face and try not to laugh while saying ‘Ho! Ho! Ho!’ <em>For littler elves: big ‘Ho! Ho! Ho!’s and funny faces.</em>",
+    "Day 2 — Reverse Christmas Charades: Give step-by-step instructions to make someone act it out, then guess. <em>For littler elves: do simple charades with sounds.</em>",
+    "Day 3 — Very Merry Ventriloquism: Say holiday phrases without moving your lips. <em>For littler elves: use a puppet or stuffed animal voice.</em>",
+    "Day 4 — Dashing Through the Doodles: Finger-draw a holiday picture to guess. <em>For littler elves: offer two choices or draw on paper.</em>",
+    "Day 5 — Jingle Jargon: Speak in elf gibberish and translate. <em>For littler elves: try short silly giggles and gibberish.</em>",
+    "Day 6 — Holly Jolly Handshake: Invent a handshake with 2–3 moves. <em>For littler elves: keep moves easy with sound effects.</em>",
+    "Day 7 — Hot Stocking: Hot-potato with balled socks; loser does a silly challenge. <em>For littler elves: pass a plush slowly; skip the challenge.</em>",
+    "Day 8 — Tinsel Twisters: Try “Santa’s short suit shrunk,” etc. five times fast. <em>For littler elves: go slowly and enjoy the sounds.</em>",
+    "Day 9 — Winter Would You Rather: Ask holiday would-you-rather questions. <em>For littler elves: use very simple either-or.</em>",
+    "Day 10 — Merry Mad Libs: Fill in the blanks for a goofy story. <em>For littler elves: you suggest easy words like color or snack.</em>",
+    "Day 11 — Strike a Jolly Pose: Lights off, pose on a prompt; lights on, pick the funniest. <em>For littler elves: skip lights; just pose together.</em>",
+    "Day 12 — Kooky Carols: Sing alternating words; try syllables if brave. <em>For littler elves: sing together; let them lead a word.</em>",
+    "Day 13 — Christmas Choreographer: Make moves, others copy; build a family dance. <em>For littler elves: copy their moves or let them ‘teach.’</em>",
+    "Day 14 — Hot Cocoa Freeze Challenge: Pretend to sip then freeze your face. <em>For littler elves: you freeze and make them giggle.</em>",
+    "Day 15 — Truth or Merry Mischief: Answer a truth or do a harmless dare. <em>For littler elves: tiny truths; dares like clap or spin.</em>",
+    "Day 16 — Silent Night Singing: Lip-sync a carol while others guess. <em>For littler elves: hum or tap the rhythm.</em>",
+    "Day 17 — Santa Says: Simon Says with Santa; keep everyone playing. <em>For littler elves: no ‘out’—just play.</em>",
+    "Day 18 — Ice Powers: Kids shout ‘Freeze!’ then ‘Unfreeze!’ and run to base. <em>For littler elves: try freeze dance first.</em>",
+    "Day 19 — Impromptu Nutcracker: Dance to The Nutcracker and capture it. <em>For littler elves: hold hands and spin.</em>",
+    "Day 20 — Holiday Mind Meld: 1-2-3 say the same holiday word together. <em>For littler elves: be a mirror—match faces/sounds.</em>",
+    "Day 21 — 10-Second Shenanigans: Act a quick holiday scenario in 10 seconds. <em>For littler elves: you perform; they pick or join.</em>",
+    "Day 22 — The Jolly Storyteller: Build a story sentence by sentence. <em>For littler elves: pause and point for a key word.</em>",
+    "Day 23 — Reindeer Hop Challenge: Hop like a reindeer for one minute. <em>For littler elves: jump, stomp, or clap.</em>",
+    "Day 24 — Jingle Jangle Jam: Make up a song at the same time. <em>For littler elves: simple tune with silly wrong words.</em>",
+    "Day 25 — That’s a Wrap: Wrap feet or a blanket present; over-react as you unwrap. <em>For littler elves: wrap a blanket ‘gift’; celebrate them!</em>"
+  ];
 
-render();
+  const grid = document.getElementById("grid");
+  const stateKey = "latw_opened_v1";
+  const opened = new Set(JSON.parse(localStorage.getItem(stateKey) || "[]"));
+  const today = new Date();
+  const currentDay = today.getMonth() === 11 ? today.getDate() : 1;
 
+  function saveState(){ localStorage.setItem(stateKey, JSON.stringify([...opened])); }
 
-// ---- Snowfall ----
-const canvas = document.getElementById('snow');
-const ctx = canvas.getContext('2d');
-let w, h, flakes;
-function resize() {
-w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight;
-flakes = Array.from({length: Math.min(180, Math.floor(w/6))}, () => ({
-x: Math.random()*w, y: Math.random()*h, r: Math.random()*2 + .6, s: Math.random()*0.6 + 0.2
-}));
-}
-window.addEventListener('resize', resize); resize();
-function snow() {
-ctx.clearRect(0,0,w,h);
-ctx.fillStyle = 'rgba(255,255,255,0.9)';
-for (const f of flakes) {
-ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2); ctx.fill();
-f.y += f.s; f.x += Math.sin(f.y*0.01);
-if (f.y > h) { f.y = -5; f.x = Math.random()*w; }
-}
-requestAnimationFrame(snow);
-}
-snow();
+  function makeDoor(i){
+    const day=i+1; const el=document.createElement("div");
+    el.className="door"; const canOpen=document.getElementById("freePlay").checked||day<=currentDay;
+    if(!canOpen&&!opened.has(day))el.classList.add("locked");
+    if(opened.has(day))el.classList.add("opened");
+    el.innerHTML=`<div class="flap"></div><div class="idea">${IDEAS[i]}</div>`;
+    el.onclick=()=>{ if(!(document.getElementById("freePlay").checked||day<=currentDay))return;
+      opened.add(day); saveState(); el.classList.add("opened"); };
+    return el;
+  }
 
+  function render(){ grid.innerHTML=""; for(let i=0;i<25;i++) grid.appendChild(makeDoor(i)); }
+  document.getElementById("freePlay").onchange=render;
+  document.getElementById("resetBtn").onclick=()=>{ opened.clear(); saveState(); render(); };
+  render();
 
-// ---- PWA install prompt ----
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
-window.addEventListener('beforeinstallprompt', (e) => {
-e.preventDefault(); deferredPrompt = e; installBtn.hidden = false;
-});
-installBtn.addEventListener('click', async () => {
-if (!deferredPrompt) return; installBtn.hidden = true; deferredPrompt.prompt();
-await deferredPrompt.userChoice; deferredPrompt = null;
-});
+  // Snowfall
+  const canvas=document.getElementById("snow"),ctx=canvas.getContext("2d");
+  function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
+  window.onresize=resize;resize();
+  const flakes=Array.from({length:120},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+0.5,s:Math.random()*0.6+0.2}));
+  function snow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="rgba(255,255,255,.9)";
+    flakes.forEach(f=>{ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);ctx.fill();f.y+=f.s;f.x+=Math.sin(f.y*0.01);
+      if(f.y>canvas.height)f.y=-5;});requestAnimationFrame(snow);}
+  snow();
 
-
-// ---- Register Service Worker ----
-if ('serviceWorker' in navigator) {
-window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
-}
-</script>
+  // Install PWA
+  let deferredPrompt;
+  const installBtn=document.getElementById("installBtn");
+  window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;installBtn.hidden=false;});
+  installBtn.onclick=async()=>{installBtn.hidden=true;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;};
+  if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js"));}
+  </script>
 </body>
 </html>
