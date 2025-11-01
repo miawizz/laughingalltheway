@@ -1,0 +1,67 @@
+<!doctype html>
+opened.add(day); saveState(); popConfetti(el);
+}
+el.classList.add('opened'); el.classList.remove('locked');
+});
+
+
+return el;
+}
+
+
+function render() {
+grid.innerHTML = '';
+for (let i = 0; i < 25; i++) grid.appendChild(makeDoor(i));
+}
+
+
+freePlayToggle.addEventListener('change', render);
+resetBtn.addEventListener('click', () => { opened.clear(); saveState(); render(); });
+
+
+render();
+
+
+// ---- Snowfall ----
+const canvas = document.getElementById('snow');
+const ctx = canvas.getContext('2d');
+let w, h, flakes;
+function resize() {
+w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight;
+flakes = Array.from({length: Math.min(180, Math.floor(w/6))}, () => ({
+x: Math.random()*w, y: Math.random()*h, r: Math.random()*2 + .6, s: Math.random()*0.6 + 0.2
+}));
+}
+window.addEventListener('resize', resize); resize();
+function snow() {
+ctx.clearRect(0,0,w,h);
+ctx.fillStyle = 'rgba(255,255,255,0.9)';
+for (const f of flakes) {
+ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2); ctx.fill();
+f.y += f.s; f.x += Math.sin(f.y*0.01);
+if (f.y > h) { f.y = -5; f.x = Math.random()*w; }
+}
+requestAnimationFrame(snow);
+}
+snow();
+
+
+// ---- PWA install prompt ----
+let deferredPrompt;
+const installBtn = document.getElementById('installBtn');
+window.addEventListener('beforeinstallprompt', (e) => {
+e.preventDefault(); deferredPrompt = e; installBtn.hidden = false;
+});
+installBtn.addEventListener('click', async () => {
+if (!deferredPrompt) return; installBtn.hidden = true; deferredPrompt.prompt();
+await deferredPrompt.userChoice; deferredPrompt = null;
+});
+
+
+// ---- Register Service Worker ----
+if ('serviceWorker' in navigator) {
+window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
+}
+</script>
+</body>
+</html>
