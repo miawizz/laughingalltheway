@@ -5,7 +5,7 @@ const ASSETS = [
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
-  './LATWlogo.png'       // ensure the header graphic is cached too
+  './LATWlogo.png'
 ];
 
 self.addEventListener('install', e => {
@@ -13,9 +13,9 @@ self.addEventListener('install', e => {
 });
 
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys =>
-    Promise.all(keys.map(k => k !== CACHE && caches.delete(k)))
-  ));
+  e.waitUntil(
+    caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE && caches.delete(k))))
+  );
 });
 
 self.addEventListener('fetch', e => {
