@@ -193,8 +193,28 @@
     }
 
     /* Snow canvas */
-    #snow { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    main { position: relative; z-index: 1; }
+   /* Snow canvas (behind everything except background) */
+#snow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* The entire app content sits above the snow */
+#appWrap,
+header,
+main,
+footer {
+  position: relative;
+  z-index: 2;
+}
+
+/* The brand graphic always sits at the very top front */
+.brand {
+  position: relative;
+  z-index: 3;
+}
 
     /* Fixed footer */
     footer {
