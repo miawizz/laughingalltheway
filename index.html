@@ -135,7 +135,7 @@
     </div>
   </div>
 
-  <script>
+ <script>
   // Content
   const IDEAS = [
     "Day 1 — Serious Santa: Put on your most serious face and try not to laugh while saying ‘Ho! Ho! Ho!’ <em>For littler elves: big ‘Ho! Ho! Ho!’s and funny faces.</em>",
@@ -165,20 +165,16 @@
     "Day 25 — That’s a Wrap: Wrap feet or a blanket present. Over react as you unwrap. <em>For littler elves: wrap a blanket gift. Celebrate them.</em>"
   ];
 
-  // Date logic
-  const today = new Date();
-  const currentDay = (today.getMonth() === 11) ? today.getDate() : 1;
-
   const grid = document.getElementById('grid');
   const viewer = document.getElementById('viewer');
   const cardTitle = document.getElementById('cardTitle');
   const cardBody  = document.getElementById('cardBody');
   const closeBtn  = document.getElementById('closeBtn');
 
-  // State
-  const stateKey = 'latw_opened_v2';
+  // State. New key to avoid old date-locked cache.
+  const stateKey = 'latw_opened_free_v1';
   const opened = new Set(JSON.parse(localStorage.getItem(stateKey) || '[]'));
-  function saveState(){ localStorage.setItem(stateKey, JSON.stringify([...opened])); }
+  const saveState = () => localStorage.setItem(stateKey, JSON.stringify([...opened]));
 
   function makeTile(i){
     const day = i + 1;
@@ -187,12 +183,11 @@
     el.type = 'button';
     el.textContent = day;
 
-    const canOpen = (day <= currentDay) || opened.has(day);
-    if (!canOpen) el.classList.add('locked');
+    // Always openable.
+    const canOpen = true;
     if (opened.has(day)) el.classList.add('opened');
 
     el.addEventListener('click', () => {
-      if (!canOpen) return;
       if (!opened.has(day)) { opened.add(day); saveState(); el.classList.add('opened'); }
       openViewer(day, IDEAS[i]);
       history.replaceState(null, '', `?day=${day}`);
@@ -218,11 +213,11 @@
   closeBtn.addEventListener('click', closeViewer);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
 
-  // Deep link
+  // Deep link stays handy.
   (function deep(){
     const p = new URLSearchParams(location.search);
     let d = p.get('day');
-    if (d === 'today') d = String(currentDay);
+    if (d === 'today') d = '1'; // all open, choose 1 for consistency
     const n = Number(d);
     if (n >= 1 && n <= 25) openViewer(n, IDEAS[n-1]);
   })();
@@ -248,7 +243,7 @@
     requestAnimationFrame(snow);
   })();
 
-  // Install UI logic and helper banner
+  // Install UI and helper banner from previous version stays the same.
   const isStandalone =
     window.matchMedia('(display-mode: standalone)').matches ||
     window.navigator.standalone === true;
@@ -301,10 +296,10 @@
     }
   });
 
-  // Register Service Worker
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js'));
   }
-  </script>
+</script>
+
 </body>
 </html>
