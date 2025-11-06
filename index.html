@@ -19,7 +19,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-
   <style>
     :root{
       --bg:#d93823;
@@ -42,7 +41,6 @@
     /* App wrapper + blur when gated */
     #appWrap{flex:1}
     #appWrap.blur{filter:blur(4px) saturate(.9); pointer-events:none; user-select:none}
-    
 
     /* Header */
     header{text-align:center; padding:14px 16px 4px;}
@@ -62,7 +60,7 @@
     }
     #installBtn{display:none}
 
-    /* Install-help bar (from WYR template) */
+    /* Install-help bar */
     .install-help {position:sticky; top:0; z-index:10001; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
     .install-help__wrap{background:#fff7f4; border-bottom:1px solid #f2e7e3}
     .install-help__summary{display:flex; align-items:center; gap:.5rem; padding:.55rem .85rem; cursor:pointer; font-size:.95rem}
@@ -122,7 +120,11 @@
     }
     @keyframes pop{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:translateY(0)}}
     .card h2{margin:0 0 8px; font-size:1.35rem; letter-spacing:.3px; color:var(--teal); font-family:'Baloo 2',system-ui; font-weight:700}
-    .prompt{font-size:1.05rem; line-height:1.5; color:var(--ink); font-family:'Baloo 2',system-ui;}
+    .prompt{
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif !important;
+      font-size:1.05rem; line-height:1.5; color:var(--ink);
+      white-space:pre-line; /* keep newlines as line breaks */
+    }
     .prompt em{color:var(--teal); font-style:normal; font-weight:600}
     .close{position:sticky; top:-8px; float:right; background:#f1f5f9; border:0; border-radius:10px; padding:8px 10px; cursor:pointer; font-weight:700; color:#2b4a5e; box-shadow:0 2px 6px var(--shadow)}
 
@@ -138,95 +140,20 @@
     }
 
     @media (max-width:620px){.grid{grid-template-columns:repeat(4,1fr)}}
-    /* Tile body text inside the opened card */
-.prompt {
-  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif !important;
-  font-size: 1.05rem;
-  line-height: 1.5;
-  color: var(--ink);
-  white-space: pre-line;  /* <- this keeps your \n as line breaks */
-}
 
-.prompt em {
-  color: var(--teal);
-  font-style: normal;
-  font-weight: 600;
-}
-/* Mad Libs: lightweight, touch-friendly form */
-.madlib-form {
-  display: grid;
-  gap: .75rem;
-  margin-top: .5rem;
-}
+    /* Generator + Mad Libs shared UI bits */
+    .madlib-actions{display:flex;gap:.6rem;margin-top:.6rem;flex-wrap:wrap}
+    .madlib-btn{all:unset;cursor:pointer;background:var(--teal);color:#fff;padding:.55rem .8rem;border-radius:.6rem;font-weight:700;box-shadow:0 2px 6px var(--shadow)}
+    .madlib-btn.secondary{background:#eef3f5;color:#2b4a5e}
+    .madlib-output{white-space:pre-line;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.55;margin-top:.75rem;font-size:1.05rem}
 
-.madlib-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: .6rem .8rem;
-}
-@media (max-width: 560px) {.madlib-grid{grid-template-columns: 1fr}}
-
-.madlib-field {
-  display: grid;
-  gap: .25rem;
-}
-
-.madlib-field label {
-  font-size: .9rem;
-  color: var(--teal);
-  font-weight: 600;
-}
-
-.madlib-field input {
-  font: inherit;
-  padding: .55rem .65rem;
-  border: 1px solid var(--line);
-  border-radius: .55rem;
-  background: #fff;
-}
-
-.madlib-actions {
-  display: flex;
-  gap: .6rem;
-  margin-top: .6rem;
-}
-
-.madlib-btn {
-  all: unset;
-  cursor: pointer;
-  background: var(--teal);
-  color: #fff;
-  padding: .55rem .8rem;
-  border-radius: .6rem;
-  font-weight: 700;
-  box-shadow: 0 2px 6px var(--shadow);
-}
-
-.madlib-btn.secondary {
-  background: #eef3f5;
-  color: #2b4a5e;
-}
-
-.madlib-output {
-  white-space: pre-line;     /* shows line breaks */
-  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.55;
-  margin-top: .75rem;
-  font-size: 1.05rem;
-}
-/* ---- MAD LIBS STYLES ---- */
-.madlib-form{display:grid;gap:.75rem;margin-top:.5rem}
-.madlib-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem .8rem}
-@media(max-width:560px){.madlib-grid{grid-template-columns:1fr}}
-.madlib-field{display:grid;gap:.25rem}
-.madlib-field label{font-size:.9rem;color:var(--teal);font-weight:600}
-.madlib-field input{font:inherit;padding:.55rem .65rem;border:1px solid var(--line);border-radius:.55rem;background:#fff}
-.madlib-actions{display:flex;gap:.6rem;margin-top:.6rem}
-.madlib-btn{all:unset;cursor:pointer;background:var(--teal);color:#fff;padding:.55rem .8rem;border-radius:.6rem;font-weight:700;box-shadow:0 2px 6px var(--shadow)}
-.madlib-btn.secondary{background:#eef3f5;color:#2b4a5e}
-.madlib-output{white-space:pre-line;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.55;margin-top:.75rem;font-size:1.05rem}
-/* ---- END MAD LIBS STYLES ---- */
-
+    /* Mad Libs form */
+    .madlib-form{display:grid;gap:.75rem;margin-top:.5rem}
+    .madlib-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem .8rem}
+    @media (max-width:560px){.madlib-grid{grid-template-columns:1fr}}
+    .madlib-field{display:grid;gap:.25rem}
+    .madlib-field label{font-size:.9rem;color:var(--teal);font-weight:600}
+    .madlib-field input{font:inherit;padding:.55rem .65rem;border:1px solid var(--line);border-radius:.55rem;background:#fff}
   </style>
 </head>
 <body>
@@ -320,158 +247,156 @@
 
   <!-- Main Script -->
   <script>
-  /* ----------------- Content ----------------- */
-const IDEAS = [
-  // WEEK 1
-  `Day 1 — Who Can Sound Like
-• an elf who just burned their tongue a little bit on hot chocolate
-• a baby polar bear trying to growl for the first time
-• reindeer hoofs on the roof (and the reindeer are super excited because it’s the first house of the night!)`,
+  /* ----------------- Content: Days 1–24 ----------------- */
+  const DAYS = [
+    // Day 1
+    { title: "Who Can Sound Like", prompts: [
+      "an elf who just burned their tongue a little bit on hot chocolate",
+      "a baby polar bear trying to growl for the first time",
+      "reindeer hoofs on the roof (and the reindeer are super excited because it’s the first house of the night!)"
+    ]},
+    // Day 2
+    { title: "Make This Face", prompts: [
+      "You just looked up in the sky and saw Santa’s sleigh and he waved at you",
+      "You’re just about to open a giant present but then the box starts wiggling and making strange noises…",
+      "Something just poked you in the back and you turn around to see it was a reindeer’s antler and Rudolph is staring at you"
+    ]},
+    // Day 3
+    { title: "You Are", prompts: [
+      "A baby penguin waddling across the slippery ice for the first time",
+      "A tired but happy elf who just made 3,645 toys and is collapsing on the floor from exhaustion",
+      "The star getting lifted up and put on top of the tree — so excited to show off how bright it can shine"
+    ]},
+    // Day 4
+    { title: "Would You Rather", prompts: [
+      "…wear jingle bells around your ankles all year long that jingle wherever you go OR hear the song “Jingle Bells” on repeat all year round",
+      "…get around everywhere by riding in Santa’s sleigh OR by riding on a reindeer",
+      "…have a magical mug of hot cocoa that refills itself whenever you snap OR a magical plate of sugar cookies that refills whenever you say “Cookies please!”"
+    ]},
+    // Day 5
+    { title: "Plot Twist Story — The Very Shy Snowman", prompts: [
+      "Suddenly, a little girl ran by. She was carrying a giant box of cookies, but then she tripped and the cookies went flying… Where did they land",
+      "Just then, a sweet little old lady walked up and said, “Pardon me, but I think this belongs to you!” She was holding a sparkly, golden ornament with words painted on it that said…",
+      "Then a voice started singing “We Wish You A Merry Christmas.” It was the most beautiful singing anyone had ever heard. It was getting louder and louder, until they realized where it was coming from. Who was it"
+    ]},
 
-  `Day 2 — Make This Face
-• You just looked up in the sky and saw Santa’s sleigh and he waved at you
-• You’re just about to open a giant present but then the box starts wiggling and making strange noises…
-• Something just poked you in the back and you turn around to see it was a reindeer’s antler and Rudolph is staring at you`,
+    // Day 6
+    { title: "Who Can Sound Like", prompts: [
+      "a grandma taking a bite of the cookies she just baked and realizing she forgot the sugar",
+      "Santa laughing but he’s trying to laugh quietly so he doesn’t wake up the sleeping kids",
+      "a squirrel who accidentally fell asleep in a Christmas tree at the tree farm and is waking up in some random person’s house"
+    ]},
+    // Day 7
+    { title: "Make This Face", prompts: [
+      "The snowman you just finished building just said, “Sorry to bother you, but do you think you could make my nose a little less crooked”",
+      "You’re smelling a very strong pine tree smell and you just realized it’s coming from your own armpit",
+      "You just knocked an ornament off the tree and caught it JUST before it hit the ground"
+    ]},
+    // Day 8
+    { title: "You Are", prompts: [
+      "A snowflake falling down from the sky and landing on top of a giant snowman and being so excited to be part of it",
+      "A cold candy cane that accidentally got left out in the snow and then a little kid finally comes and picks you up",
+      "A jar of sprinkles getting sprinkled all over the Christmas cookies"
+    ]},
+    // Day 9
+    { title: "Would You Rather", prompts: [
+      "…be able to build a snowman that lasts year round even when it’s hot outside OR make paper snowflakes that turn into real snowflakes",
+      "…be able to snap your fingers and make it snow outside OR snap your fingers and automatically decorate the whole neighborhood",
+      "…your laugh sound like a deep, jolly Santa laugh OR like a little silly high-pitched elf"
+    ]},
+    // Day 10
+    { title: "Plot Twist Story — The Case of the Missing Christmas Pajamas", prompts: [
+      "Just then, a little squeaky, mischievous laugh could be heard from under a nearby bush. Who was it",
+      "“Help Help I don’t know how to stop this thing” shouted a voice from across the road. They turned to see a man on a snowboard being pulled by a donkey who was galloping as fast as he could",
+      "Suddenly, the smell of cinnamon and apple cider wafted through the air, and that could only mean one thing"
+    ]},
 
-  `Day 3 — You Are
-• A baby penguin waddling across the slippery ice for the first time
-• A tired but happy elf who just made 3,645 toys and is collapsing on the floor from exhaustion
-• The star getting lifted up and put on top of the tree - so exicted to show off how bright it can shine`,
+    // Day 11
+    { title: "Who Can Sound Like", prompts: [
+      "Two turtle doves cooing back and forth telling each other a funny story",
+      "A gingerbread cookie that comes to life and is so excited it’s real",
+      "Mrs. Claus humming a carol but then she accidentally sits down on a pinecone"
+    ]},
+    // Day 12
+    { title: "Make This Face", prompts: [
+      "You just realized you ripped your pants right down the bottom when you were making a snow angel",
+      "It’s snowing outside and you stick out your tongue to try to catch the snowflakes but then you realize it’s actually snowing mini marshmallows",
+      "You just realized it’s so cold outside you have little snotsicles hanging out of your nose"
+    ]},
+    // Day 13
+    { title: "You Are", prompts: [
+      "An ice skater doing the most amazing ice skating trick of all time",
+      "A snowball rolling down a hill, getting bigger and bigger until you crash in a big fluffy Christmas tree",
+      "A gingerbread cookie that is sad nobody picked it off the plate and then it finally gets picked"
+    ]},
+    // Day 14
+    { title: "Would You Rather", prompts: [
+      "…have everything you eat for a day be gingerbread spice flavored OR turn into a magical gingerbread cookie for a whole day",
+      "…have to change your name to Frosty OR have the song “Frosty the Snowman” play whenever you walk into the room",
+      "…have to permanently dye your hair to be candy cane striped OR only wear candy cane striped clothes year-round"
+    ]},
+    // Day 15
+    { title: "Plot Twist Story — The Day That Rudolph’s Nose Couldn’t Stop Changing Colors", prompts: [
+      "“Oh dear, this is a catastrophe” cried a voice from across the room. “I’ve lost my lucky candy cane I’ve been saving for 50 years” Who was it",
+      "A gust of cold wind blew in along with a note that had a riddle on it that read: “Noses are red, gumdrops are blue, what is the thing that makes you truly YOU”",
+      "Suddenly, an elf named Larry came running up, out of breath, saying, “I’ve done it My invention finally works Quick Come see, come see”"
+    ]},
 
-  `Day 4 — Would You Rather
-• …wear jingle bells around your ankles all year long that jingle wherever you go OR hear the song “Jingle Bells” on repeat all year round
-• …get around everywhere by riding in Santa’s sleigh OR by riding on a reindeer
-• …have a magical mug of hot cocoa that refills itself whenever you snap OR a magical plate of sugar cookies that refills whenever you say “Cookies please!”`,
+    // Day 16
+    { title: "Who Can Sound Like", prompts: [
+      "A professional chicken caroler bawking “Jingle Bells” for a crowd",
+      "A little kid tasting a candy cane for the first time",
+      "A french hen looking everywhere for its other two best french-hen-friends because they’re playing hide and seek"
+    ]},
+    // Day 17
+    { title: "Make This Face", prompts: [
+      "You just smelled the most delicious gingerbread cookies baking in the oven and they’re going to be done in five minutes",
+      "You just burped and it sounded JUST like “Silent Night” and everyone is very impressed, especially yourself",
+      "You’re almost asleep on Christmas Eve but you THINK you just heard sleigh bells jingling outside"
+    ]},
+    // Day 18
+    { title: "You Are", prompts: [
+      "A lucky, but stinky, pair of Christmas socks getting washed in the washing machine",
+      "The one lightbulb on the Christmas tree that keeps going out because you’re just so tired",
+      "Jack Frost running around nipping at everyone’s nose (no actual nose-nipping please)"
+    ]},
+    // Day 19
+    { title: "Would You Rather", prompts: [
+      "…live in a gingerbread house OR live next door to Santa’s workshop",
+      "…instantly grow a Santa Claus-looking beard every time someone says your name (and then it disappears after 30 seconds) OR have your nose light up like Rudolph’s for two minutes every time someone says your name",
+      "…have a partridge that lives in a little pear tree and squawks to wake you up every morning OR have three french hens that live in your bathroom and are always getting in your way"
+    ]},
+    // Day 20
+    { title: "Who Can Sound Like", prompts: [
+      "A jolly mommy snow owl hooting for her babies to come home for dinner",
+      "A donkey singing its favorite Christmas carol (but can only sing the words “hee-haw”)",
+      "Six geese a-laying eggs and honking to each other about how proud they are"
+    ]},
+    // Day 21
+    { title: "Make This Face", prompts: [
+      "You just looked in the mirror and realized you’ve grown pointy elf ears and you’re not sure if you’re dreaming or not",
+      "You just opened up a gift from your Great Aunt Mildred and it’s a Christmas sweater that has her own face embroidered on it and it lights up and plays polka music when you press the button",
+      "Your nose just started lighting up red like Rudolph"
+    ]},
+    // Day 22
+    { title: "Would You Rather", prompts: [
+      "…shrink down to the size of an ornament OR grow to the size of a Christmas tree for a day",
+      "…have tiny snowflakes flutter down all around you every time you feel sleepy OR have sprinkles sprinkle down around you whenever you get excited",
+      "…be the official cookie taste-tester of the North Pole OR be the official toy-tester at Santa’s workshop"
+    ]},
 
-  `Day 5 — Plot Twist Story: The Very Shy Snowman
-• Suddenly, a little girl ran by. She was carrying a giant box of cookies, but then she tripped and the cookies went flying… Where did they land
-• Just then, a sweet little old lady walked up and said, “Pardon me, but I think this belongs to you!” She was holding a sparkly, golden ornament with words painted on it that said…
-• Then a voice started singing “We Wish You A Merry Christmas.” It was the most beautiful singing anyone had ever heard. It was getting louder and louder, until they realized where it was coming from. Who was it`,
+    // Day 23 — Truth or Merry Mischief pairs
+    { title: "Truth or Merry Mischief", pairs: [
+      { truth: "If you could only ever listen to one Christmas song, what would you choose", dare: "Step outside and sing “It’s the most wonderful time of the year” at the top of your lungs" },
+      { truth: "What’s the best Christmas gift you ever got OR the best gift you ever gave someone", dare: "Build a snowman out of pillows and give it a name" },
+      { truth: "If you were an elf, what’s your name and job in Santa’s workshop", dare: "Act like a partridge in a pear tree. Flap and squawk" },
+      { truth: "Are you a candy cane, a gingerbread cookie, or peppermint bark. Explain", dare: "Run around the room and say in a gingerbread voice, “Run, fun as fast as you can You can’t catch me, I’m the gingerbread man”" },
+      { truth: "If you could only eat one holiday food for the rest of your life, what would it be", dare: "Make up an original holiday joke" }
+    ]},
 
-  // WEEK 2
-  `Day 6 — Who Can Sound Like
-• a grandma taking a bite of the cookies she just baked and realizing she forgot the sugar
-• Santa laughing but he’s trying to laugh quietly so he doesn’t wake up the sleeping kids
-• a squirrel who accidentally fell asleep in a Christmas tree at the tree farm and is waking up in some random person’s house`,
-
-  `Day 7 — Make This Face
-• The snowman you just finished building just said, “Sorry to bother you, but do you think you could make my nose a little less crooked”
-• You’re smelling a very strong pine tree smell and you just realized it’s coming from your own armpit
-• You just knocked an ornament off the tree and caught it JUST before it hit the ground`,
-
-  `Day 8 — You Are
-• A snowflake falling down from the sky and landing on top of a giant snowman and being so excited to be part of it
-• A cold candy cane that accidentally got left out in the snow and then a little kid finally comes and picks you up
-• A jar of sprinkles getting sprinkled all over the Christmas cookies`,
-
-  `Day 9 — Would You Rather
-• …be able to build a snowman that lasts year round even when it’s hot outside OR make paper snowflakes that turn into real snowflakes
-• …be able to snap your fingers and make it snow outside OR snap your fingers and automatically decorate the whole neighborhood
-• …your laugh sound like a deep, jolly Santa laugh OR like a little silly high-pitched elf`,
-
-  `Day 10 — Plot Twist Story: The Case of the Missing Christmas Pajamas
-• Just then, a little squeaky, mischievous laugh could be heard from under a nearby bush. Who was it
-• “Help Help I don’t know how to stop this thing” shouted a voice from across the road. They turned to see a man on a snowboard being pulled by a donkey who was galloping as fast as he could
-• Suddenly, the smell of cinnamon and apple cider wafted through the air, and that could only mean one thing`,
-
-  // WEEK 3
-  `Day 11 — Who Can Sound Like
-• Two turtle doves cooing back and forth telling each other a funny story
-• A gingerbread cookie that comes to life and is so excited it’s real
-• Mrs. Claus humming a carol but then she accidentally sits down on a pinecone`,
-
-  `Day 12 — Make This Face
-• You just realized you ripped your pants right down the bottom when you were making a snow angel
-• It’s snowing outside and you stick out your tongue to try to catch the snowflakes but then you realize it’s actually snowing mini marshmallows
-• You just realized it’s so cold outside you have little snotsicles hanging out of your nose`,
-
-  `Day 13 — You Are
-• An ice skater doing the most amazing ice skating trick of all time
-• A snowball rolling down a hill, getting bigger and bigger until you crash in a big fluffy Christmas tree
-• A gingerbread cookie that is sad nobody picked it off the plate and then it finally gets picked`,
-
-  `Day 14 — Would You Rather
-• …have everything you eat for a day be gingerbread spice flavored OR turn into a magical gingerbread cookie for a whole day
-• …have to change your name to Frosty OR have the song “Frosty the Snowman” play whenever you walk into the room
-• …have to permanently dye your hair to be candy cane striped OR only wear candy cane striped clothes year-round`,
-
-  `Day 15 — Plot Twist Story: The Day That Rudolph’s Nose Couldn’t Stop Changing Colors
-• “Oh dear, this is a catastrophe” cried a voice from across the room. “I’ve lost my lucky candy cane I’ve been saving for 50 years” Who was it
-• A gust of cold wind blew in along with a note that had a riddle on it that read: “Noses are red, gumdrops are blue, what is the thing that makes you truly YOU”
-• Suddenly, an elf named Larry came running up, out of breath, saying, “I’ve done it My invention finally works Quick Come see, come see”`,
-
-  // WEEK 4 START
-  `Day 16 — Who Can Sound Like
-• A professional chicken caroler bawking “Jingle Bells” for a crowd
-• A little kid tasting a candy cane for the first time
-• A french hen looking everywhere for its other two best french-hen-friends because they’re playing hide and seek`,
-
-  `Day 17 — Make This Face
-• You just smelled the most delicious gingerbread cookies baking in the oven and they’re going to be done in five minutes
-• You just burped and it sounded JUST like “Silent Night” and everyone is very impressed, especially yourself
-• You’re almost asleep on Christmas Eve but you THINK you just heard sleigh bells jingling outside`,
-
-  `Day 18 — You Are
-• A lucky, but stinky, pair of Christmas socks getting washed in the washing machine
-• The one lightbulb on the Christmas tree that keeps going out because you’re honestly just so tired
-• Jack Frost running around nipping at everyone’s nose (no actually nose-nipping, please)`,
-
-  `Day 19 — Would You Rather
-• …live in a gingerbread house OR live next door to Santa’s workshop
-• …instantly grow a Santa Claus-looking beard every time someone says your name (and then it disappears after 30 seconds) OR have your nose light up like Rudolph’s for two minutes every time someone says your name
-• …have a partridge that lives in a little pear tree and squawks to wake you up every morning OR have three french hens that live in your bathroom and are always getting in your way`,
-
-  `Day 20 — Who Can Sound Like
-• A jolly mommy snow owl hooting for her babies to come home for dinner
-• A donkey singing its favorite Christmas carol (but can only sing the words “hee-haw”)
-• Six geese a-laying eggs and honking to each other about how proud they are`,
-
-  `Day 21 — Make This Face
-• You just looked in the mirror and realized you’ve grown pointy elf ears and you’re not sure if you’re dreaming or not
-• You just opened up a gift from your Great Aunt Mildred and it’s a Christmas sweater that has her own face embroidered on it and it lights up and plays polka music when you press the button
-• Your nose just started lighting up red like Rudolph`,
-
-  `Day 22 — Would You Rather
-• …shrink down to the size of an ornament OR grow to the size of a Christmas tree for a day
-• …have tiny snowflakes flutter down all around you every time you feel sleepy OR have sprinkles sprinkle down around you whenever you get excited
-• …be the official cookie taste-tester of the North Pole OR be the official toy-tester at Santa’s workshop`,
-
-  // FINALE
-  `Day 23 — Truth or Merry Mischief
-TRUTH: If you could only ever listen to one Christmas song, what would you choose
-MERRY MISCHIEF: Step outside and sing “It’s the most wonderful time of the year” at the top of your lungs
-
-TRUTH: What’s the best Christmas gift you ever got OR the best gift you ever gave someone
-MERRY MISCHIEF: Build a snowman out of pillows and give it a name
-
-TRUTH: If you were an elf, what do you think your name would be, and what kind of job would you have in Santa’s workshop
-MERRY MISCHIEF: Act like a partridge in a pear tree. Flap and squawk
-
-TRUTH: Are you a candy cane, a gingerbread cookie, or peppermint bark. Explain
-MERRY MISCHIEF: Run around the room and say in a gingerbread voice, “Run, fun as fast as you can You can’t catch me, I’m the gingerbread man”
-
-TRUTH: If you could only eat one holiday food for the rest of your life, what would it be
-MERRY MISCHIEF: Make up an original holiday joke`,
-
-  `Day 24 — Merry Mad Libs (Fill-in-the-Blanks Story)
-Fill in the blanks by number:
-1) Exclamation  2) Something you can feel  3) Body part  4) Verb ending in “ing”
-5) Color  6) Color  7) Number  8) Animal  9) Something you can hold
-10) Food  11) Feeling  12) Someone famous  13) Part of a house
-14) Body part (plural)  15) Body part (plural)  16) Verb ending in “ing”
-17) Verb  18) Food  19) Adjective  20) Verb
-
-“(1)_______” Do you feel that little (2)______ in the air It sure is starting to feel like Christmas I can feel it in my (3)_________ — that jolly, warm excitement for the holiday season
-
-Why, just yesterday, I was (4)_______ around downtown and was dazzled by all the (5)_______ and (6)_______ decorations. I even saw a (7)______-foot-tall inflatable (8)___________ wearing a Santa outfit, holding a (9)__________ Instant holiday spirit
-
-Then I stopped to grab a nice hot cup of (10)_______-nog and felt (11)________ when I heard a remix of “Jolly Old (12)_________” and “Up on the (13)___________” Before I knew it, my (14)_________ were dancing by themselves and I was singing at the top of my (15)_________ Nobody minded — they were (16)_________ along, too
-
-My favorite part of the season is time with family. I love (17)_______ together while eating spiced (18)_________ and laughing about all the (19)_________ memories of Christmases past
-
-I hope you have a wonderful holiday. And don’t forget to (20)_________ as much as you can in the new year`
-];
-
+    // Day 24 handled by the Mad Libs mini-app
+    { title: "Merry Mad Libs" }
+  ];
 
   /* ----------------- Elements ----------------- */
   const grid = document.getElementById('grid');
@@ -487,20 +412,94 @@ I hope you have a wonderful holiday. And don’t forget to (20)_________ as much
     el.className = 'tile';
     el.type = 'button';
     el.textContent = day;
-    el.addEventListener('click', () => openViewer(day, IDEAS[i]));
+    el.addEventListener('click', () => openViewer(day));
     return el;
   }
   function renderGrid(){
     grid.innerHTML = '';
-    for (let i=0; i<25; i++) grid.appendChild(makeTile(i));
+    for (let i=0; i<24; i++) grid.appendChild(makeTile(i)); // Days 1–24
   }
   renderGrid();
 
+  /* ----------------- Generator helpers ----------------- */
+  function pickNext(indexes){
+    const i = Math.floor(Math.random() * indexes.length);
+    return indexes.splice(i,1)[0];
+  }
+
+  function renderPromptGenerator(dayIndex){
+    const day = DAYS[dayIndex];
+    const title = day.title || "Today’s Prompts";
+    cardTitle.textContent = `Day ${dayIndex+1} — ${title}`;
+
+    // Truth/Mischief layout (Day 23)
+    if (day.pairs){
+      const remaining = Array.from({length: day.pairs.length}, (_,i)=>i);
+      cardBody.innerHTML = `
+        <div class="prompt">
+          <p><em>Tap a button to draw a card</em></p>
+          <div class="madlib-actions" style="margin:.5rem 0 0">
+            <button class="madlib-btn" id="drawTruth">Draw TRUTH</button>
+            <button class="madlib-btn secondary" id="drawDare">Draw MISCHIEF</button>
+            <button class="madlib-btn" id="drawEither">Surprise me</button>
+          </div>
+          <div id="genOutput" class="madlib-output" style="display:none"></div>
+        </div>
+      `;
+      const out = document.getElementById('genOutput');
+      function show(kind){
+        if(remaining.length===0){ out.textContent="All cards used. Shuffle and play again"; out.style.display="block"; return; }
+        const idx = pickNext(remaining);
+        const pair = day.pairs[idx];
+        const txt = kind==="truth" ? `TRUTH:\n${pair.truth}` :
+                    kind==="mischief" ? `MERRY MISCHIEF:\n${pair.dare}` :
+                    (Math.random()<.5 ? `TRUTH:\n${pair.truth}` : `MERRY MISCHIEF:\n${pair.dare}`);
+        out.textContent = txt;
+        out.style.display="block";
+      }
+      document.getElementById('drawTruth').onclick   = ()=>show("truth");
+      document.getElementById('drawDare').onclick    = ()=>show("mischief");
+      document.getElementById('drawEither').onclick  = ()=>show("either");
+      return;
+    }
+
+    // Regular 3-prompt generator
+    const remaining = [0,1,2];
+    cardBody.innerHTML = `
+      <div class="prompt">
+        <p><em>Tap to get a prompt</em></p>
+        <div id="genOutput" class="madlib-output" style="display:none"></div>
+        <div class="madlib-actions" style="margin-top:.6rem">
+          <button class="madlib-btn" id="nextPrompt">New prompt</button>
+          <button class="madlib-btn secondary" id="resetPrompts">Shuffle</button>
+        </div>
+      </div>
+    `;
+    const out = document.getElementById('genOutput');
+    function next(){
+      if(remaining.length===0){ out.textContent = "All done. Tap Shuffle to start again"; out.style.display="block"; return; }
+      const idx = pickNext(remaining);
+      out.textContent = "• " + day.prompts[idx];
+      out.style.display="block";
+    }
+    document.getElementById('nextPrompt').onclick = next;
+    document.getElementById('resetPrompts').onclick = ()=>{
+      remaining.splice(0, remaining.length, 0,1,2);
+      out.textContent = "";
+      out.style.display="none";
+    };
+    next(); // auto-draw first
+  }
+
   /* ----------------- Viewer ----------------- */
-  function openViewer(day, html){
-    cardTitle.textContent = `Day ${day}`;
-    cardBody.innerHTML = html;
+  function openViewer(day){
     viewer.classList.add('open');
+    if (day === 24){
+      cardTitle.textContent = "Day 24 — Merry Mad Libs";
+      renderMadLibsForm();
+      return;
+    }
+    renderPromptGenerator(day - 1);
   }
   function closeViewer(){
     viewer.classList.remove('open');
@@ -537,16 +536,14 @@ I hope you have a wonderful holiday. And don’t forget to (20)_________ as much
     if (!courtesyAck.checked) return;
     localStorage.setItem(COURTESY_KEY, 'yes');
     hideGate();
-    // Reveal install-help bar after acceptance
     document.getElementById('install-help')?.classList.remove('gate-hide');
   });
 
-  // If already accepted, show install-help immediately
   if (localStorage.getItem(COURTESY_KEY) === 'yes') {
     document.getElementById('install-help')?.classList.remove('gate-hide');
   }
 
-  /* ----------------- Install Help (like WYR) ----------------- */
+  /* ----------------- Install Help ----------------- */
   (function(){
     const root = document.getElementById('install-help');
     const panel = document.getElementById('install-help-panel');
@@ -647,31 +644,32 @@ I hope you have a wonderful holiday. And don’t forget to (20)_________ as much
       deferredPrompt = null;
     });
   }
-    /* === DAY 24 MAD LIBS MINI-APP === */
-const MADLIBS_FIELDS = [
-  {key:"f1",label:"1) Exclamation"},
-  {key:"f2",label:"2) Something you can feel"},
-  {key:"f3",label:"3) Body part"},
-  {key:"f4",label:"4) Verb ending in “ing”"},
-  {key:"f5",label:"5) Color"},
-  {key:"f6",label:"6) Color"},
-  {key:"f7",label:"7) Number"},
-  {key:"f8",label:"8) Animal"},
-  {key:"f9",label:"9) Something you can hold"},
-  {key:"f10",label:"10) Food"},
-  {key:"f11",label:"11) Feeling"},
-  {key:"f12",label:"12) Someone famous"},
-  {key:"f13",label:"13) Part of a house"},
-  {key:"f14",label:"14) Body part (plural)"},
-  {key:"f15",label:"15) Body part (plural)"},
-  {key:"f16",label:"16) Verb ending in “ing”"},
-  {key:"f17",label:"17) Verb"},
-  {key:"f18",label:"18) Food"},
-  {key:"f19",label:"19) Adjective"},
-  {key:"f20",label:"20) Verb"}
-];
 
-const MADLIBS_TEMPLATE = 
+  /* ----------------- Day 24: Mad Libs mini-app ----------------- */
+  const MADLIBS_FIELDS = [
+    {key:"f1",label:"1) Exclamation"},
+    {key:"f2",label:"2) Something you can feel"},
+    {key:"f3",label:"3) Body part"},
+    {key:"f4",label:"4) Verb ending in “ing”"},
+    {key:"f5",label:"5) Color"},
+    {key:"f6",label:"6) Color"},
+    {key:"f7",label:"7) Number"},
+    {key:"f8",label:"8) Animal"},
+    {key:"f9",label:"9) Something you can hold"},
+    {key:"f10",label:"10) Food"},
+    {key:"f11",label:"11) Feeling"},
+    {key:"f12",label:"12) Someone famous"},
+    {key:"f13",label:"13) Part of a house"},
+    {key:"f14",label:"14) Body part (plural)"},
+    {key:"f15",label:"15) Body part (plural)"},
+    {key:"f16",label:"16) Verb ending in “ing”"},
+    {key:"f17",label:"17) Verb"},
+    {key:"f18",label:"18) Food"},
+    {key:"f19",label:"19) Adjective"},
+    {key:"f20",label:"20) Verb"}
+  ];
+
+  const MADLIBS_TEMPLATE =
 `“{1}!” Do you feel that little {2} in the air? It sure is starting to feel like Christmas! I can feel it in my {3} — that jolly, warm excitement for the holiday season.
 
 Why, just yesterday, I was {4} around downtown and I was dazzled by all the {5} and {6} decorations. I even saw a {7}-foot-tall inflatable {8} wearing a Santa outfit, holding a {9}! Instant holiday spirit!
@@ -682,66 +680,53 @@ My favorite part of the season is time with family. I love {17} together while e
 
 I hope you have a wonderful holiday — and don’t forget to {20} as much as you can in the new year!`;
 
-function renderMadLibsForm(){
-  const c=document.getElementById("cardBody");
-  const fieldsHTML=MADLIBS_FIELDS.map(f=>`
-    <div class="madlib-field">
-      <label for="${f.key}">${f.label}</label>
-      <input id="${f.key}" type="text">
-    </div>`).join("");
-  c.innerHTML=`
-    <div class="idea-title">Merry Mad Libs</div>
-    <form class="madlib-form" id="madlibForm">
-      <div class="madlib-grid">${fieldsHTML}</div>
-      <div class="madlib-actions">
-        <button type="submit" class="madlib-btn">Make My Story</button>
+  function renderMadLibsForm(){
+    const fieldsHTML = MADLIBS_FIELDS.map(f=>`
+      <div class="madlib-field">
+        <label for="${f.key}">${f.label}</label>
+        <input id="${f.key}" type="text">
+      </div>`).join("");
+
+    cardBody.innerHTML=`
+      <form class="madlib-form" id="madlibForm">
+        <div class="madlib-grid">${fieldsHTML}</div>
+        <div class="madlib-actions">
+          <button type="submit" class="madlib-btn">Make My Story</button>
+        </div>
+      </form>
+      <div id="madlibOutput" class="madlib-output" style="display:none"></div>
+      <div class="madlib-actions" id="madlibEditBar" style="display:none">
+        <button class="madlib-btn secondary" id="madlibEditBtn" type="button">Edit Answers</button>
       </div>
-    </form>
-    <div id="madlibOutput" class="madlib-output" style="display:none"></div>
-    <div class="madlib-actions" id="madlibEditBar" style="display:none">
-      <button class="madlib-btn secondary" id="madlibEditBtn" type="button">Edit Answers</button>
-    </div>
-  `;
+    `;
 
-  const form=document.getElementById("madlibForm");
-  form.addEventListener("submit",e=>{
-    e.preventDefault();
-    const data={};
-    MADLIBS_FIELDS.forEach(f=>{
-      data[f.key]=(document.getElementById(f.key).value||"_____").trim();
+    const form=document.getElementById("madlibForm");
+    form.addEventListener("submit",e=>{
+      e.preventDefault();
+      const data={};
+      MADLIBS_FIELDS.forEach(f=>{
+        data[f.key]=(document.getElementById(f.key).value||"_____").trim();
+      });
+      renderMadLibsStory(data);
     });
-    renderMadLibsStory(data);
-  });
-  document.getElementById("madlibEditBtn").addEventListener("click",()=>{
-    document.getElementById("madlibOutput").style.display="none";
-    document.getElementById("madlibEditBar").style.display="none";
-    form.style.display="grid";
-  });
-}
 
-function renderMadLibsStory(values){
-  let story=MADLIBS_TEMPLATE;
-  for(let i=1;i<=20;i++){
-    story=story.split(`{${i}}`).join(values[`f${i}`]||"_____");
+    document.getElementById("madlibEditBtn").addEventListener("click",()=>{
+      document.getElementById("madlibOutput").style.display="none";
+      document.getElementById("madlibEditBar").style.display="none";
+      form.style.display="grid";
+    });
   }
-  document.getElementById("madlibOutput").textContent=story;
-  document.getElementById("madlibOutput").style.display="block";
-  document.getElementById("madlibEditBar").style.display="flex";
-  document.getElementById("madlibForm").style.display="none";
-}
 
-/* Hook into openViewer so tile 24 launches the Mad Libs app */
-const originalOpenViewer=openViewer;
-openViewer=function(day,html){
-  if(day===24){        // Day 24 tile
-    viewer.classList.add("open");
-    cardTitle.textContent="Day 24";
-    renderMadLibsForm();
-    return;
+  function renderMadLibsStory(values){
+    let story=MADLIBS_TEMPLATE;
+    for(let i=1;i<=20;i++){
+      story=story.split(`{${i}}`).join(values[`f${i}`]||"_____");
+    }
+    document.getElementById("madlibOutput").textContent=story;
+    document.getElementById("madlibOutput").style.display="block";
+    document.getElementById("madlibEditBar").style.display="flex";
+    document.getElementById("madlibForm").style.display="none";
   }
-  originalOpenViewer(day,html);
-};
-
   </script>
 
   <!-- Service worker registration (separate script block) -->
@@ -760,7 +745,19 @@ openViewer=function(day,html){
         } catch {}
       });
     }
-  </script>
 
+    /* Hook viewer after SW to keep main script tidy */
+    function openViewer(day){
+      const viewer = document.getElementById('viewer');
+      const cardTitle = document.getElementById('cardTitle');
+      viewer.classList.add('open');
+      if (day === 24){
+        cardTitle.textContent = "Day 24 — Merry Mad Libs";
+        renderMadLibsForm();
+        return;
+      }
+      renderPromptGenerator(day - 1);
+    }
+  </script>
 </body>
 </html>
