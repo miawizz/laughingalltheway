@@ -320,9 +320,26 @@
   }
 
   // ---- Service Worker ----
-  if('serviceWorker' in navigator){
-    window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', async () => {
+      try {
+        const reg = await navigator.serviceWorker.register('./sw.js?ver=2025-11-05');
+        // If there is an updated worker waiting, tell it to activate now
+        if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
+
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          // Reload once when the new SW takes over
+          if (!window.__reloadedForSW__) {
+            window.__reloadedForSW__ = true;
+            location.reload();
+          }
+        });
+      } catch (e) {
+        // silent
+      }
+    });
   }
-  </script>
+</script>
 </body>
 </html>
