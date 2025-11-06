@@ -42,6 +42,7 @@
     /* App wrapper + blur when gated */
     #appWrap{flex:1}
     #appWrap.blur{filter:blur(4px) saturate(.9); pointer-events:none; user-select:none}
+    
 
     /* Header */
     header{text-align:center; padding:14px 16px 4px;}
@@ -137,6 +138,20 @@
     }
 
     @media (max-width:620px){.grid{grid-template-columns:repeat(4,1fr)}}
+    /* Tile body text inside the opened card */
+.prompt {
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif !important;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.prompt em {
+  color: var(--teal);
+  font-style: normal;
+  font-weight: 600;
+}
+
   </style>
 </head>
 <body>
