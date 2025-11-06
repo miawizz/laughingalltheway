@@ -14,7 +14,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-  <!-- Rounded, bubbly font -->
+  <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
 
   <style>
@@ -95,7 +95,6 @@
       z-index:2;
     }
 
-    /* Gift-box style tiles */
     .tile{
       aspect-ratio:1/1;
       background:var(--card);
@@ -122,7 +121,6 @@
       border-top-right-radius:18px;
     }
 
-    /* Viewer */
     .viewer{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;z-index:3}
     .viewer.open{display:flex}
     .card{
@@ -143,7 +141,6 @@
     .prompt em{color:var(--teal);font-style:normal;font-weight:600}
     .close{position:sticky;top:-8px;float:right;background:#f1f5f9;border:0;border-radius:10px;padding:8px 10px;cursor:pointer;font-weight:700;color:#2b4a5e;box-shadow:0 2px 6px var(--shadow)}
 
-    /* Snow behind everything */
     #snow{position:fixed;inset:0;pointer-events:none;z-index:0}
     header,main,footer,#appWrap{position:relative;z-index:2}
 
@@ -162,7 +159,7 @@
 <body>
   <canvas id="snow"></canvas>
 
-  <!-- Welcome / Agreement overlay -->
+  <!-- Welcome Overlay -->
   <div id="welcome" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:5;">
     <div style="background:rgba(0,0,0,.45);position:absolute;inset:0;"></div>
     <div style="position:relative;background:#fff;border:1px solid #e5ecf0;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,.35);padding:22px;max-width:580px;margin:20px;">
@@ -181,7 +178,7 @@
     </div>
   </div>
 
-  <div id="appWrap" class="blur">
+  <div id="appWrap">
     <header>
       <img class="brand" src="./LATWlogo.png" alt="Laughing All the Way — Advent Calendar from Playful Heart Parenting" />
       <div class="controls">
@@ -203,10 +200,10 @@
   </div>
 
   <footer>
-    © 2025 Mia Wisinski, Playful Heart Parenting. This app is for personal use only by those who have purchased access from Playful Heart Parenting. Please do not share this link publicly or distribute without explicit permission.
+    © 2025 Mia Wisinski, Playful Heart Parenting. This app is for personal use only by those who have purchased access. Please do not share this link publicly or distribute without permission.
   </footer>
 
-  <!-- Fullscreen Viewer -->
+  <!-- Viewer -->
   <div class="viewer" id="viewer" aria-modal="true" role="dialog">
     <div class="card" id="card">
       <button class="close" id="closeBtn">Close</button>
@@ -215,6 +212,7 @@
     </div>
   </div>
 
+  <!-- Main Script -->
   <script>
   // ---- Content ----
   const IDEAS = Array.from({length:25},(_,i)=>`Day ${i+1} — Placeholder content here.`);
@@ -248,11 +246,30 @@
   const welcome=document.getElementById('welcome');
   const agreeChk=document.getElementById('agreeChk');
   const agreeBtn=document.getElementById('agreeBtn');
-  function showWelcome(){appWrap.classList.add('blur');welcome.style.display='flex';document.body.style.overflow='hidden';}
-  function hideWelcome(){appWrap.classList.remove('blur');welcome.style.display='none';document.body.style.overflow='';}
-  if(!localStorage.getItem(ACK_KEY))showWelcome();
-  agreeChk.addEventListener('change',()=>{agreeBtn.disabled=!agreeChk.checked;agreeBtn.style.cursor=agreeChk.checked?'pointer':'not-allowed';});
-  agreeBtn.addEventListener('click',()=>{if(!agreeChk.checked)return;localStorage.setItem(ACK_KEY,'yes');hideWelcome();});
+
+  function showWelcome(){
+    if (appWrap) appWrap.classList.add('blur');
+    if (welcome) { welcome.style.display='flex'; document.body.style.overflow='hidden'; }
+  }
+  function hideWelcome(){
+    if (appWrap) appWrap.classList.remove('blur');
+    if (welcome) { welcome.style.display='none'; document.body.style.overflow=''; }
+  }
+
+  hideWelcome();
+  if(!localStorage.getItem(ACK_KEY)) showWelcome();
+
+  if (agreeChk && agreeBtn){
+    agreeChk.addEventListener('change',()=>{
+      agreeBtn.disabled=!agreeChk.checked;
+      agreeBtn.style.cursor=agreeChk.checked?'pointer':'not-allowed';
+    });
+    agreeBtn.addEventListener('click',()=>{
+      if(!agreeChk.checked) return;
+      localStorage.setItem(ACK_KEY,'yes');
+      hideWelcome();
+    });
+  }
 
   // ---- Snowfall ----
   const canvas=document.getElementById('snow'),ctx=canvas.getContext('2d');
@@ -273,21 +290,20 @@
   const installBtn=document.getElementById('installBtn');
   const CLOSE_KEY='latw_installHelp_closed';
 
-  if(localStorage.getItem(CLOSE_KEY)){helpWrap.style.display='none';}
-
-  if(isIOS){installBtn.remove();}
+  if(localStorage.getItem(CLOSE_KEY) && helpWrap){helpWrap.style.display='none';}
+  if(isIOS && installBtn){ installBtn.remove(); }
 
   let deferredPrompt;
   window.addEventListener('beforeinstallprompt', e=>{
     e.preventDefault();
     deferredPrompt=e;
-    if(!isStandalone && !isIOS){installBtn.style.display='inline-block';}
-    if(helpWrap)helpWrap.style.display='none';
+    if(!isStandalone && !isIOS && installBtn){installBtn.style.display='inline-block';}
+    if(helpWrap) helpWrap.style.display='none';
   });
 
   if(installBtn){
     installBtn.addEventListener('click',async()=>{
-      if(!deferredPrompt)return;
+      if(!deferredPrompt) return;
       installBtn.style.display='none';
       deferredPrompt.prompt();
       await deferredPrompt.userChoice;
@@ -296,46 +312,45 @@
   }
 
   window.addEventListener('load',()=>{
-    if(isStandalone)return;
+    if(isStandalone) return;
     const noPromptSupport=!('onbeforeinstallprompt'in window);
-    if(noPromptSupport){
+    if(noPromptSupport && helpWrap){
       if(isIOS){
-        helpText.textContent='To install on iPhone: tap Share → Add to Home Screen.';
-        helpWrap.style.display=localStorage.getItem(CLOSE_KEY)?'none':'block';
+        helpText.textContent='To install on iPhone. Tap Share, then Add to Home Screen.';
       }else if(isAndroid){
-        helpText.textContent='To install on Android: open in Chrome → menu → Add to Home screen.';
-        helpWrap.style.display=localStorage.getItem(CLOSE_KEY)?'none':'block';
+        helpText.textContent='To install on Android. Open in Chrome, then Add to Home screen.';
       }else{
-        helpText.textContent='To install: use Chrome or Edge Install button, or on iPhone use Share → Add to Home Screen.';
-        helpWrap.style.display=localStorage.getItem(CLOSE_KEY)?'none':'block';
+        helpText.textContent='To install. Use Chrome or Edge Install. On iPhone use Share then Add to Home Screen.';
       }
+      if(!localStorage.getItem(CLOSE_KEY)) helpWrap.style.display='block';
     }
   });
 
   if(closeInstallHelp){
     closeInstallHelp.addEventListener('click',()=>{
-      helpWrap.style.display='none';
+      if(helpWrap) helpWrap.style.display='none';
       localStorage.setItem(CLOSE_KEY,'true');
     });
   }
+  </script>
 
-  // ---- Service Worker ----
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', async () => {
-      try {
-        const reg = await navigator.serviceWorker.register('./sw.js?ver=safe1');
-        if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!window.__swReloaded) {
-            window.__swReloaded = true;
-            location.reload();
-          }
-        });
-      } catch {}
-    });
-  }
-</script>
+  <!-- Service Worker -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          const reg = await navigator.serviceWorker.register('./sw.js?ver=safe1');
+          if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!window.__swReloaded) {
+              window.__swReloaded = true;
+              location.reload();
+            }
+          });
+        } catch {}
+      });
+    }
+  </script>
 
 </body>
 </html>
