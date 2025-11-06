@@ -324,22 +324,18 @@
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', async () => {
       try {
-        const reg = await navigator.serviceWorker.register('./sw.js?ver=2025-11-05');
-        // If there is an updated worker waiting, tell it to activate now
+        const reg = await navigator.serviceWorker.register('./sw.js?ver=safe1');
         if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
-
         navigator.serviceWorker.addEventListener('controllerchange', () => {
-          // Reload once when the new SW takes over
-          if (!window.__reloadedForSW__) {
-            window.__reloadedForSW__ = true;
+          if (!window.__swReloaded) {
+            window.__swReloaded = true;
             location.reload();
           }
         });
-      } catch (e) {
-        // silent
-      }
+      } catch {}
     });
   }
 </script>
+
 </body>
 </html>
