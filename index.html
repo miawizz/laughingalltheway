@@ -229,33 +229,157 @@
   <!-- Main Script -->
   <script>
   /* ----------------- Content ----------------- */
-  const IDEAS = [
-    "Day 1 — Serious Santa: Put on your most serious face and try not to laugh while saying ‘Ho! Ho! Ho!’ <em>For littler elves: big ‘Ho! Ho! Ho!’s and funny faces.</em>",
-    "Day 2 — Reverse Christmas Charades: Give step-by-step instructions to make someone act it out, then guess. <em>For littler elves: do simple charades with sounds.</em>",
-    "Day 3 — Very Merry Ventriloquism: Say holiday phrases without moving your lips. <em>For littler elves: use a puppet or stuffed animal voice.</em>",
-    "Day 4 — Dashing Through the Doodles: Finger-draw a holiday picture to guess. <em>For littler elves: offer two choices or draw on paper.</em>",
-    "Day 5 — Jingle Jargon: Speak in elf gibberish and translate. <em>For littler elves: try short silly giggles and gibberish.</em>",
-    "Day 6 — Holly Jolly Handshake: Invent a handshake with 2–3 moves. <em>For littler elves: keep moves easy with sound effects.</em>",
-    "Day 7 — Hot Stocking: Hot-potato with balled socks. Loser does a silly challenge. <em>For littler elves: pass a plush slowly. Skip the challenge if needed.</em>",
-    "Day 8 — Tinsel Twisters: Try “Santa’s short suit shrunk,” etc. five times fast. <em>For littler elves: go slowly and enjoy the sounds.</em>",
-    "Day 9 — Winter Would You Rather: Ask holiday would-you-rather questions. <em>For littler elves: use very simple either-or.</em>",
-    "Day 10 — Merry Mad Libs: Fill in the blanks for a goofy story. <em>For littler elves: you suggest easy words like color or snack.</em>",
-    "Day 11 — Strike a Jolly Pose: Lights off. Pose on a prompt. Lights on. Pick the funniest. <em>For littler elves: skip lights. Just pose together.</em>",
-    "Day 12 — Kooky Carols: Sing alternating words. Try syllables if brave. <em>For littler elves: sing together. Let them lead a word.</em>",
-    "Day 13 — Christmas Choreographer: Make moves. Others copy. Build a family dance. <em>For littler elves: copy their moves or let them teach.</em>",
-    "Day 14 — Hot Cocoa Freeze Challenge: Pretend to sip then freeze your face. <em>For littler elves: you freeze and make them giggle.</em>",
-    "Day 15 — Truth or Merry Mischief: Answer a truth or do a harmless dare. <em>For littler elves: tiny truths. Dares like clap or spin.</em>",
-    "Day 16 — Silent Night Singing: Lip-sync a carol while others guess. <em>For littler elves: hum or tap the rhythm.</em>",
-    "Day 17 — Santa Says: Simon Says with Santa. Keep everyone playing. <em>For littler elves: no out. Just play.</em>",
-    "Day 18 — Ice Powers: Kids shout Freeze then Unfreeze and run to base. <em>For littler elves: try freeze dance first.</em>",
-    "Day 19 — Impromptu Nutcracker: Dance to The Nutcracker and capture it. <em>For littler elves: hold hands and spin.</em>",
-    "Day 20 — Holiday Mind Meld: 1 2 3 say the same holiday word together. <em>For littler elves: be a mirror. Match faces and sounds.</em>",
-    "Day 21 — 10 Second Shenanigans: Act a quick holiday scenario in ten seconds. <em>For littler elves: you perform. They pick or join.</em>",
-    "Day 22 — The Jolly Storyteller: Build a story sentence by sentence. <em>For littler elves: pause and point for a key word.</em>",
-    "Day 23 — Reindeer Hop Challenge: Hop like a reindeer for one minute. <em>For littler elves: jump or stomp or clap.</em>",
-    "Day 24 — Jingle Jangle Jam: Make up a song at the same time. <em>For littler elves: simple tune with silly wrong words.</em>",
-    "Day 25 — That’s a Wrap: Wrap feet or a blanket present. Over react as you unwrap. <em>For littler elves: wrap a blanket gift. Celebrate them.</em>"
-  ];
+const IDEAS = [
+  // WEEK 1
+  `Day 1 — Who Can Sound Like
+• an elf who just burned their tongue a little bit on hot chocolate
+• a baby polar bear trying to growl for the first time
+• reindeer hoofs on the roof (and the reindeer are super excited because it’s the first house of the night!)`,
+
+  `Day 2 — Make This Face
+• You just looked up in the sky and saw Santa’s sleigh and he waved at you
+• You’re just about to open a giant present but then the box starts wiggling and making strange noises…
+• Something just poked you in the back and you turn around to see it was a reindeer’s antler and Rudolph is staring at you`,
+
+  `Day 3 — You Are
+• A baby penguin waddling across the slippery ice for the first time
+• A tired but happy elf who just made 3,645 toys and is collapsing on the floor from exhaustion
+• The star getting lifted up and put on top of the tree`,
+
+  `Day 4 — Would You Rather
+• …wear jingle bells around your ankles all year long that jingle wherever you go OR hear the song “Jingle Bells” on repeat all year round
+• …get around everywhere by riding in Santa’s sleigh OR by riding on a reindeer
+• …have a magical mug of hot cocoa that refills itself whenever you snap OR a magical plate of sugar cookies that refills whenever you say “Cookies please!”`,
+
+  `Day 5 — Plot Twist Story: The Very Shy Snowman
+• Suddenly, a little girl ran by. She was carrying a giant box of cookies, but then she tripped and the cookies went flying… Where did they land
+• Just then, a sweet little old lady walked up and said, “Pardon me, but I think this belongs to you!” She was holding a sparkly, golden ornament with words painted on it that said…
+• Then a voice started singing “We Wish You A Merry Christmas.” It was the most beautiful singing anyone had ever heard. It was getting louder and louder, until they realized where it was coming from. Who was it`,
+
+  // WEEK 2
+  `Day 6 — Who Can Sound Like
+• a grandma taking a bite of the cookies she just baked and realizing she forgot the sugar
+• Santa laughing but he’s trying to laugh quietly so he doesn’t wake up the sleeping kids
+• a squirrel who accidentally fell asleep in a Christmas tree at the tree farm and is waking up in some random person’s house`,
+
+  `Day 7 — Make This Face
+• The snowman you just finished building just said, “Sorry to bother you, but do you think you could make my nose a little less crooked”
+• You’re smelling a very strong pine tree smell and you just realized it’s coming from your own armpit
+• You just knocked an ornament off the tree and caught it JUST before it hit the ground`,
+
+  `Day 8 — You Are
+• A snowflake falling down from the sky and landing on top of a giant snowman and being so excited to be part of it
+• A cold candy cane that accidentally got left out in the snow and then a little kid finally comes and picks you up
+• A jar of sprinkles getting sprinkled all over the Christmas cookies`,
+
+  `Day 9 — Would You Rather
+• …be able to build a snowman that lasts year round even when it’s hot outside OR make paper snowflakes that turn into real snowflakes
+• …be able to snap your fingers and make it snow outside OR snap your fingers and automatically decorate the whole neighborhood
+• …your laugh sound like a deep, jolly Santa laugh OR like a little silly high-pitched elf`,
+
+  `Day 10 — Plot Twist Story: The Case of the Missing Christmas Pajamas
+• Just then, a little squeaky, mischievous laugh could be heard from under a nearby bush. Who was it
+• “Help Help I don’t know how to stop this thing” shouted a voice from across the road. They turned to see a man on a snowboard being pulled by a donkey who was galloping as fast as he could
+• Suddenly, the smell of cinnamon and apple cider wafted through the air, and that could only mean one thing`,
+
+  // WEEK 3
+  `Day 11 — Who Can Sound Like
+• Two turtle doves cooing back and forth telling each other a funny story
+• A gingerbread cookie that comes to life and is so excited it’s real
+• Mrs. Claus humming a carol but then she accidentally sits down on a pinecone`,
+
+  `Day 12 — Make This Face
+• You just realized you ripped your pants right down the bottom when you were making a snow angel
+• It’s snowing outside and you stick out your tongue to try to catch the snowflakes but then you realize it’s actually snowing mini marshmallows
+• You just realized it’s so cold outside you have little snotsicles hanging out of your nose`,
+
+  `Day 13 — You Are
+• An ice skater doing the most amazing ice skating trick of all time
+• A snowball rolling down a hill, getting bigger and bigger until you crash in a big fluffy Christmas tree
+• A gingerbread cookie that is sad nobody picked it off the plate and then it finally gets picked`,
+
+  `Day 14 — Would You Rather
+• …have everything you eat for a day be gingerbread spice flavored OR turn into a magical gingerbread cookie for a whole day
+• …have to change your name to Frosty OR have the song “Frosty the Snowman” play whenever you walk into the room
+• …have to permanently dye your hair to be candy cane striped OR only wear candy cane striped clothes year-round`,
+
+  `Day 15 — Plot Twist Story: The Day That Rudolph’s Nose Couldn’t Stop Changing Colors
+• “Oh dear, this is a catastrophe” cried a voice from across the room. “I’ve lost my lucky candy cane I’ve been saving for 50 years” Who was it
+• A gust of cold wind blew in along with a note that had a riddle on it that read: “Noses are red, gumdrops are blue, what is the thing that makes you truly YOU”
+• Suddenly, an elf named Larry came running up, out of breath, saying, “I’ve done it My invention finally works Quick Come see, come see”`,
+
+  // WEEK 4 START
+  `Day 16 — Who Can Sound Like
+• A professional chicken caroler bawking “Jingle Bells” for a crowd
+• A little kid tasting a candy cane for the first time
+• A french hen looking everywhere for its other two best french-hen-friends because they’re playing hide and seek`,
+
+  `Day 17 — Make This Face
+• You just smelled the most delicious gingerbread cookies baking in the oven and they’re going to be done in five minutes
+• You just burped and it sounded JUST like “Silent Night” and everyone is very impressed, especially yourself
+• You’re almost asleep on Christmas Eve but you THINK you just heard sleigh bells jingling outside`,
+
+  `Day 18 — You Are
+• A lucky, but stinky, pair of Christmas socks getting washed in the washing machine
+• The one lightbulb on the Christmas tree that keeps going out because you’re honestly just so tired
+• Jack Frost running around nipping at everyone’s nose (no actually nose-nipping, please)`,
+
+  `Day 19 — Would You Rather
+• …live in a gingerbread house OR live next door to Santa’s workshop
+• …instantly grow a Santa Claus-looking beard every time someone says your name (and then it disappears after 30 seconds) OR have your nose light up like Rudolph’s for two minutes every time someone says your name
+• …have a partridge that lives in a little pear tree and squawks to wake you up every morning OR have three french hens that live in your bathroom and are always getting in your way`,
+
+  `Day 20 — Who Can Sound Like
+• A jolly mommy snow owl hooting for her babies to come home for dinner
+• A donkey singing its favorite Christmas carol (but can only sing the words “hee-haw”)
+• Six geese a-laying eggs and honking to each other about how proud they are`,
+
+  `Day 21 — Make This Face
+• You just looked in the mirror and realized you’ve grown pointy elf ears and you’re not sure if you’re dreaming or not
+• You just opened up a gift from your Great Aunt Mildred and it’s a Christmas sweater that has her own face embroidered on it and it lights up and plays polka music when you press the button
+• Your nose just started lighting up red like Rudolph`,
+
+  `Day 22 — Would You Rather
+• …shrink down to the size of an ornament OR grow to the size of a Christmas tree for a day
+• …have tiny snowflakes flutter down all around you every time you feel sleepy OR have sprinkles sprinkle down around you whenever you get excited
+• …be the official cookie taste-tester of the North Pole OR be the official toy-tester at Santa’s workshop`,
+
+  // FINALE
+  `Day 23 — Truth or Merry Mischief
+TRUTH: If you could only ever listen to one Christmas song, what would you choose
+MERRY MISCHIEF: Step outside and sing “It’s the most wonderful time of the year” at the top of your lungs
+
+TRUTH: What’s the best Christmas gift you ever got OR the best gift you ever gave someone
+MERRY MISCHIEF: Build a snowman out of pillows and give it a name
+
+TRUTH: If you were an elf, what do you think your name would be, and what kind of job would you have in Santa’s workshop
+MERRY MISCHIEF: Act like a partridge in a pear tree. Flap and squawk
+
+TRUTH: Are you a candy cane, a gingerbread cookie, or peppermint bark. Explain
+MERRY MISCHIEF: Run around the room and say in a gingerbread voice, “Run, fun as fast as you can You can’t catch me, I’m the gingerbread man”
+
+TRUTH: If you could only eat one holiday food for the rest of your life, what would it be
+MERRY MISCHIEF: Make up an original holiday joke`,
+
+  `Day 24 — Merry Mad Libs (Fill-in-the-Blanks Story)
+Fill in the blanks by number:
+1) Exclamation  2) Something you can feel  3) Body part  4) Verb ending in “ing”
+5) Color  6) Color  7) Number  8) Animal  9) Something you can hold
+10) Food  11) Feeling  12) Someone famous  13) Part of a house
+14) Body part (plural)  15) Body part (plural)  16) Verb ending in “ing”
+17) Verb  18) Food  19) Adjective  20) Verb
+
+“(1)_______” Do you feel that little (2)______ in the air It sure is starting to feel like Christmas I can feel it in my (3)_________ — that jolly, warm excitement for the holiday season
+
+Why, just yesterday, I was (4)_______ around downtown and was dazzled by all the (5)_______ and (6)_______ decorations. I even saw a (7)______-foot-tall inflatable (8)___________ wearing a Santa outfit, holding a (9)__________ Instant holiday spirit
+
+Then I stopped to grab a nice hot cup of (10)_______-nog and felt (11)________ when I heard a remix of “Jolly Old (12)_________” and “Up on the (13)___________” Before I knew it, my (14)_________ were dancing by themselves and I was singing at the top of my (15)_________ Nobody minded — they were (16)_________ along, too
+
+My favorite part of the season is time with family. I love (17)_______ together while eating spiced (18)_________ and laughing about all the (19)_________ memories of Christmases past
+
+I hope you have a wonderful holiday. And don’t forget to (20)_________ as much as you can in the new year`
+];
+
 
   /* ----------------- Elements ----------------- */
   const grid = document.getElementById('grid');
