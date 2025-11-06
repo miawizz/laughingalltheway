@@ -151,6 +151,68 @@
   font-style: normal;
   font-weight: 600;
 }
+/* Mad Libs: lightweight, touch-friendly form */
+.madlib-form {
+  display: grid;
+  gap: .75rem;
+  margin-top: .5rem;
+}
+
+.madlib-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .6rem .8rem;
+}
+@media (max-width: 560px) {.madlib-grid{grid-template-columns: 1fr}}
+
+.madlib-field {
+  display: grid;
+  gap: .25rem;
+}
+
+.madlib-field label {
+  font-size: .9rem;
+  color: var(--teal);
+  font-weight: 600;
+}
+
+.madlib-field input {
+  font: inherit;
+  padding: .55rem .65rem;
+  border: 1px solid var(--line);
+  border-radius: .55rem;
+  background: #fff;
+}
+
+.madlib-actions {
+  display: flex;
+  gap: .6rem;
+  margin-top: .6rem;
+}
+
+.madlib-btn {
+  all: unset;
+  cursor: pointer;
+  background: var(--teal);
+  color: #fff;
+  padding: .55rem .8rem;
+  border-radius: .6rem;
+  font-weight: 700;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.madlib-btn.secondary {
+  background: #eef3f5;
+  color: #2b4a5e;
+}
+
+.madlib-output {
+  white-space: pre-line;     /* shows line breaks */
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.55;
+  margin-top: .75rem;
+  font-size: 1.05rem;
+}
 
   </style>
 </head>
