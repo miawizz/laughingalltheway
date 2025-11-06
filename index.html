@@ -213,6 +213,18 @@
   margin-top: .75rem;
   font-size: 1.05rem;
 }
+/* ---- MAD LIBS STYLES ---- */
+.madlib-form{display:grid;gap:.75rem;margin-top:.5rem}
+.madlib-grid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem .8rem}
+@media(max-width:560px){.madlib-grid{grid-template-columns:1fr}}
+.madlib-field{display:grid;gap:.25rem}
+.madlib-field label{font-size:.9rem;color:var(--teal);font-weight:600}
+.madlib-field input{font:inherit;padding:.55rem .65rem;border:1px solid var(--line);border-radius:.55rem;background:#fff}
+.madlib-actions{display:flex;gap:.6rem;margin-top:.6rem}
+.madlib-btn{all:unset;cursor:pointer;background:var(--teal);color:#fff;padding:.55rem .8rem;border-radius:.6rem;font-weight:700;box-shadow:0 2px 6px var(--shadow)}
+.madlib-btn.secondary{background:#eef3f5;color:#2b4a5e}
+.madlib-output{white-space:pre-line;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.55;margin-top:.75rem;font-size:1.05rem}
+/* ---- END MAD LIBS STYLES ---- */
 
   </style>
 </head>
@@ -634,6 +646,101 @@ I hope you have a wonderful holiday. And don’t forget to (20)_________ as much
       deferredPrompt = null;
     });
   }
+    /* === DAY 24 MAD LIBS MINI-APP === */
+const MADLIBS_FIELDS = [
+  {key:"f1",label:"1) Exclamation"},
+  {key:"f2",label:"2) Something you can feel"},
+  {key:"f3",label:"3) Body part"},
+  {key:"f4",label:"4) Verb ending in “ing”"},
+  {key:"f5",label:"5) Color"},
+  {key:"f6",label:"6) Color"},
+  {key:"f7",label:"7) Number"},
+  {key:"f8",label:"8) Animal"},
+  {key:"f9",label:"9) Something you can hold"},
+  {key:"f10",label:"10) Food"},
+  {key:"f11",label:"11) Feeling"},
+  {key:"f12",label:"12) Someone famous"},
+  {key:"f13",label:"13) Part of a house"},
+  {key:"f14",label:"14) Body part (plural)"},
+  {key:"f15",label:"15) Body part (plural)"},
+  {key:"f16",label:"16) Verb ending in “ing”"},
+  {key:"f17",label:"17) Verb"},
+  {key:"f18",label:"18) Food"},
+  {key:"f19",label:"19) Adjective"},
+  {key:"f20",label:"20) Verb"}
+];
+
+const MADLIBS_TEMPLATE = 
+`“{1}!” Do you feel that little {2} in the air? It sure is starting to feel like Christmas! I can feel it in my {3} — that jolly, warm excitement for the holiday season.
+
+Why, just yesterday, I was {4} around downtown and I was dazzled by all the {5} and {6} decorations. I even saw a {7}-foot-tall inflatable {8} wearing a Santa outfit, holding a {9}! Instant holiday spirit!
+
+Then I stopped to grab a nice hot cup of {10}-nog and felt {11} when I heard a remix of “Jolly Old {12}” and “Up on the {13}.” Before I knew it, my {14} were dancing by themselves and I was singing at the top of my {15}. Nobody minded — they were {16} along too!
+
+My favorite part of the season is time with family. I love {17} together while eating spiced {18} and laughing about all the {19} memories of Christmases past.
+
+I hope you have a wonderful holiday — and don’t forget to {20} as much as you can in the new year!`;
+
+function renderMadLibsForm(){
+  const c=document.getElementById("cardBody");
+  const fieldsHTML=MADLIBS_FIELDS.map(f=>`
+    <div class="madlib-field">
+      <label for="${f.key}">${f.label}</label>
+      <input id="${f.key}" type="text">
+    </div>`).join("");
+  c.innerHTML=`
+    <div class="idea-title">Merry Mad Libs</div>
+    <form class="madlib-form" id="madlibForm">
+      <div class="madlib-grid">${fieldsHTML}</div>
+      <div class="madlib-actions">
+        <button type="submit" class="madlib-btn">Make My Story</button>
+      </div>
+    </form>
+    <div id="madlibOutput" class="madlib-output" style="display:none"></div>
+    <div class="madlib-actions" id="madlibEditBar" style="display:none">
+      <button class="madlib-btn secondary" id="madlibEditBtn" type="button">Edit Answers</button>
+    </div>
+  `;
+
+  const form=document.getElementById("madlibForm");
+  form.addEventListener("submit",e=>{
+    e.preventDefault();
+    const data={};
+    MADLIBS_FIELDS.forEach(f=>{
+      data[f.key]=(document.getElementById(f.key).value||"_____").trim();
+    });
+    renderMadLibsStory(data);
+  });
+  document.getElementById("madlibEditBtn").addEventListener("click",()=>{
+    document.getElementById("madlibOutput").style.display="none";
+    document.getElementById("madlibEditBar").style.display="none";
+    form.style.display="grid";
+  });
+}
+
+function renderMadLibsStory(values){
+  let story=MADLIBS_TEMPLATE;
+  for(let i=1;i<=20;i++){
+    story=story.split(`{${i}}`).join(values[`f${i}`]||"_____");
+  }
+  document.getElementById("madlibOutput").textContent=story;
+  document.getElementById("madlibOutput").style.display="block";
+  document.getElementById("madlibEditBar").style.display="flex";
+  document.getElementById("madlibForm").style.display="none";
+}
+
+/* Hook into openViewer so tile 24 launches the Mad Libs app */
+const originalOpenViewer=openViewer;
+openViewer=function(day,html){
+  if(day===24){        // Day 24 tile
+    viewer.classList.add("open");
+    cardTitle.textContent="Day 24";
+    renderMadLibsForm();
+    return;
+  }
+  originalOpenViewer(day,html);
+};
+
   </script>
 
   <!-- Service worker registration (separate script block) -->
