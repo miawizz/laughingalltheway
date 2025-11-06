@@ -5,16 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Laughing All the Way</title>
 
+  <!-- PWA basics -->
   <meta name="theme-color" content="#d93823" />
   <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" href="icon-192.png" sizes="192x192" />
 
-  <!-- iOS Add to Home Screen support -->
+  <!-- Icons in repo root (not in /icons) -->
+  <link rel="icon" href="icon-192.png" sizes="192x192" />
   <link rel="apple-touch-icon" href="icon-192.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-  <!-- Font -->
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
 
   <style>
@@ -33,164 +34,177 @@
       background:var(--bg);
       color:var(--ink);
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      display:flex;
-      flex-direction:column;
-      min-height:100vh;
+      display:flex; flex-direction:column; min-height:100vh;
     }
+
+    /* App wrapper + blur when gated */
     #appWrap{flex:1}
-    #appWrap.blur{filter:blur(4px) saturate(.9);pointer-events:none;user-select:none}
+    #appWrap.blur{filter:blur(4px) saturate(.9); pointer-events:none; user-select:none}
 
-    header{text-align:center;padding:14px 16px 4px;}
+    /* Header */
+    header{text-align:center; padding:14px 16px 4px;}
     .brand{
-      width:320px;max-width:78vw;height:auto;
-      display:inline-block;border-radius:18px;
+      width:320px; max-width:78vw; height:auto;
+      display:inline-block; border-radius:18px;
       box-shadow:0 6px 18px var(--shadow);
-      background:transparent;
-      position:relative;z-index:3;
+      background:transparent; position:relative; z-index:3;
     }
 
-    .controls{display:flex;gap:10px;justify-content:center;margin:8px 0}
+    .controls{display:flex; gap:10px; justify-content:center; margin:8px 0}
     .pill{
-      background:var(--card);border:1px solid var(--line);
-      padding:8px 12px;border-radius:999px;
+      background:var(--card); border:1px solid var(--line);
+      padding:8px 12px; border-radius:999px;
       box-shadow:0 2px 6px var(--shadow);
-      font-size:.9rem;cursor:pointer;
+      font-size:.9rem; cursor:pointer;
     }
     #installBtn{display:none}
 
-    #installHelp{display:none;margin:8px auto 0;max-width:820px;text-align:center;}
-    #installHelp>div{
-      background:#fff;border:1px solid var(--line);border-radius:12px;
-      padding:10px 12px;box-shadow:0 2px 6px rgba(0,0,0,.08);
-      font-size:.92rem;line-height:1.3;
-      font-family:'Baloo 2',system-ui;
-    }
-    #closeInstallHelp{
-      margin-top:6px;
-      background:#237e6b;
-      color:#fff;
-      border:0;
-      border-radius:999px;
-      padding:6px 14px;
-      font-family:'Baloo 2',system-ui;
-      font-weight:700;
-      font-size:.85rem;
-      cursor:pointer;
-      box-shadow:0 2px 6px rgba(0,0,0,.15);
-      transition:transform .1s ease, box-shadow .1s ease;
-    }
-    #closeInstallHelp:hover{
-      transform:translateY(-1px);
-      box-shadow:0 3px 10px rgba(0,0,0,.25);
-    }
+    /* Install-help bar (from WYR template) */
+    .install-help {position:sticky; top:0; z-index:10001; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+    .install-help__wrap{background:#fff7f4; border-bottom:1px solid #f2e7e3}
+    .install-help__summary{display:flex; align-items:center; gap:.5rem; padding:.55rem .85rem; cursor:pointer; font-size:.95rem}
+    .install-help__summary:hover{background:#fff3ee}
+    summary.install-help__wrap::-webkit-details-marker{display:none}
+    summary.install-help__wrap::marker{content:''; font-size:0}
+    .install-help__summary .caret{transition:transform .2s ease; width:40px; height:40px}
+    details[open] .install-help__summary .caret{transform:rotate(180deg)}
+    details[open] .install-help__wrap{box-shadow:inset 0 -1px 0 #e7d8d3, 0 1px 0 #e7d8d3}
+    .install-help__panel{padding:.75rem .9rem .95rem .9rem; display:grid; gap:.75rem; background:#fff}
+    .install-help__panel h4{margin:.25rem 0 .25rem 0; font-size:.95rem}
+    .install-help__panel p{margin:0 0 .35rem 0; font-size:.9rem}
+    .install-help__close{all:unset; display:inline-grid; place-items:center; width:32px; height:32px; cursor:pointer; color:#000; line-height:1; font-weight:700}
+    .install-help__tips{font-size:.85rem; opacity:.9}
+    .install-help__box{border:1px solid #efdfda; background:#fff; border-radius:.65rem; padding:.65rem .75rem}
+    .install-help__steps{margin:.25rem 0 0 1.15rem}
+    .install-help__steps li{margin:.25rem 0}
+    .install-help__never{align-self:start; border:0; background:transparent; padding:0; font:inherit; color:#6b7f88; text-decoration:underline; cursor:pointer}
+    .hidden{display:none}
+    .install-help.gate-hide{display:none}
+    @media (prefers-reduced-motion: reduce){.install-help__summary .caret{transition:none}}
 
+    /* Grid */
     .grid{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:12px;
-      padding:16px;
-      max-width:820px;
-      margin:10px auto 20px;
-      position:relative;
-      z-index:2;
+      display:grid; grid-template-columns:repeat(5,1fr);
+      gap:12px; padding:16px; max-width:820px; margin:10px auto 20px;
+      position:relative; z-index:2;
     }
-
     .tile{
-      aspect-ratio:1/1;
-      background:var(--card);
-      color:var(--teal);
-      border-radius:22px;
-      border:4px solid var(--teal);
-      display:flex;align-items:center;justify-content:center;
+      aspect-ratio:1/1; background:var(--card); color:var(--teal);
+      border-radius:22px; border:4px solid var(--teal);
+      display:flex; align-items:center; justify-content:center;
       font-family:'Baloo 2',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      font-weight:700;font-size:2.3rem;
+      font-weight:700; font-size:2.3rem;
       box-shadow:0 3px 10px var(--shadow);
-      cursor:pointer;position:relative;user-select:none;
-      transition:transform .1s ease, box-shadow .1s ease;
-      overflow:hidden;
+      cursor:pointer; position:relative; user-select:none;
+      transition:transform .1s ease, box-shadow .1s ease; overflow:hidden;
     }
-    .tile:hover{transform:translateY(-2px);box-shadow:0 5px 14px var(--shadow)}
+    .tile:hover{transform:translateY(-2px); box-shadow:0 5px 14px var(--shadow)}
     .tile.opened{outline:3px solid rgba(35,126,107,.35)}
     .tile::before{
-      content:"";
-      position:absolute;
-      top:0;left:0;right:0;
-      height:20%;
+      content:""; position:absolute; top:0; left:0; right:0; height:20%;
       border-bottom:4px solid var(--teal);
-      border-top-left-radius:18px;
-      border-top-right-radius:18px;
+      border-top-left-radius:18px; border-top-right-radius:18px;
     }
 
-    .viewer{position:fixed;inset:0;background:rgba(0,0,0,.35);display:none;align-items:center;justify-content:center;padding:16px;z-index:3}
+    /* Viewer */
+    .viewer{position:fixed; inset:0; background:rgba(0,0,0,.35); display:none; align-items:center; justify-content:center; padding:16px; z-index:3}
     .viewer.open{display:flex}
     .card{
-      width:min(760px,92vw);
-      max-height:86vh;
-      overflow:auto;
-      background:var(--card);
-      border-radius:26px;
+      width:min(760px,92vw); max-height:86vh; overflow:auto;
+      background:var(--card); border-radius:26px;
       box-shadow:0 8px 30px rgba(0,0,0,.25);
       border:2px solid rgba(35,126,107,.15);
       padding:22px 22px 26px;
-      transform:translateY(8px);
-      animation:pop .18s ease-out both;
+      transform:translateY(8px); animation:pop .18s ease-out both;
     }
-    @keyframes pop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-    .card h2{margin:0 0 8px;font-size:1.35rem;letter-spacing:.3px;color:var(--teal);font-family:'Baloo 2',system-ui;font-weight:700}
-    .prompt{font-size:1.05rem;line-height:1.5;color:var(--ink);font-family:'Baloo 2',system-ui;}
-    .prompt em{color:var(--teal);font-style:normal;font-weight:600}
-    .close{position:sticky;top:-8px;float:right;background:#f1f5f9;border:0;border-radius:10px;padding:8px 10px;cursor:pointer;font-weight:700;color:#2b4a5e;box-shadow:0 2px 6px var(--shadow)}
+    @keyframes pop{from{opacity:0; transform:translateY(12px)} to{opacity:1; transform:translateY(0)}}
+    .card h2{margin:0 0 8px; font-size:1.35rem; letter-spacing:.3px; color:var(--teal); font-family:'Baloo 2',system-ui; font-weight:700}
+    .prompt{font-size:1.05rem; line-height:1.5; color:var(--ink); font-family:'Baloo 2',system-ui;}
+    .prompt em{color:var(--teal); font-style:normal; font-weight:600}
+    .close{position:sticky; top:-8px; float:right; background:#f1f5f9; border:0; border-radius:10px; padding:8px 10px; cursor:pointer; font-weight:700; color:#2b4a5e; box-shadow:0 2px 6px var(--shadow)}
 
-    #snow{position:fixed;inset:0;pointer-events:none;z-index:0}
-    header,main,footer,#appWrap{position:relative;z-index:2}
+    /* Snow behind everything */
+    #snow{position:fixed; inset:0; pointer-events:none; z-index:0}
+    header,main,footer,#appWrap{position:relative; z-index:2}
 
     footer{
       background:rgba(255,255,255,.92);
       border-top:1px solid var(--line);
-      padding:12px 14px 18px;
-      text-align:center;
-      font-size:.78rem;
-      line-height:1.25rem;
+      padding:12px 14px 18px; text-align:center;
+      font-size:.78rem; line-height:1.25rem;
     }
 
     @media (max-width:620px){.grid{grid-template-columns:repeat(4,1fr)}}
   </style>
 </head>
 <body>
+  <!-- Snow -->
   <canvas id="snow"></canvas>
 
-  <!-- Welcome Overlay -->
-  <div id="welcome" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:5;">
-    <div style="background:rgba(0,0,0,.45);position:absolute;inset:0;"></div>
-    <div style="position:relative;background:#fff;border:1px solid #e5ecf0;border-radius:20px;box-shadow:0 12px 40px rgba(0,0,0,.35);padding:22px;max-width:580px;margin:20px;">
-      <h2 style="margin:0 0 8px;font-family:'Baloo 2',system-ui;font-size:1.25rem;color:#237e6b;">Before you enter</h2>
-      <p style="margin:6px 0 14px;font-size:.98rem;line-height:1.45;">
-        This app is only for those who purchased from Playful Heart Parenting. Thank you for supporting this work!
-      </p>
-      <label style="display:flex;align-items:center;gap:10px;margin:2px 0 14px;font-size:.95rem;">
-        <input id="agreeChk" type="checkbox" />
-        <span>I agree to keep this link private and not share it.</span>
+  <!-- Install-help bar, hidden until privacy accepted -->
+  <details class="install-help gate-hide" id="install-help" data-dismiss-key="latw-install-help">
+    <summary class="install-help__wrap">
+      <div class="install-help__summary" role="button" aria-expanded="false">
+        <svg class="caret" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"></path></svg>
+        <strong>Tap for a reminder on saving this app to your home screen</strong>
+        <button class="install-help__close" type="button" title="Hide">✖</button>
+      </div>
+    </summary>
+    <div class="install-help__panel" id="install-help-panel" aria-live="polite">
+      <div class="install-help__box" id="ios-safari" hidden>
+        <h4>iPhone or iPad using Safari</h4>
+        <ol class="install-help__steps">
+          <li>Tap the Share icon</li><li>Choose <em>Add to Home Screen</em></li><li>Tap <em>Add</em></li>
+        </ol>
+      </div>
+      <div class="install-help__box" id="ios-chrome" hidden>
+        <h4>iPhone or iPad using Chrome</h4>
+        <ol class="install-help__steps">
+          <li>Tap the Share icon</li><li>Select <em>Add to Home Screen</em></li><li>Tap <em>Add</em></li>
+        </ol>
+      </div>
+      <div class="install-help__box" id="android-chrome" hidden>
+        <h4>Android using Chrome</h4>
+        <ol class="install-help__steps">
+          <li>Tap the menu</li><li>Choose <em>Install app</em> or <em>Add to Home screen</em></li><li>Confirm</li>
+        </ol>
+      </div>
+      <div class="install-help__box" id="android-samsung" hidden>
+        <h4>Android using Samsung Internet</h4>
+        <ol class="install-help__steps">
+          <li>Tap the menu</li><li>Select <em>Add page to</em> → <em>Home screen</em></li><li>Confirm</li>
+        </ol>
+      </div>
+      <div class="install-help__box" id="other-browsers" hidden>
+        <h4>Other browsers</h4>
+        <p>Look in the menu for <em>Install</em> or <em>Add to Home Screen</em></p>
+      </div>
+      <p class="install-help__tips">Installing adds an icon to your Home Screen and makes it behave like an app</p>
+      <button type="button" id="install-help-never" class="install-help__never">Don’t show this again</button>
+    </div>
+  </details>
+
+  <!-- Privacy / Courtesy overlay -->
+  <section id="courtesyOverlay" role="dialog" aria-labelledby="courtesyTitle" aria-modal="true" style="position:fixed; inset:0; display:none; place-items:center; z-index:9999; background:rgba(0,0,0,.45);">
+    <div class="courtesy-card" style="width:min(560px,92%); background:#fff; color:#3c3c3c; border-radius:18px; box-shadow:0 12px 40px rgba(0,0,0,.18); padding:22px; text-align:left;">
+      <h2 id="courtesyTitle" style="margin:0 0 8px; color:#237e6b; font-family:'Baloo 2',system-ui; font-size:20px;">Thanks for supporting this work</h2>
+      <p style="margin:6px 0 14px; color:#666;">This app is for customers of Playful Heart Parenting. Please keep this link private.</p>
+      <label class="courtesy-check" style="display:flex; align-items:center; gap:10px; margin:6px 0 12px;">
+        <input type="checkbox" id="courtesyAck" />
+        <span>I understand</span>
       </label>
-      <button id="agreeBtn" disabled
-        style="background:#237e6b;color:#fff;border:0;border-radius:999px;padding:10px 14px;font-weight:700;cursor:not-allowed;box-shadow:0 2px 6px rgba(0,0,0,.15);font-family:'Baloo 2',system-ui;">
-        Enter
+      <button id="courtesyContinue" disabled style="width:100%; padding:12px 14px; border:0; border-radius:14px; font-weight:700; cursor:not-allowed; background:#b24627; color:#fff;">
+        Continue
       </button>
     </div>
-  </div>
+  </section>
 
+  <!-- App -->
   <div id="appWrap">
     <header>
       <img class="brand" src="./LATWlogo.png" alt="Laughing All the Way — Advent Calendar from Playful Heart Parenting" />
       <div class="controls">
         <button class="pill" id="installBtn">Install</button>
-      </div>
-
-      <div id="installHelp">
-        <div>
-          <span id="installHelpText"></span>
-          <br />
-          <button id="closeInstallHelp">Close</button>
-        </div>
       </div>
     </header>
 
@@ -200,7 +214,7 @@
   </div>
 
   <footer>
-    © 2025 Mia Wisinski, Playful Heart Parenting. This app is for personal use only by those who have purchased access. Please do not share this link publicly or distribute without permission.
+    © 2025 Mia Wisinski, Playful Heart Parenting. For personal use by purchasers only.
   </footer>
 
   <!-- Viewer -->
@@ -214,143 +228,224 @@
 
   <!-- Main Script -->
   <script>
-  // ---- Content ----
-  const IDEAS = Array.from({length:25},(_,i)=>`Day ${i+1} — Placeholder content here.`);
+  /* ----------------- Content ----------------- */
+  const IDEAS = [
+    "Day 1 — Serious Santa: Put on your most serious face and try not to laugh while saying ‘Ho! Ho! Ho!’ <em>For littler elves: big ‘Ho! Ho! Ho!’s and funny faces.</em>",
+    "Day 2 — Reverse Christmas Charades: Give step-by-step instructions to make someone act it out, then guess. <em>For littler elves: do simple charades with sounds.</em>",
+    "Day 3 — Very Merry Ventriloquism: Say holiday phrases without moving your lips. <em>For littler elves: use a puppet or stuffed animal voice.</em>",
+    "Day 4 — Dashing Through the Doodles: Finger-draw a holiday picture to guess. <em>For littler elves: offer two choices or draw on paper.</em>",
+    "Day 5 — Jingle Jargon: Speak in elf gibberish and translate. <em>For littler elves: try short silly giggles and gibberish.</em>",
+    "Day 6 — Holly Jolly Handshake: Invent a handshake with 2–3 moves. <em>For littler elves: keep moves easy with sound effects.</em>",
+    "Day 7 — Hot Stocking: Hot-potato with balled socks. Loser does a silly challenge. <em>For littler elves: pass a plush slowly. Skip the challenge if needed.</em>",
+    "Day 8 — Tinsel Twisters: Try “Santa’s short suit shrunk,” etc. five times fast. <em>For littler elves: go slowly and enjoy the sounds.</em>",
+    "Day 9 — Winter Would You Rather: Ask holiday would-you-rather questions. <em>For littler elves: use very simple either-or.</em>",
+    "Day 10 — Merry Mad Libs: Fill in the blanks for a goofy story. <em>For littler elves: you suggest easy words like color or snack.</em>",
+    "Day 11 — Strike a Jolly Pose: Lights off. Pose on a prompt. Lights on. Pick the funniest. <em>For littler elves: skip lights. Just pose together.</em>",
+    "Day 12 — Kooky Carols: Sing alternating words. Try syllables if brave. <em>For littler elves: sing together. Let them lead a word.</em>",
+    "Day 13 — Christmas Choreographer: Make moves. Others copy. Build a family dance. <em>For littler elves: copy their moves or let them teach.</em>",
+    "Day 14 — Hot Cocoa Freeze Challenge: Pretend to sip then freeze your face. <em>For littler elves: you freeze and make them giggle.</em>",
+    "Day 15 — Truth or Merry Mischief: Answer a truth or do a harmless dare. <em>For littler elves: tiny truths. Dares like clap or spin.</em>",
+    "Day 16 — Silent Night Singing: Lip-sync a carol while others guess. <em>For littler elves: hum or tap the rhythm.</em>",
+    "Day 17 — Santa Says: Simon Says with Santa. Keep everyone playing. <em>For littler elves: no out. Just play.</em>",
+    "Day 18 — Ice Powers: Kids shout Freeze then Unfreeze and run to base. <em>For littler elves: try freeze dance first.</em>",
+    "Day 19 — Impromptu Nutcracker: Dance to The Nutcracker and capture it. <em>For littler elves: hold hands and spin.</em>",
+    "Day 20 — Holiday Mind Meld: 1 2 3 say the same holiday word together. <em>For littler elves: be a mirror. Match faces and sounds.</em>",
+    "Day 21 — 10 Second Shenanigans: Act a quick holiday scenario in ten seconds. <em>For littler elves: you perform. They pick or join.</em>",
+    "Day 22 — The Jolly Storyteller: Build a story sentence by sentence. <em>For littler elves: pause and point for a key word.</em>",
+    "Day 23 — Reindeer Hop Challenge: Hop like a reindeer for one minute. <em>For littler elves: jump or stomp or clap.</em>",
+    "Day 24 — Jingle Jangle Jam: Make up a song at the same time. <em>For littler elves: simple tune with silly wrong words.</em>",
+    "Day 25 — That’s a Wrap: Wrap feet or a blanket present. Over react as you unwrap. <em>For littler elves: wrap a blanket gift. Celebrate them.</em>"
+  ];
 
-  const grid=document.getElementById('grid');
+  /* ----------------- Elements ----------------- */
+  const grid = document.getElementById('grid');
+  const viewer = document.getElementById('viewer');
+  const cardTitle = document.getElementById('cardTitle');
+  const cardBody  = document.getElementById('cardBody');
+  const closeBtn  = document.getElementById('closeBtn');
+
+  /* ----------------- Tiles ----------------- */
   function makeTile(i){
-    const day=i+1;
-    const el=document.createElement('button');
-    el.className='tile';
-    el.type='button';
-    el.textContent=day;
-    el.addEventListener('click',()=>openViewer(day,IDEAS[i]));
+    const day = i + 1;
+    const el = document.createElement('button');
+    el.className = 'tile';
+    el.type = 'button';
+    el.textContent = day;
+    el.addEventListener('click', () => openViewer(day, IDEAS[i]));
     return el;
   }
-  function renderGrid(){grid.innerHTML='';for(let i=0;i<25;i++)grid.appendChild(makeTile(i));}
+  function renderGrid(){
+    grid.innerHTML = '';
+    for (let i=0; i<25; i++) grid.appendChild(makeTile(i));
+  }
   renderGrid();
 
-  const viewer=document.getElementById('viewer');
-  const cardTitle=document.getElementById('cardTitle');
-  const cardBody=document.getElementById('cardBody');
-  const closeBtn=document.getElementById('closeBtn');
-  function openViewer(day,html){cardTitle.textContent=`Day ${day}`;cardBody.innerHTML=html;viewer.classList.add('open');}
-  function closeViewer(){viewer.classList.remove('open');}
-  viewer.addEventListener('click',e=>{if(e.target===viewer)closeViewer();});
-  closeBtn.addEventListener('click',closeViewer);
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeViewer();});
-
-  // ---- Welcome / Agreement ----
-  const ACK_KEY='latw_ack_v1';
-  const appWrap=document.getElementById('appWrap');
-  const welcome=document.getElementById('welcome');
-  const agreeChk=document.getElementById('agreeChk');
-  const agreeBtn=document.getElementById('agreeBtn');
-
-  function showWelcome(){
-    if (appWrap) appWrap.classList.add('blur');
-    if (welcome) { welcome.style.display='flex'; document.body.style.overflow='hidden'; }
+  /* ----------------- Viewer ----------------- */
+  function openViewer(day, html){
+    cardTitle.textContent = `Day ${day}`;
+    cardBody.innerHTML = html;
+    viewer.classList.add('open');
   }
-  function hideWelcome(){
-    if (appWrap) appWrap.classList.remove('blur');
-    if (welcome) { welcome.style.display='none'; document.body.style.overflow=''; }
+  function closeViewer(){
+    viewer.classList.remove('open');
   }
+  viewer.addEventListener('click', (e) => { if (e.target === viewer) closeViewer(); });
+  closeBtn.addEventListener('click', closeViewer);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
 
-  hideWelcome();
-  if(!localStorage.getItem(ACK_KEY)) showWelcome();
+  /* ----------------- Courtesy / Privacy Gate ----------------- */
+  const COURTESY_KEY = 'latw_courtesy_v1';
+  const courtesyOverlay = document.getElementById('courtesyOverlay');
+  const courtesyAck = document.getElementById('courtesyAck');
+  const courtesyContinue = document.getElementById('courtesyContinue');
+  const appWrap = document.getElementById('appWrap');
 
-  if (agreeChk && agreeBtn){
-    agreeChk.addEventListener('change',()=>{
-      agreeBtn.disabled=!agreeChk.checked;
-      agreeBtn.style.cursor=agreeChk.checked?'pointer':'not-allowed';
-    });
-    agreeBtn.addEventListener('click',()=>{
-      if(!agreeChk.checked) return;
-      localStorage.setItem(ACK_KEY,'yes');
-      hideWelcome();
-    });
+  function showGate(){
+    appWrap.classList.add('blur');
+    courtesyOverlay.style.display = 'grid';
+  }
+  function hideGate(){
+    appWrap.classList.remove('blur');
+    courtesyOverlay.style.display = 'none';
   }
 
-  // ---- Snowfall ----
-  const canvas=document.getElementById('snow'),ctx=canvas.getContext('2d');
-  function resize(){canvas.width=innerWidth;canvas.height=innerHeight;}
-  addEventListener('resize',resize);resize();
-  const flakes=Array.from({length:Math.min(200,Math.floor(innerWidth/5))},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*2+0.7,s:Math.random()*0.7+0.2}));
-  (function snow(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle='rgba(255,255,255,0.95)';for(const f of flakes){ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);ctx.fill();f.y+=f.s;f.x+=Math.sin(f.y*0.01);if(f.y>canvas.height){f.y=-6;f.x=Math.random()*canvas.width;}}requestAnimationFrame(snow);})();
+  if (localStorage.getItem(COURTESY_KEY) !== 'yes') {
+    showGate();
+  }
 
-  // ---- Install UI ----
-  const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true;
-  const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)||('ontouchend'in document&&navigator.userAgent.includes('Mac'));
-  const isSafari=/^((?!chrome|android|crios|fxios|edgios).)*safari/i.test(navigator.userAgent);
-  const isAndroid=/Android/i.test(navigator.userAgent);
-
-  const helpWrap=document.getElementById('installHelp');
-  const helpText=document.getElementById('installHelpText');
-  const closeInstallHelp=document.getElementById('closeInstallHelp');
-  const installBtn=document.getElementById('installBtn');
-  const CLOSE_KEY='latw_installHelp_closed';
-
-  if(localStorage.getItem(CLOSE_KEY) && helpWrap){helpWrap.style.display='none';}
-  if(isIOS && installBtn){ installBtn.remove(); }
-
-  let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', e=>{
-    e.preventDefault();
-    deferredPrompt=e;
-    if(!isStandalone && !isIOS && installBtn){installBtn.style.display='inline-block';}
-    if(helpWrap) helpWrap.style.display='none';
+  courtesyAck.addEventListener('change', () => {
+    courtesyContinue.disabled = !courtesyAck.checked;
+    courtesyContinue.style.cursor = courtesyAck.checked ? 'pointer' : 'not-allowed';
+  });
+  courtesyContinue.addEventListener('click', () => {
+    if (!courtesyAck.checked) return;
+    localStorage.setItem(COURTESY_KEY, 'yes');
+    hideGate();
+    // Reveal install-help bar after acceptance
+    document.getElementById('install-help')?.classList.remove('gate-hide');
   });
 
-  if(installBtn){
-    installBtn.addEventListener('click',async()=>{
-      if(!deferredPrompt) return;
-      installBtn.style.display='none';
+  // If already accepted, show install-help immediately
+  if (localStorage.getItem(COURTESY_KEY) === 'yes') {
+    document.getElementById('install-help')?.classList.remove('gate-hide');
+  }
+
+  /* ----------------- Install Help (like WYR) ----------------- */
+  (function(){
+    const root = document.getElementById('install-help');
+    const panel = document.getElementById('install-help-panel');
+    if (!root || !panel) return;
+
+    const closeBtn = root.querySelector('.install-help__close');
+    const providedKey = root.getAttribute('data-dismiss-key');
+    const key = providedKey && providedKey.trim().length ? providedKey : 'latw-install-help::' + location.pathname;
+
+    // Optional reset via ?reset_install_tip=1
+    try {
+      if (new URLSearchParams(location.search).get('reset_install_tip') === '1') {
+        localStorage.removeItem(key);
+      }
+    } catch(e) {}
+
+    if(localStorage.getItem(key)==='1'){ root.classList.add('hidden'); return; }
+
+    closeBtn.addEventListener('click', function(e){
+      e.preventDefault(); e.stopPropagation();
+      localStorage.setItem(key,'1');
+      root.classList.add('hidden');
+    });
+
+    const neverBtn = document.getElementById('install-help-never');
+    if(neverBtn){
+      neverBtn.addEventListener('click', function(){
+        localStorage.setItem(key,'1');
+        root.classList.add('hidden');
+      });
+    }
+
+    // Platform detection
+    const ua = navigator.userAgent || '';
+    const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isAndroid = /Android/i.test(ua);
+    const isSamsung = /SamsungBrowser/i.test(ua);
+    const isCriOS = /CriOS/i.test(ua); // Chrome on iOS
+    const isFxiOS = /FxiOS/i.test(ua); // Firefox on iOS
+    const isSafari = isIOS && /Safari/i.test(ua) && !isCriOS && !isFxiOS;
+    const isChromeAndroid = isAndroid && /Chrome/i.test(ua) && !isSamsung;
+
+    function show(id){ const el = document.getElementById(id); if(el) el.hidden = false; }
+
+    if(isIOS && isSafari){ show('ios-safari'); }
+    else if(isIOS && isCriOS){ show('ios-chrome'); }
+    else if(isAndroid && isSamsung){ show('android-samsung'); }
+    else if(isChromeAndroid){ show('android-chrome'); }
+    else { show('other-browsers'); }
+
+    // Label swap on toggle
+    const label = root.querySelector('.install-help__summary strong');
+    const summaryBtn = root.querySelector('.install-help__summary');
+    const closedText = 'Tap for a reminder on saving this app to your home screen';
+    const openText = 'Hide instructions';
+    root.addEventListener('toggle', function(){
+      const exp = root.open ? 'true' : 'false';
+      summaryBtn && summaryBtn.setAttribute('aria-expanded', exp);
+      if(label){ label.textContent = root.open ? openText : closedText; }
+    });
+  })();
+
+  /* ----------------- Snowfall ----------------- */
+  const canvas = document.getElementById('snow');
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+  addEventListener('resize', resize); resize();
+  const flakes = Array.from({length: Math.min(200, Math.floor(innerWidth/5))},
+    () => ({ x: Math.random()*innerWidth, y: Math.random()*innerHeight, r: Math.random()*2+0.7, s: Math.random()*0.7+0.2 })
+  );
+  (function snow(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = 'rgba(255,255,255,0.95)';
+    for (const f of flakes){
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2); ctx.fill();
+      f.y += f.s; f.x += Math.sin(f.y*0.01);
+      if (f.y > canvas.height) { f.y = -6; f.x = Math.random()*canvas.width; }
+    }
+    requestAnimationFrame(snow);
+  })();
+
+  /* ----------------- Install button (A2HS) ----------------- */
+  const isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    window.navigator.standalone === true;
+  const installBtn = document.getElementById('installBtn');
+  let deferredPrompt;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (!isStandalone && installBtn) installBtn.style.display = 'inline-block';
+  });
+
+  if (installBtn) {
+    installBtn.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      installBtn.style.display = 'none';
       deferredPrompt.prompt();
       await deferredPrompt.userChoice;
-      deferredPrompt=null;
-    });
-  }
-
-  window.addEventListener('load',()=>{
-    if(isStandalone) return;
-    const noPromptSupport=!('onbeforeinstallprompt'in window);
-    if(noPromptSupport && helpWrap){
-      if(isIOS){
-        helpText.textContent='To install on iPhone. Tap Share, then Add to Home Screen.';
-      }else if(isAndroid){
-        helpText.textContent='To install on Android. Open in Chrome, then Add to Home screen.';
-      }else{
-        helpText.textContent='To install. Use Chrome or Edge Install. On iPhone use Share then Add to Home Screen.';
-      }
-      if(!localStorage.getItem(CLOSE_KEY)) helpWrap.style.display='block';
-    }
-  });
-
-  if(closeInstallHelp){
-    closeInstallHelp.addEventListener('click',()=>{
-      if(helpWrap) helpWrap.style.display='none';
-      localStorage.setItem(CLOSE_KEY,'true');
+      deferredPrompt = null;
     });
   }
   </script>
 
-  <!-- Service Worker -->
+  <!-- Optional service worker registration (safe-mode or your known-good SW) -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', async () => {
         try {
-          const reg = await navigator.serviceWorker.register('./sw.js?ver=safe1');
-          if (reg.waiting) reg.waiting.postMessage('SKIP_WAITING');
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (!window.__swReloaded) {
-              window.__swReloaded = true;
-              location.reload();
-            }
-          });
+          const reg = await navigator.serviceWorker.register('./sw.js?ver=latw-safe');
+          // If you’re using a “safe mode” SW, no extra logic needed
         } catch {}
       });
     }
   </script>
-
 </body>
 </html>
