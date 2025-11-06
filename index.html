@@ -340,7 +340,6 @@
     const providedKey = root.getAttribute('data-dismiss-key');
     const key = providedKey && providedKey.trim().length ? providedKey : 'latw-install-help::' + location.pathname;
 
-    // Optional reset via ?reset_install_tip=1
     try {
       if (new URLSearchParams(location.search).get('reset_install_tip') === '1') {
         localStorage.removeItem(key);
@@ -363,13 +362,12 @@
       });
     }
 
-    // Platform detection
     const ua = navigator.userAgent || '';
     const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     const isAndroid = /Android/i.test(ua);
     const isSamsung = /SamsungBrowser/i.test(ua);
-    const isCriOS = /CriOS/i.test(ua); // Chrome on iOS
-    const isFxiOS = /FxiOS/i.test(ua); // Firefox on iOS
+    const isCriOS = /CriOS/i.test(ua);
+    const isFxiOS = /FxiOS/i.test(ua);
     const isSafari = isIOS && /Safari/i.test(ua) && !isCriOS && !isFxiOS;
     const isChromeAndroid = isAndroid && /Chrome/i.test(ua) && !isSamsung;
 
@@ -381,7 +379,6 @@
     else if(isChromeAndroid){ show('android-chrome'); }
     else { show('other-browsers'); }
 
-    // Label swap on toggle
     const label = root.querySelector('.install-help__summary strong');
     const summaryBtn = root.querySelector('.install-help__summary');
     const closedText = 'Tap for a reminder on saving this app to your home screen';
@@ -434,24 +431,25 @@
       deferredPrompt = null;
     });
   }
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', async () => {
-      try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=2025-11-06-1');
-        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+  </script>
 
-        // Reload once when the new SW takes control
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!window.__swReloaded) {
-            window.__swReloaded = true;
-            location.reload();
-          }
-        });
-      } catch {}
-    });
-  }
-</script>
+  <!-- Service worker registration (separate script block) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          const reg = await navigator.serviceWorker.register('./sw.js?v=2025-11-06-1');
+          if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!window.__swReloaded) {
+              window.__swReloaded = true;
+              location.reload();
+            }
+          });
+        } catch {}
+      });
+    }
+  </script>
 
 </body>
 </html>
