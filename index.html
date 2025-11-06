@@ -434,18 +434,24 @@
       deferredPrompt = null;
     });
   }
-  </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', async () => {
+      try {
+        const reg = await navigator.serviceWorker.register('./sw.js?v=2025-11-06-1');
+        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
 
-  <!-- Optional service worker registration (safe-mode or your known-good SW) -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', async () => {
-        try {
-          const reg = await navigator.serviceWorker.register('./sw.js?ver=latw-safe');
-          // If you’re using a “safe mode” SW, no extra logic needed
-        } catch {}
-      });
-    }
-  </script>
+        // Reload once when the new SW takes control
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!window.__swReloaded) {
+            window.__swReloaded = true;
+            location.reload();
+          }
+        });
+      } catch {}
+    });
+  }
+</script>
+
 </body>
 </html>
