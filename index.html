@@ -156,6 +156,20 @@
     .madlib-field{display:grid;gap:.25rem}
     .madlib-field label{font-size:.9rem;color:var(--teal);font-weight:600}
     .madlib-field input{font:inherit;padding:.55rem .65rem;border:1px solid var(--line);border-radius:.55rem;background:#fff}
+
+    /* Instruction / how-to-play bar */
+.instructions {
+  background: var(--bg);
+  color: #fff;
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.4;
+  padding: 0.55rem 0.75rem;
+  border-radius: 10px;
+  margin: 0 0 0.8rem;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}  
   </style>
 </head>
 <body>
@@ -479,7 +493,7 @@ function renderPromptGenerator(dayIndex){
 
     cardBody.innerHTML = `
       <div class="prompt">
-        ${rules ? `<p style="margin:.25rem 0 .6rem; opacity:.9">${rules}</p>` : ``}
+${rules ? `<div class="instructions">${rules}</div>` : ``}
         <div class="madlib-actions" style="margin:.2rem 0 .6rem">
           <button class="madlib-btn" id="drawTruth">Draw TRUTH</button>
           <button class="madlib-btn secondary" id="drawMischief">Draw MERRY MISCHIEF</button>
@@ -541,7 +555,7 @@ function renderPromptGenerator(dayIndex){
 
   cardBody.innerHTML = `
     <div class="prompt">
-      ${rules ? `<p style="margin:.25rem 0 .6rem; opacity:.9">${rules}</p>` : ``}
+  ${rules ? `<div class="instructions">${rules}</div>` : ``}
       <div id="genOutput" class="madlib-output" style="display:none"></div>
       <div class="madlib-actions" style="margin-top:.6rem">
         <button class="madlib-btn" id="nextPrompt">${nextLabel}</button>
@@ -767,7 +781,10 @@ I hope you have a wonderful holiday — and don’t forget to {20} as much as yo
         <input id="${f.key}" type="text">
       </div>`).join("");
 
-    cardBody.innerHTML=`
+cardBody.innerHTML=`
+      <div class="instructions">
+        Pick the silliest words you can think of! Fill in the blanks below, then tap ‘Make My Story’ to see your festive masterpiece.
+      </div>
       <form class="madlib-form" id="madlibForm">
         <div class="madlib-grid">${fieldsHTML}</div>
         <div class="madlib-actions">
