@@ -157,11 +157,12 @@
     .madlib-field label{font-size:.9rem;color:var(--teal);font-weight:600}
     .madlib-field input{font:inherit;padding:.55rem .65rem;border:1px solid var(--line);border-radius:.55rem;background:#fff}
 
-    /* Instruction / how-to-play bar */
-.instructions {
+/* Instruction / how-to-play bar */
+.instructions{
   background: var(--bg);
   color: #fff;
-  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-weight: 700;
   font-size: 1rem;
   line-height: 1.4;
   padding: 0.55rem 0.75rem;
@@ -169,7 +170,8 @@
   margin: 0 0 0.8rem;
   text-align: center;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}  
+}
+
   </style>
 </head>
 <body>
@@ -552,32 +554,49 @@ ${rules ? `<div class="instructions">${rules}</div>` : ``}
   // Button label: call it “Next twist!” on Plot Twist days, otherwise “Next prompt!”
   const isPlotTwist = (title.toLowerCase().includes("plot twist"));
   const nextLabel = isPlotTwist ? "Next twist!" : "Next prompt!";
+  // For Plot Twist, extract the short story name shown inside the card
+let plotStoryName = "";
+if (isPlotTwist){
+  // Remove the leading label if present, keep the actual story name
+  plotStoryName = title.replace(/^Plot Twist Story\s*—\s*/i, "").trim();
+}
 
-  cardBody.innerHTML = `
-    <div class="prompt">
-  ${rules ? `<div class="instructions">${rules}</div>` : ``}
-      <div id="genOutput" class="madlib-output" style="display:none"></div>
-      <div class="madlib-actions" style="margin-top:.6rem">
-        <button class="madlib-btn" id="nextPrompt">${nextLabel}</button>
-      </div>
+cardBody.innerHTML = `
+  <div class="prompt">
+    ${rules ? `<div class="instructions">${rules}</div>` : ``}
+    ${isPlotTwist ? `<div class="madlib-output" style="margin-top:.2rem; font-weight:700; font-family:'Baloo 2', system-ui; color:var(--teal)">${plotStoryName}</div>` : ``}
+    <div id="genOutput" class="madlib-output" style="display:none"></div>
+    <div class="madlib-actions" style="margin-top:.6rem">
+      <button class="madlib-btn" id="nextPrompt">${nextLabel}</button>
     </div>
-  `;
+  </div>
+`;
+
 
   const out = document.getElementById('genOutput');
   const btn = document.getElementById('nextPrompt');
 
-  function next(){
-    if(remaining.length === 0){
-      out.innerHTML = `Way to play! That’s a wrap for today!`;
-      out.style.display = "block";
-      btn.style.display = "none";
-      return;
-    }
-    const idx = pickNext(remaining);
-    const text = normalizePrompt(day.prompts[idx]);
-    out.innerHTML = `<em>${titlePrefix}</em> ${text}`;
+function next(){
+  if(remaining.length === 0){
+    out.innerHTML = `Way to play! That’s a wrap for today!`;
     out.style.display = "block";
+    btn.style.display = "none";
+    return;
   }
+  const idx = pickNext(remaining);
+  const text = normalizePrompt(day.prompts[idx]);
+
+  if (isPlotTwist){
+    // Show only the twist content under the repeated story title
+    out.innerHTML = `${text}`;
+  } else {
+    // Keep the green lead-in for other game types
+    out.innerHTML = `<em>${titlePrefix}</em> ${text}`;
+  }
+
+  out.style.display = "block";
+}
+
 
   btn.onclick = next;
   next(); // show the first on open
