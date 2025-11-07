@@ -423,96 +423,152 @@
   }
   renderGrid();
 
-  /* ----------------- Generator helpers ----------------- */
-  function pickNext(indexes){
-    const i = Math.floor(Math.random() * indexes.length);
-    return indexes.splice(i,1)[0];
-  }
+/* ----------------- Generator helpers ----------------- */
+function pickNext(indexes){
+  const i = Math.floor(Math.random() * indexes.length);
+  return indexes.splice(i,1)[0];
+}
+
 function prefixFor(title){
-  // Green lead-in text shown before each prompt
   const t = (title || "").toLowerCase();
   if (t.includes("who can sound like")) return "Who can sound like…";
   if (t.includes("make this face"))     return "Make this face…";
   if (t === "you are" || t.includes("you are")) return "You are…";
   if (t.includes("would you rather"))   return "Would you rather…";
-  // Defaults to the day title if it is a story or something custom
+  if (t.includes("plot twist"))         return "Plot twist…";
   return title || "Today’s prompt";
 }
 
-// Remove a leading ellipsis so your copy reads nicely after the prefix
+// Trim leading ellipses so the prefix reads cleanly
 function normalizePrompt(p){
   return (p || "").replace(/^[.…\s]+/, "");
 }
 
-  function renderPromptGenerator(dayIndex){
-    const day = DAYS[dayIndex];
-    const title = day.title || "Today’s Prompts";
-    cardTitle.textContent = `Day ${dayIndex+1} — ${title}`;
+// Short “how to play” line under the title
+function rulesFor(title){
+  const t = (title || "").toLowerCase();
+  if (t.includes("who can sound like"))
+    return "Take turns using just sounds to act out the prompt. No right or wrong answers, just for fun.";
+  if (t.includes("you are"))
+    return "Take turns using body, sound, and facial expression to act out the prompt.";
+  if (t.includes("make this face"))
+    return "Take turns making a dramatic facial expression for the prompt. No sound, just freeze your face.";
+  if (t.includes("plot twist"))
+    return "Use this title to make up a silly, creative story together. Trade off every few sentences. Tap for three unexpected twists to work in.";
+  if (t.includes("merry mischief"))
+    return "Pick TRUTH or MERRY MISCHIEF and draw a card. Keep going until you use them all.";
+  return "";
+}
 
-    // Truth/Mischief layout (Day 23)
-    if (day.pairs){
-      const remaining = Array.from({length: day.pairs.length}, (_,i)=>i);
-      cardBody.innerHTML = `
-        <div class="prompt">
-          <p><em>Tap a button to draw a card</em></p>
-          <div class="madlib-actions" style="margin:.5rem 0 0">
-            <button class="madlib-btn" id="drawTruth">Draw TRUTH</button>
-            <button class="madlib-btn secondary" id="drawDare">Draw MISCHIEF</button>
-            <button class="madlib-btn" id="drawEither">Surprise me</button>
-          </div>
-          <div id="genOutput" class="madlib-output" style="display:none"></div>
+function renderPromptGenerator(dayIndex){
+  const day = DAYS[dayIndex];
+  const title = day.title || "Today’s Prompts";
+  cardTitle.textContent = `Day ${dayIndex+1} — ${title}`;
+
+  // Insert the short rules line
+  const rules = rulesFor(title);
+  const titlePrefix = prefixFor(title);
+
+  // ---------- Day 23: Truth or Merry Mischief (cycle through ALL cards) ----------
+  if (day.pairs){
+    // Build independent buckets so every TRUTH and every MISCHIEF can be drawn once
+    const truths    = day.pairs.map(p => p.truth);
+    const mischiefs = day.pairs.map(p => p.dare);
+    const truthIdxs    = Array.from({length: truths.length}, (_,i)=>i);
+    const mischiefIdxs = Array.from({length: mischiefs.length}, (_,i)=>i);
+
+    cardBody.innerHTML = `
+      <div class="prompt">
+        ${rules ? `<p style="margin:.25rem 0 .6rem; opacity:.9">${rules}</p>` : ``}
+        <div class="madlib-actions" style="margin:.2rem 0 .6rem">
+          <button class="madlib-btn" id="drawTruth">Draw TRUTH</button>
+          <button class="madlib-btn secondary" id="drawMischief">Draw MERRY MISCHIEF</button>
+          <button class="madlib-btn" id="drawEither">Surprise me</button>
         </div>
-      `;
-      const out = document.getElementById('genOutput');
-      function show(kind){
-        if(remaining.length===0){ out.textContent="All cards used. Shuffle and play again"; out.style.display="block"; return; }
-        const idx = pickNext(remaining);
-        const pair = day.pairs[idx];
-        const txt = kind==="truth" ? `TRUTH:\n${pair.truth}` :
-                    kind==="mischief" ? `MERRY MISCHIEF:\n${pair.dare}` :
-                    (Math.random()<.5 ? `TRUTH:\n${pair.truth}` : `MERRY MISCHIEF:\n${pair.dare}`);
-        out.textContent = txt;
-        out.style.display="block";
+        <div id="genOutput" class="madlib-output" style="display:none"></div>
+      </div>
+    `;
+
+    const out = document.getElementById('genOutput');
+
+    function drawTruth(){
+      if (truthIdxs.length === 0) {
+        out.textContent = "All TRUTH cards used.";
+        out.style.display = "block";
+        return;
       }
-      document.getElementById('drawTruth').onclick   = ()=>show("truth");
-      document.getElementById('drawDare').onclick    = ()=>show("mischief");
-      document.getElementById('drawEither').onclick  = ()=>show("either");
-      return;
+      const idx = pickNext(truthIdxs);
+      out.textContent = `TRUTH:\n${truths[idx]}`;
+      out.style.display = "block";
     }
 
-    // Regular 3-prompt generator
-// Regular 3-prompt generator  ✅ new version
-const remaining = [0,1,2];
-const titlePrefix = prefixFor(title);
+    function drawMischief(){
+      if (mischiefIdxs.length === 0) {
+        out.textContent = "All MERRY MISCHIEF cards used.";
+        out.style.display = "block";
+        return;
+      }
+      const idx = pickNext(mischiefIdxs);
+      out.textContent = `MERRY MISCHIEF:\n${mischiefs[idx]}`;
+      out.style.display = "block";
+    }
 
-cardBody.innerHTML = `
-  <div class="prompt">
-    <div id="genOutput" class="madlib-output" style="display:none"></div>
-    <div class="madlib-actions" style="margin-top:.6rem">
-      <button class="madlib-btn" id="nextPrompt">Next prompt!</button>
-    </div>
-  </div>
-`;
+    function drawEither(){
+      // Choose from whatever remains across both buckets
+      const totalRemaining = truthIdxs.length + mischiefIdxs.length;
+      if (totalRemaining === 0){
+        out.textContent = "Way to play! That’s a wrap for today!";
+        out.style.display = "block";
+        return;
+      }
+      // Weight by remaining counts
+      const roll = Math.random() * totalRemaining;
+      if (roll < truthIdxs.length) drawTruth(); else drawMischief();
+    }
 
-const out = document.getElementById('genOutput');
-const btn = document.getElementById('nextPrompt');
-
-function next(){
-  if(remaining.length === 0){
-    out.innerHTML = `Way to Play! That's a WRAP for today. 🎁`;
-    out.style.display = "block";
-    btn.style.display = "none";
+    document.getElementById('drawTruth').onclick   = drawTruth;
+    document.getElementById('drawMischief').onclick= drawMischief;
+    document.getElementById('drawEither').onclick  = drawEither;
     return;
   }
-  const idx = pickNext(remaining);
-  const text = normalizePrompt(day.prompts[idx]);
-  out.innerHTML = `<em>${titlePrefix}</em> ${text}`;
-  out.style.display = "block";
+
+  // ---------- Regular generators (3 prompts): WCSL, Make This Face, You Are, WYR, Plot Twist ----------
+  const remaining = [0,1,2];
+
+  // Button label: call it “Next twist!” on Plot Twist days, otherwise “Next prompt!”
+  const isPlotTwist = (title.toLowerCase().includes("plot twist"));
+  const nextLabel = isPlotTwist ? "Next twist!" : "Next prompt!";
+
+  cardBody.innerHTML = `
+    <div class="prompt">
+      ${rules ? `<p style="margin:.25rem 0 .6rem; opacity:.9">${rules}</p>` : ``}
+      <div id="genOutput" class="madlib-output" style="display:none"></div>
+      <div class="madlib-actions" style="margin-top:.6rem">
+        <button class="madlib-btn" id="nextPrompt">${nextLabel}</button>
+      </div>
+    </div>
+  `;
+
+  const out = document.getElementById('genOutput');
+  const btn = document.getElementById('nextPrompt');
+
+  function next(){
+    if(remaining.length === 0){
+      out.innerHTML = `Way to play! That’s a wrap for today!`;
+      out.style.display = "block";
+      btn.style.display = "none";
+      return;
+    }
+    const idx = pickNext(remaining);
+    const text = normalizePrompt(day.prompts[idx]);
+    out.innerHTML = `<em>${titlePrefix}</em> ${text}`;
+    out.style.display = "block";
+  }
+
+  btn.onclick = next;
+  next(); // show the first on open
 }
 
-btn.onclick = next;
-next(); // show the first on open
-}
 
 
   /* ----------------- Viewer ----------------- */
