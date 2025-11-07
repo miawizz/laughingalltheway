@@ -448,15 +448,15 @@ function normalizePrompt(p){
 function rulesFor(title){
   const t = (title || "").toLowerCase();
   if (t.includes("who can sound like"))
-    return "Take turns using just sounds to act out the prompt. No right or wrong answers, just for fun.";
+    return "Take turns using just sounds to act out the prompt. No right or wrong answers, it's just for fun!";
   if (t.includes("you are"))
-    return "Take turns using body, sound, and facial expression to act out the prompt.";
+    return "Take turns using your body, sounds, and facial expressions to act out the prompt.";
   if (t.includes("make this face"))
-    return "Take turns making a dramatic facial expression for the prompt. No sound, just freeze your face.";
+    return "Take turns making a dramatic facial expression for the prompt. Try not to make any sound -- just freeze your face!";
   if (t.includes("plot twist"))
-    return "Use this title to make up a silly, creative story together. Trade off every few sentences. Tap for three unexpected twists to work in.";
+    return "Use this title as inspiration to make up a silly, creative story together. Trade off every few sentences. Tap for three unexpected plot twists to work in!";
   if (t.includes("merry mischief"))
-    return "Pick TRUTH or MERRY MISCHIEF and draw a card. Keep going until you use them all.";
+    return "Take turns picking TRUTH or MERRY MISCHIEF. For TRUTH, simply answer the question. For MERRY MISCHIEF, complete the challenge if you dare!";
   return "";
 }
 
