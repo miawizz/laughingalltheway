@@ -471,6 +471,8 @@ function rulesFor(title){
     return "Take turns making a dramatic facial expression for the prompt. Try not to make any sound -- just freeze your face!";
   if (t.includes("plot twist"))
     return "Use this title as inspiration to make up a silly, creative story together. Trade off every few sentences. Tap for three unexpected plot twists to work in!";
+ if (t.includes("would you rather"))
+  return "Take turns answering each question. For extra fun, explain your answers!";
   if (t.includes("merry mischief"))
     return "Take turns picking TRUTH or MERRY MISCHIEF. For TRUTH, simply answer the question. For MERRY MISCHIEF, complete the challenge if you dare!";
   return "";
@@ -855,6 +857,8 @@ function renderMadLibsStory(values){
   out.style.display = "block";
   document.getElementById("madlibEditBar").style.display = "flex";
   document.getElementById("madlibForm").style.display = "none";
+  document.querySelector(".instructions")?.style.setProperty("display", "none");
+
 }
 </script>  <!-- ✅ close the main script here -->
 
