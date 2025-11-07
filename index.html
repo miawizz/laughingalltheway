@@ -171,6 +171,60 @@
   text-align: center;
   box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
+/* Welcome Card */
+.welcome-card {
+  background: #fff8d2; /* cream color */
+  color: #237e6b;      /* dark green */
+  font-family: "Poppins", system-ui, sans-serif;
+  border-radius: 26px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  max-width: 760px;
+  margin: 24px auto;
+  padding: 28px 22px;
+  text-align: left;
+  line-height: 1.55;
+}
+
+.welcome-card h1 {
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-size: 1.7rem;
+  color: var(--teal);
+  margin-bottom: .75rem;
+}
+
+.welcome-card h2 {
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  font-size: 1.25rem;
+  color: var(--teal);
+  margin-top: 1.4rem;
+}
+
+.welcome-card ul {
+  padding-left: 1.1rem;
+  margin-top: .5rem;
+}
+
+.welcome-card li {
+  margin-bottom: .4rem;
+}
+
+.start-btn {
+  all: unset;
+  display: inline-block;
+  margin-top: 1.3rem;
+  background: var(--teal);
+  color: #fff;
+  padding: .7rem 1.3rem;
+  border-radius: .8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  text-align: center;
+}
+.start-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
 
   </style>
 </head>
@@ -245,9 +299,30 @@
       </div>
     </header>
 
-    <main>
-      <section class="grid" id="grid"></section>
-    </main>
+  <main>
+  <!-- Welcome screen -->
+  <section class="welcome-card" id="welcomeCard">
+    <h1>🎄 Welcome to <em>Laughing All the Way!</em></h1>
+    <p>Tap a square each day to unlock your festive family game as you count down to Christmas! The calendar rotates through several games with a few prompts for each day. Each prompt is designed to bring laughter, connection, and a little bit of holiday magic to your home There's no right or wrong way to play; this is all just for fun and togetherness!</p>
+
+    <h2>✨ How to Play Each Game</h2>
+    <ul>
+      <li><strong>Who Can Sound Like</strong> — Take turns using just sounds to act out the prompt. No right or wrong answers!</li>
+      <li><strong>You Are</strong> — Use your body, sounds, and facial expressions to act it each prompt</li>
+      <li><strong>Make This Face</strong> — Create a dramatic facial expression for the prompt—no sound, just freeze your face!</li>
+      <li><strong>Would You Rather</strong> — Take turns answering each question. For extra fun, explain your answers!</li>
+      <li><strong>Plot Twist Story</strong> — Use the title to make up a silly, creative story together. Start with "Once upon a time... then trade off every few sentences! Challenge yourself to include the three plot twists that are mentioned.</li>
+      <li><strong>Truth or Merry Mischief</strong> — Choose TRUTH and answer, or MERRY MISCHIEF and do the challenge if you dare!</li>
+      <li><strong>Merry Mad Libs</strong> — Pick the silliest words you can think of to fill in the blanks, then tap to make your story!</li>
+    </ul>
+
+    <button class="start-btn" id="startBtn">Start the Countdown!</button>
+  </section>
+
+  <!-- Calendar grid -->
+  <section class="grid" id="grid" style="display:none;"></section>
+</main>
+
   </div>
 
   <footer>
@@ -438,6 +513,18 @@
     for (let i=0; i<24; i++) grid.appendChild(makeTile(i)); // Days 1–24
   }
   renderGrid();
+    // ----------------- Welcome screen toggle -----------------
+const welcomeCard = document.getElementById("welcomeCard");
+const gridSection = document.getElementById("grid");
+const startBtn = document.getElementById("startBtn");
+
+if (startBtn) {
+  startBtn.addEventListener("click", () => {
+    welcomeCard.style.display = "none";
+    gridSection.style.display = "grid";
+  });
+}
+
 
 /* ----------------- Generator helpers ----------------- */
 function pickNext(indexes){
