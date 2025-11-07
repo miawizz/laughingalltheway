@@ -14,6 +14,8 @@
   <link rel="apple-touch-icon" href="icon-192.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Laughing All the Way" />
+
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
@@ -390,7 +392,7 @@
       { truth: "If you could only ever listen to one Christmas song, what would you choose", dare: "Step outside and sing “It’s the most wonderful time of the year” at the top of your lungs" },
       { truth: "What’s the best Christmas gift you ever got OR the best gift you ever gave someone", dare: "Build a snowman out of pillows and give it a name" },
       { truth: "If you were an elf, what’s your name and job in Santa’s workshop", dare: "Act like a partridge in a pear tree. Flap and squawk" },
-      { truth: "Are you a candy cane, a gingerbread cookie, or peppermint bark. Explain", dare: "Run around the room and say in a gingerbread voice, “Run, fun as fast as you can You can’t catch me, I’m the gingerbread man”" },
+      { truth: "Are you a candy cane, a gingerbread cookie, or peppermint bark. Explain", dare: "Run around the room and say in a gingerbread voice, “Run, run as fast as you can You can’t catch me, I’m the gingerbread man”" },
       { truth: "If you could only eat one holiday food for the rest of your life, what would it be", dare: "Make up an original holiday joke" }
     ]},
 
@@ -716,48 +718,50 @@ I hope you have a wonderful holiday — and don’t forget to {20} as much as yo
       form.style.display="grid";
     });
   }
+// --- Helper: safely escape text before inserting into HTML ---
+function escapeHTML(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
 
-  function renderMadLibsStory(values){
-    let story=MADLIBS_TEMPLATE;
-    for(let i=1;i<=20;i++){
-      story=story.split(`{${i}}`).join(values[`f${i}`]||"_____");
-    }
-    document.getElementById("madlibOutput").textContent=story;
-    document.getElementById("madlibOutput").style.display="block";
-    document.getElementById("madlibEditBar").style.display="flex";
-    document.getElementById("madlibForm").style.display="none";
+function renderMadLibsStory(values){
+  let story = MADLIBS_TEMPLATE;
+  for(let i=1; i<=20; i++){
+    const raw  = values[`f${i}`] || "_____";
+    const safe = escapeHTML(raw);
+    const bold = `<strong>${safe}</strong>`;
+    story = story.split(`{${i}}`).join(bold);
   }
-  </script>
+  const out = document.getElementById("madlibOutput");
+  out.innerHTML = story;
+  out.style.display = "block";
+  document.getElementById("madlibEditBar").style.display = "flex";
+  document.getElementById("madlibForm").style.display = "none";
+}
+</script>  <!-- ✅ close the main script here -->
 
-  <!-- Service worker registration (separate script block) -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', async () => {
-        try {
-          const reg = await navigator.serviceWorker.register('./sw.js?v=2025-11-06-1');
-          if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-          navigator.serviceWorker.addEventListener('controllerchange', () => {
-            if (!window.__swReloaded) {
-              window.__swReloaded = true;
-              location.reload();
-            }
-          });
-        } catch {}
-      });
-    }
+<!-- Service worker registration (separate script block) -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', async () => {
+      try {
+        const reg = await navigator.serviceWorker.register('./sw.js?v=2025-11-06-1');
+        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          if (!window.__swReloaded) {
+            window.__swReloaded = true;
+            location.reload();
+          }
+        });
+      } catch {}
+    });
+  }
 
-    /* Hook viewer after SW to keep main script tidy */
-    function openViewer(day){
-      const viewer = document.getElementById('viewer');
-      const cardTitle = document.getElementById('cardTitle');
-      viewer.classList.add('open');
-      if (day === 24){
-        cardTitle.textContent = "Day 24 — Merry Mad Libs";
-        renderMadLibsForm();
-        return;
-      }
-      renderPromptGenerator(day - 1);
-    }
-  </script>
+</script>
+
 </body>
 </html>
