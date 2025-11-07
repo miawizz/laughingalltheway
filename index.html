@@ -248,6 +248,17 @@
   text-decoration: none;
   color: #1c6359;
 }
+/* CTA link inside Merry Christmas message */
+.cta-link {
+  display: inline-block;
+  color: var(--teal);
+  font-weight: 700;
+  text-decoration: underline;
+}
+.cta-link:hover {
+  text-decoration: none;
+  color: #1c6359;
+}
 
   </style>
 </head>
@@ -325,7 +336,7 @@
   <main>
   <!-- Welcome screen -->
   <section class="welcome-card" id="welcomeCard">
-    <h1>🎄 Welcome to <em>Laughing All the Way!</em></h1>
+    <h1>Welcome to <em>Laughing All the Way!</em></h1>
     <p>Tap a square each day to reveal your game-of-the-day as you count down to Christmas! This advent calendar rotates through several games with a few prompts for each day. Each prompt is designed to bring you together through laughter and creativity. There's no right or wrong way to play, no winners, no losers... just simple family fun and connection!</p>
 
     <h2>✨ How to Play Each Game</h2>
@@ -536,10 +547,11 @@
     el.addEventListener('click', () => openViewer(day));
     return el;
   }
-  function renderGrid(){
-    grid.innerHTML = '';
-    for (let i=0; i<24; i++) grid.appendChild(makeTile(i)); // Days 1–24
-  }
+function renderGrid(){
+  grid.innerHTML = '';
+  for (let i=0; i<25; i++) grid.appendChild(makeTile(i)); // Days 1–25
+}
+
   renderGrid();
     // ----------------- Welcome screen toggle -----------------
 const welcomeCard = document.getElementById("welcomeCard");
@@ -722,15 +734,36 @@ function next(){
 
 
   /* ----------------- Viewer ----------------- */
-  function openViewer(day){
-    viewer.classList.add('open');
-    if (day === 24){
-      cardTitle.textContent = "Day 24 — Merry Mad Libs";
-      renderMadLibsForm();
-      return;
-    }
-    renderPromptGenerator(day - 1);
+function openViewer(day){
+  viewer.classList.add('open');
+
+  // Day 24 (Mad Libs)
+  if (day === 24){
+    cardTitle.textContent = "Day 24 — Merry Mad Libs";
+    renderMadLibsForm();
+    return;
   }
+
+  // 🎄 Day 25 — Final note
+  if (day === 25){
+    cardTitle.textContent = "Merry Christmas!";
+    cardBody.innerHTML = `
+      <div class="prompt">
+        <p>Thank you for playing along all month long. What an honor and joy to share this season of laughter and connection with you!</p>
+        <p>As we wrap up this countdown, I hope these little moments reminded you that play is one of the most powerful ways to stay connected, even during the busiest times.</p>
+        <p>Carry that playful energy into the new year with even more fun ideas and connection games inside the <strong>Playful Heart Parenting Bundle</strong>!</p>
+        <p><a href="https://www.playfulheartparenting.com/bundle-little-moments-tap-into-play-apps" target="_blank" class="cta-link">Tap here to explore the full bundle & save over 40%</a></p>
+        <p style="margin-top:1rem;font-weight:600;">Cheering you on always!</p>
+        <p style="margin-bottom:0;"><em>Love,<br>Mia</em></p>
+      </div>
+    `;
+    return;
+  }
+
+  // Regular tiles (Days 1–23)
+  renderPromptGenerator(day - 1);
+}
+
   function closeViewer(){
     viewer.classList.remove('open');
   }
