@@ -277,9 +277,9 @@
     ]},
     // Day 5
     { title: "Plot Twist Story — The Very Shy Snowman", prompts: [
-      "Suddenly, a little girl ran by. She was carrying a giant box of cookies, but then she tripped and the cookies went flying… Where did they land",
+      "Suddenly, a little girl ran by. She was carrying a giant box of cookies, but then she tripped and the cookies went flying… Where did they land?",
       "Just then, a sweet little old lady walked up and said, “Pardon me, but I think this belongs to you!” She was holding a sparkly, golden ornament with words painted on it that said…",
-      "Then a voice started singing “We Wish You A Merry Christmas.” It was the most beautiful singing anyone had ever heard. It was getting louder and louder, until they realized where it was coming from. Who was it"
+      "Then a voice started singing “We Wish You A Merry Christmas.” It was the most beautiful singing anyone had ever heard. It was getting louder and louder, until they realized where it was coming from. Who was it?"
     ]},
 
     // Day 6
@@ -308,9 +308,9 @@
     ]},
     // Day 10
     { title: "Plot Twist Story — The Case of the Missing Christmas Pajamas", prompts: [
-      "Just then, a little squeaky, mischievous laugh could be heard from under a nearby bush. Who was it",
-      "“Help Help I don’t know how to stop this thing” shouted a voice from across the road. They turned to see a man on a snowboard being pulled by a donkey who was galloping as fast as he could",
-      "Suddenly, the smell of cinnamon and apple cider wafted through the air, and that could only mean one thing"
+      "Just then, a little squeaky, mischievous laugh could be heard from under a nearby bush. Who was it?",
+      "“Help Help I don’t know how to stop this thing” shouted a voice from across the road. They turned to see a man on a snowboard being pulled by a donkey who was galloping as fast as he could...",
+      "Suddenly, the smell of cinnamon and apple cider wafted through the air, and that could only mean one thing..."
     ]},
 
     // Day 11
@@ -428,6 +428,21 @@
     const i = Math.floor(Math.random() * indexes.length);
     return indexes.splice(i,1)[0];
   }
+function prefixFor(title){
+  // Green lead-in text shown before each prompt
+  const t = (title || "").toLowerCase();
+  if (t.includes("who can sound like")) return "Who can sound like…";
+  if (t.includes("make this face"))     return "Make this face…";
+  if (t === "you are" || t.includes("you are")) return "You are…";
+  if (t.includes("would you rather"))   return "Would you rather…";
+  // Defaults to the day title if it is a story or something custom
+  return title || "Today’s prompt";
+}
+
+// Remove a leading ellipsis so your copy reads nicely after the prefix
+function normalizePrompt(p){
+  return (p || "").replace(/^[.…\s]+/, "");
+}
 
   function renderPromptGenerator(dayIndex){
     const day = DAYS[dayIndex];
@@ -466,32 +481,39 @@
     }
 
     // Regular 3-prompt generator
-    const remaining = [0,1,2];
-    cardBody.innerHTML = `
-      <div class="prompt">
-        <p><em>Tap to get a prompt</em></p>
-        <div id="genOutput" class="madlib-output" style="display:none"></div>
-        <div class="madlib-actions" style="margin-top:.6rem">
-          <button class="madlib-btn" id="nextPrompt">New prompt</button>
-          <button class="madlib-btn secondary" id="resetPrompts">Shuffle</button>
-        </div>
-      </div>
-    `;
-    const out = document.getElementById('genOutput');
-    function next(){
-      if(remaining.length===0){ out.textContent = "All done. Tap Shuffle to start again"; out.style.display="block"; return; }
-      const idx = pickNext(remaining);
-      out.textContent = "• " + day.prompts[idx];
-      out.style.display="block";
-    }
-    document.getElementById('nextPrompt').onclick = next;
-    document.getElementById('resetPrompts').onclick = ()=>{
-      remaining.splice(0, remaining.length, 0,1,2);
-      out.textContent = "";
-      out.style.display="none";
-    };
-    next(); // auto-draw first
+// Regular 3-prompt generator  ✅ new version
+const remaining = [0,1,2];
+const titlePrefix = prefixFor(title);
+
+cardBody.innerHTML = `
+  <div class="prompt">
+    <div id="genOutput" class="madlib-output" style="display:none"></div>
+    <div class="madlib-actions" style="margin-top:.6rem">
+      <button class="madlib-btn" id="nextPrompt">Next prompt!</button>
+    </div>
+  </div>
+`;
+
+const out = document.getElementById('genOutput');
+const btn = document.getElementById('nextPrompt');
+
+function next(){
+  if(remaining.length === 0){
+    out.innerHTML = `That’s it for the day! Way to play!`;
+    out.style.display = "block";
+    btn.style.display = "none";
+    return;
   }
+  const idx = pickNext(remaining);
+  const text = normalizePrompt(day.prompts[idx]);
+  out.innerHTML = `<em>${titlePrefix}</em> ${text}`;
+  out.style.display = "block";
+}
+
+btn.onclick = next;
+next(); // show the first on open
+}
+
 
   /* ----------------- Viewer ----------------- */
   function openViewer(day){
