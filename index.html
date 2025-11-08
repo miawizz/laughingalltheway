@@ -837,6 +837,9 @@
   viewer.addEventListener('click', (e) => { if (e.target === viewer) closeViewer(); });
   closeBtn.addEventListener('click', closeViewer);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
+  // make closeViewer callable from the bonus module
+window.__closeViewer = closeViewer;
+
 
   /* ----------------- Courtesy / Privacy Gate ----------------- */
   const COURTESY_KEY = 'latw_courtesy_v1';
@@ -1078,7 +1081,7 @@ I hope you have a wonderful holiday — and don’t forget to {20} as much as yo
       'jingle-jargon': { title:'Jingle Jargon', text:'Make up an elf language. Have a gibberish-elf conversation or try to translate it.' },
       'tinsel-twisters': { title:'Tinsel Twisters', text:'Say these tongue twisters five times fast: Santa’s short suit shrunk • Red lolly yellow lolly • Toy boat.' },
       'mind-meld': { title:'Holiday Mind Meld', text:'Count down from three, then try to say the same holiday word at the same time. Keep going until you match!' },
-      'silent-singing': { title:'Silent Night Singing', text:'Lip-sync a carol without sound while others guess. Bonust points for an extra expressive face!' },
+      'silent-singing': { title:'Silent Night Singing', text:'Lip-sync a carol without sound while others guess. Bonus points for an extra expressive face!' },
       'santa-says': { title:'Santa Says', text:'Play Simon Says but as Santa Says. Say “Ho Ho Ho, Santa says…” before each instruction.' },
       'ventriloquism': { title:'Very Merry Ventriloquism', text:'Try to say these holiday phrases while smiling without moving your lips: KRIS KRINGLE • I LIKE SINGING SONGS • DO YOU LIKE CANDY CANES?' },
       'bawk-carol': { title:'Bawk That Carol', text:'Bawk a Christmas carol like a chicken while others guess the song. Try your best to keep a straight face.' }
@@ -1119,15 +1122,19 @@ I hope you have a wonderful holiday — and don’t forget to {20} as much as yo
       `;
     }
 
-    function openModal() {
-      const m = qs('#bonusVaultModal'); if (!m) return;
-      m.classList.add('open');
-      m.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
-      // prevent card beneath from interacting
-      const viewer = document.getElementById('viewer');
-      if (viewer) viewer.setAttribute('inert','');
-    }
+function openModal() {
+  // close the tile/card behind the modal
+  window.__closeViewer?.();
+
+  const m = qs('#bonusVaultModal'); if (!m) return;
+  m.classList.add('open');
+  m.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+
+  // prevent card beneath from interacting
+  const viewer = document.getElementById('viewer');
+  if (viewer) viewer.setAttribute('inert','');
+}
 
     function closeModal() {
       const m = qs('#bonusVaultModal'); if (!m) return;
