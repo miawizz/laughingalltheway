@@ -305,6 +305,16 @@
     .latw-vault-item:focus-visible { outline: 2px solid #699eb0; }
     .latw-bonus-detail h3 { margin: .5rem 0 .25rem; font-family: 'Baloo 2', system-ui, sans-serif; color: #237e6b; }
     .latw-bonus-detail p { margin: 0; font-family: "Poppins", system-ui, sans-serif; }
+
+    /* Mark tiles that have been opened at least once */
+.tile.viewed { filter: saturate(.85) brightness(.98); }
+.tile.viewed::after{
+  content:"✓";
+  position:absolute; right:6px; bottom:6px;
+  font-size:1rem; color:var(--teal); font-weight:700;
+}
+
+    
   </style>
 </head>
 <body>
@@ -379,7 +389,7 @@
     </header>
 
     <!-- ⭐ Bonus info bar + Bonus Vault -->
-    <header class="latw-sticky" data-latw-bonus>
+    <header id="bonusBar" class="latw-sticky hidden" data-latw-bonus>
       <div class="latw-sticky__inner">
         <span class="latw-emoji" aria-hidden="true">🎁</span>
         <span class="latw-sticky__text">
@@ -399,10 +409,10 @@
         <h2>✨ How to Play Each Game</h2>
         <ul>
           <li><strong>Who Can Sound Like</strong> — Take turns using just sounds to act out the prompt. No right or wrong answers!</li>
-          <li><strong>You Are</strong> — Use your body, sounds, and facial expressions to act it each prompt</li>
+          <li><strong>You Are</strong> — Use your body, sounds, and facial expressions to act out each prompt</li>
           <li><strong>Make This Face</strong> — Create a dramatic facial expression for the prompt—no sound, just freeze your face!</li>
           <li><strong>Would You Rather</strong> — Take turns answering each question. For extra fun, explain your answers!</li>
-          <li><strong>Plot Twist Story</strong> — Use the title to make up a silly, creative story together. Start with "Once upon a time... then trade off every few sentences! Challenge yourself to include the three plot twists that are mentioned.</li>
+          <li><strong>Plot Twist Story</strong> — Use the title to make up a silly, creative story together. Start with "Once upon a time..." then trade off every few sentences! Challenge yourself to include the three plot twists that are mentioned.</li>
           <li><strong>Truth or Merry Mischief</strong> — Choose TRUTH and answer, or MERRY MISCHIEF and do the challenge if you dare!</li>
           <li><strong>Merry Mad Libs</strong> — Pick the silliest words you can think of to fill in the blanks, then tap to make your story!</li>
         </ul>
@@ -596,34 +606,99 @@
   const cardBody  = document.getElementById('cardBody');
   const closeBtn  = document.getElementById('closeBtn');
 
+    // --- Viewed tiles persistence
+const OPENED_KEY = 'latw_opened_days_v1';
+
+function getOpened(){
+  try { return new Set(JSON.parse(localStorage.getItem(OPENED_KEY) || '[]')); }
+  catch(e){ return new Set(); }
+}
+function saveOpened(set){
+  try { localStorage.setItem(OPENED_KEY, JSON.stringify([...set])); } catch(e){}
+}
+
+let openedDays = getOpened();
+
+function markViewed(day){
+  openedDays.add(day);
+  saveOpened(openedDays);
+  const tile = document.querySelector(`.tile[data-day="${day}"]`);
+  tile?.classList.add('viewed');
+  tile?.setAttribute('aria-pressed','true');
+}
+
+function applyViewedStates(){
+  openedDays.forEach(d => {
+    const tile = document.querySelector(`.tile[data-day="${d}"]`);
+    tile?.classList.add('viewed');
+    tile?.setAttribute('aria-pressed','true');
+  });
+}
+
+    
   /* ----------------- Tiles ----------------- */
-  function makeTile(i){
-    const day = i + 1;
-    const el = document.createElement('button');
-    el.className = 'tile';
-    el.type = 'button';
-    el.textContent = day;
-    el.setAttribute('data-day', String(day)); // ⭐ allow bonus star targeting
-    el.addEventListener('click', () => openViewer(day));
-    return el;
-  }
-  function renderGrid(){
-    grid.innerHTML = '';
-    for (let i=0; i<25; i++) grid.appendChild(makeTile(i)); // Days 1–25
-  }
+function makeTile(i){
+  const day = i + 1;
+  const el = document.createElement('button');
+  el.className = 'tile';
+  el.type = 'button';
+  el.textContent = day;
+  el.setAttribute('data-day', String(day));
+  el.setAttribute('aria-pressed', openedDays.has(day) ? 'true' : 'false');
+  if (openedDays.has(day)) el.classList.add('viewed');
+  el.addEventListener('click', () => openViewer(day));
+  return el;
+}
+
+function renderGrid(){
+  grid.innerHTML = '';
+  for (let i=0; i<25; i++) grid.appendChild(makeTile(i));
+  applyViewedStates();
+}
+
 
   renderGrid();
     // ----------------- Welcome screen toggle -----------------
   const welcomeCard = document.getElementById("welcomeCard");
   const gridSection = document.getElementById("grid");
   const startBtn = document.getElementById("startBtn");
+    // --- Boot visibility states
+const bonusBar = document.getElementById('bonusBar');
+bonusBar?.classList.add('hidden');     // keep bonus bar hidden at first
+gridSection.style.display = "none";    // be explicit
 
-  if (startBtn) {
-    startBtn.addEventListener("click", () => {
-      welcomeCard.style.display = "none";
-      gridSection.style.display = "grid";
-    });
+// Optional support reset: add ?reset=1 to URL to show welcome again
+try {
+  if (new URLSearchParams(location.search).get('reset') === '1') {
+    localStorage.removeItem('latw_started_v1');
   }
+} catch(e){}
+
+// If user already tapped Start on this device, skip welcome
+try {
+  if (localStorage.getItem('latw_started_v1') === 'yes') {
+    welcomeCard.style.display = "none";
+    gridSection.style.display = "grid";
+    bonusBar?.classList.remove('hidden');
+    setTimeout(() => window.__initLATWBonus?.(), 0);
+  }
+} catch(e){}
+
+
+if (startBtn) {
+  startBtn.addEventListener("click", () => {
+    welcomeCard.style.display = "none";
+    gridSection.style.display = "grid";
+    bonusBar?.classList.remove('hidden');
+
+    // mark as started for future visits
+    try { localStorage.setItem('latw_started_v1', 'yes'); } catch(e){}
+
+    // init bonus now that tiles exist
+    setTimeout(() => window.__initLATWBonus?.(), 0);
+  });
+}
+
 
 
   /* ----------------- Generator helpers ----------------- */
@@ -794,35 +869,39 @@
 
 
   /* ----------------- Viewer ----------------- */
-  function openViewer(day){
-    viewer.classList.add('open');
+function openViewer(day){
+  viewer.classList.add('open');
 
-    // Day 24 (Mad Libs)
-    if (day === 24){
-      cardTitle.textContent = "Day 24 — Merry Mad Libs";
-      renderMadLibsForm();
-      return;
-    }
-
-    // 🎄 Day 25 — Final note
-    if (day === 25){
-      cardTitle.textContent = "Merry Christmas!";
-      cardBody.innerHTML = `
-        <div class="prompt">
-          <p>Thank you for playing along all month long. What an honor and joy to share this season of laughter and connection with you!</p>
-          <p>As we wrap up this countdown, I hope these little moments reminded you that play is one of the most powerful ways to stay connected, even during the busiest times.</p>
-          <p>Carry that playful energy into the new year with even more fun ideas and connection games inside the <strong>Playful Heart Parenting Bundle</strong>!</p>
-          <p><a href="https://www.playfulheartparenting.com/bundle-little-moments-tap-into-play-apps" target="_blank" class="cta-link">Tap here to explore the full bundle & save over 40%</a></p>
-          <p style="margin-top:1rem;font-weight:600;">Cheering you on always!</p>
-          <p style="margin-bottom:0;"><em>Love,<br>Mia</em></p>
-        </div>
-      `;
-      return;
-    }
-
-    // Regular tiles (Days 1–23)
-    renderPromptGenerator(day - 1);
+  // Day 24 (Mad Libs)
+  if (day === 24){
+    cardTitle.textContent = "Day 24 — Merry Mad Libs";
+    renderMadLibsForm();
+    markViewed(day);
+    return;
   }
+
+  // Day 25 — Final note
+  if (day === 25){
+    cardTitle.textContent = "Merry Christmas!";
+    cardBody.innerHTML = `
+      <div class="prompt">
+        <p>Thank you for playing along all month long. What an honor and joy to share this season of laughter and connection with you!</p>
+        <p>As we wrap up this countdown, I hope these little moments reminded you that play is one of the most powerful ways to stay connected, even during the busiest times.</p>
+        <p>Carry that playful energy into the new year with even more fun ideas and connection games inside the <strong>Playful Heart Parenting Bundle</strong>!</p>
+        <p><a href="https://www.playfulheartparenting.com/bundle-little-moments-tap-into-play-apps" target="_blank" rel="noopener" class="cta-link">Tap here to explore the full bundle & save over 40%</a></p>
+        <p style="margin-top:1rem;font-weight:600;">Cheering you on always!</p>
+        <p style="margin-bottom:0;"><em>Love,<br>Mia</em></p>
+      </div>
+    `;
+    markViewed(day);
+    return;
+  }
+
+  // Regular tiles (Days 1–23)
+  renderPromptGenerator(day - 1);
+  markViewed(day);
+}
+
 
   function closeViewer(){
     viewer.classList.remove('open');
@@ -1077,23 +1156,27 @@ I hope you have a wonderful holiday — and don’t forget to {20} as much as yo
       'serious-santa': { title:'Serious Santa', text:'Have a staring contest while saying Ho-Ho-Ho in different silly ways but without laughing!' },
       'holly-handshake': { title:'Holly Jolly Handshake', text:'Create a creative holiday-themed handshake! Ideas to include: candy-cane-claps, snowman-snaps, jingle-bell-jumps... whatever you can think of!' },
       'jingle-jargon': { title:'Jingle Jargon', text:'Make up an elf language! Have a gibberish-elf conversation with each other OR try to translate what the elf is trying to say.' },
-      'tinsel-twisters': { title:'Tinsel Twisters', text:'Try to these tongue twisters five times fast: Santa’s short suit shrunk... Red lolly yellow lolly... Toy boat!' },
+      'tinsel-twisters': { title:'Tinsel Twisters', text:'Try these tongue twisters five times fast: Santa’s short suit shrunk... Red lolly yellow lolly... Toy boat!' },
       'mind-meld': { title:'Holiday Mind Meld', text:'Count down from three, then try to say the same holiday-related word at the same time. Keep trying until you match!' },
       'silent-singing': { title:'Silent Night Singing', text:'Lip-sync a carol without any sound while others guess the song. Bonus points for an extra-expressive face!' },
       'santa-says': { title:'Santa Says', text:'Play Simon Says, but instead, make it Santa says - Say Ho! Ho! Ho!... SANTA SAYS... before giving your instructions.' },
-      'ventriloquism': { title:'Very Merry Ventriloquism', text:'Try to say holiday phrases while smiling but without moving your lips. Easy ones to try are: KRIS KRINGLE, I LIKE SINGING SONGS, and DO YOU LIKE CANDY CANES?' }
+      'ventriloquism': { title:'Very Merry Ventriloquism', text:'Try to say holiday phrases while smiling but without moving your lips. Easy ones to try are: KRIS KRINGLE, I LIKE SINGING SONGS, and DO YOU LIKE CANDY CANES?' },
+      'bawk-carol': {title: 'Bawk That Carol', text: 'Bawk a Christmas carol like a chicken while others guess the song! Bonus points for keeping a straight face.'
+}
+
     };
 
     // Your chosen placement
     const PLACEMENT = {
       3:'serious-santa',
       6:'holly-handshake',
+      8:'ventriloquism',
       10:'jingle-jargon',
       13:'tinsel-twisters',
       16:'mind-meld',
       19:'silent-singing',
+      20: 'bawk-carol',
       22:'santa-says',
-      24:'ventriloquism'
     };
 
     function qs(sel, root=document){ return root.querySelector(sel); }
@@ -1134,34 +1217,65 @@ I hope you have a wonderful holiday — and don’t forget to {20} as much as yo
       d.innerHTML = `<h3>${b.title}</h3><p>${b.text}</p>`;
     }
 
-    function injectStars(placement) {
-      Object.entries(placement).forEach(([day, id]) => {
-        const tile = document.querySelector(`.tile[data-day="${day}"]`);
-        if (!tile || tile.querySelector('.latw-star')) return;
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'latw-star';
-        btn.setAttribute('aria-label', `Open bonus ${BONUS_COPY[id]?.title || 'Bonus'}`);
-        btn.dataset.bonusId = id;
-        btn.textContent = '⭐';
-        if (!getComputedStyle(tile).position || getComputedStyle(tile).position === 'static') {
-          tile.style.position = 'relative';
-        }
-        tile.appendChild(btn);
-      });
+function injectStars(placement) {
+  Object.entries(placement).forEach(([day, id]) => {
+    const tile = document.querySelector(`.tile[data-day="${day}"]`);
+    if (!tile || tile.querySelector('.latw-star')) return;
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'latw-star';
+    btn.setAttribute('aria-label', `Open bonus ${BONUS_COPY[id]?.title || 'Bonus'}`);
+    btn.dataset.bonusId = id;
+    btn.textContent = '⭐';
+
+    // ensure positioning
+    if (getComputedStyle(tile).position === 'static') {
+      tile.style.position = 'relative';
+    }
+    tile.appendChild(btn);
+
+    // STOP the tile from also receiving the click
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation?.();
+      renderBonus(btn.dataset.bonusId);
+      openModal();
+    });
+
+    // extra safety on touch and pointer events
+    ['pointerdown','touchstart','mousedown'].forEach(evt => {
+      btn.addEventListener(evt, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }, {capture: true});
+    });
+  });
+}
+
+
+function wireEvents() {
+  document.addEventListener('click', (e) => {
+    const star = e.target.closest('.latw-star');
+    if (star) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation?.();
+      renderBonus(star.dataset.bonusId);
+      openModal();
+      return;
     }
 
-    function wireEvents() {
-      document.addEventListener('click', (e) => {
-        const t = e.target;
-        if (t.id === 'bonusVaultBtn') { openModal(); return; }
-        if (t.classList.contains('latw-modal__close')) { closeModal(); return; }
-        if (t.classList.contains('latw-star')) { renderBonus(t.dataset.bonusId); openModal(); return; }
-        if (t.classList.contains('latw-vault-item')) { renderBonus(t.dataset.bonusId); return; }
-        if (t.id === 'bonusVaultModal' && t.classList.contains('latw-modal')) { closeModal(); return; }
-      });
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-    }
+    if (e.target.id === 'bonusVaultBtn') { openModal(); return; }
+    if (e.target.classList.contains('latw-modal__close')) { closeModal(); return; }
+    if (e.target.classList.contains('latw-vault-item')) { renderBonus(e.target.dataset.bonusId); return; }
+    if (e.target.id === 'bonusVaultModal' && e.target.classList.contains('latw-modal')) { closeModal(); return; }
+  });
+
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+}
+
 
     function initBonus() {
       ensureModal();
@@ -1170,13 +1284,8 @@ I hope you have a wonderful holiday — and don’t forget to {20} as much as yo
     }
 
     // Run after DOM is ready and again when Start reveals the grid
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initBonus);
-    } else {
-      initBonus();
-    }
-    const startBtn = document.getElementById('startBtn');
-    if (startBtn) startBtn.addEventListener('click', () => setTimeout(initBonus, 0));
+window.__initLATWBonus = () => { try { initBonus(); } catch(e){} };
+
   })();
   </script>
 
