@@ -16,7 +16,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Laughing All the Way" />
 
-
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -157,109 +156,155 @@
     .madlib-field label{font-size:.9rem;color:var(--teal);font-weight:600}
     .madlib-field input{font:inherit;padding:.55rem .65rem;border:1px solid var(--line);border-radius:.55rem;background:#fff}
 
-/* Instruction / how-to-play bar */
-.instructions{
-  background: var(--bg);
-  color: #fff;
-  font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  line-height: 1.4;
-  padding: 0.55rem 0.75rem;
-  border-radius: 10px;
-  margin: 0 0 0.8rem;
-  text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-/* Welcome Card */
-.welcome-card {
-  background: #fff8d2; /* cream color */
-  color: #237e6b;      /* dark green */
-  font-family: "Poppins", system-ui, sans-serif;
-  border-radius: 26px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-  max-width: 760px;
-  margin: 24px auto;
-  padding: 28px 22px;
-  text-align: left;
-  line-height: 1.55;
-}
+    /* Instruction / how-to-play bar */
+    .instructions{
+      background: var(--bg);
+      color: #fff;
+      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      line-height: 1.4;
+      padding: 0.55rem 0.75rem;
+      border-radius: 10px;
+      margin: 0 0 0.8rem;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    /* Welcome Card */
+    .welcome-card {
+      background: #fff8d2; /* cream color */
+      color: #237e6b;      /* dark green */
+      font-family: "Poppins", system-ui, sans-serif;
+      border-radius: 26px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+      max-width: 760px;
+      margin: 24px auto;
+      padding: 28px 22px;
+      text-align: left;
+      line-height: 1.55;
+    }
 
-.welcome-card h1 {
-  font-family: 'Baloo 2', system-ui, sans-serif;
-  font-size: 1.7rem;
-  color: var(--teal);
-  margin-bottom: .75rem;
-}
+    .welcome-card h1 {
+      font-family: 'Baloo 2', system-ui, sans-serif;
+      font-size: 1.7rem;
+      color: var(--teal);
+      margin-bottom: .75rem;
+    }
 
-.welcome-card h2 {
-  font-family: 'Baloo 2', system-ui, sans-serif;
-  font-size: 1.25rem;
-  color: var(--teal);
-  margin-top: 1.4rem;
-}
+    .welcome-card h2 {
+      font-family: 'Baloo 2', system-ui, sans-serif;
+      font-size: 1.25rem;
+      color: var(--teal);
+      margin-top: 1.4rem;
+    }
 
-.welcome-card ul {
-  padding-left: 1.1rem;
-  margin-top: .5rem;
-}
+    .welcome-card ul {
+      padding-left: 1.1rem;
+      margin-top: .5rem;
+    }
 
-.welcome-card li {
-  margin-bottom: .4rem;
-}
+    .welcome-card li {
+      margin-bottom: .4rem;
+    }
 
-.start-btn {
-  all: unset;
-  display: inline-block;
-  margin-top: 1.3rem;
-  background: var(--teal);
-  color: #fff;
-  padding: .7rem 1.3rem;
-  border-radius: .8rem;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-  text-align: center;
-}
-.start-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-}
-/* Download link below welcome card */
-.download-note {
-  text-align: center;
-  font-family: "Poppins", system-ui, sans-serif;
-  font-size: 0.95rem;
-  color: #237e6b;
-  margin-top: 1rem;
-  line-height: 1.4;
-}
+    .start-btn {
+      all: unset;
+      display: inline-block;
+      margin-top: 1.3rem;
+      background: var(--teal);
+      color: #fff;
+      padding: .7rem 1.3rem;
+      border-radius: .8rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+    .start-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    /* Download link below welcome card */
+    .download-note {
+      text-align: center;
+      font-family: "Poppins", system-ui, sans-serif;
+      font-size: 0.95rem;
+      color: #237e6b;
+      margin-top: 1rem;
+      line-height: 1.4;
+    }
 
-.download-link {
-  display: inline-block;
-  margin-top: 0.3rem;
-  color: var(--teal);
-  font-weight: 700;
-  text-decoration: underline;
-  cursor: pointer;
-}
+    .download-link {
+      display: inline-block;
+      margin-top: 0.3rem;
+      color: var(--teal);
+      font-weight: 700;
+      text-decoration: underline;
+      cursor: pointer;
+    }
 
-.download-link:hover {
-  text-decoration: none;
-  color: #1c6359;
-}
-/* CTA link inside Merry Christmas message */
-.cta-link {
-  display: inline-block;
-  color: var(--teal);
-  font-weight: 700;
-  text-decoration: underline;
-}
-.cta-link:hover {
-  text-decoration: none;
-  color: #1c6359;
-}
+    .download-link:hover {
+      text-decoration: none;
+      color: #1c6359;
+    }
+    /* CTA link inside Merry Christmas message */
+    .cta-link {
+      display: inline-block;
+      color: var(--teal);
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    .cta-link:hover {
+      text-decoration: none;
+      color: #1c6359;
+    }
 
+    /* ===== LATW Bonus Module (added) ===== */
+    [data-latw-bonus].latw-sticky {
+      position: sticky; top: 0; z-index: 1000;
+      background: #fff4db; border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .latw-sticky__inner {
+      max-width: 1000px; margin: 0 auto; padding: .6rem .9rem;
+      display: flex; gap: .6rem; align-items: center; justify-content: space-between;
+    }
+    .latw-sticky__text { font-size: .95rem; line-height: 1.3; }
+    .latw-emoji { font-size: 1.1rem; }
+    .latw-btn {
+      background:#d93823; color:#fff; border:0; border-radius:.5rem;
+      padding:.5rem .75rem; font-weight:700; cursor:pointer;
+    }
+
+    .latw-star {
+      position: absolute; right: .35rem; top: .35rem;
+      background: transparent; border: 0; font-size: 1rem; line-height: 1;
+      cursor: pointer; filter: drop-shadow(0 1px 0 rgba(0,0,0,.2));
+    }
+    .latw-star:focus-visible { outline: 2px solid #699eb0; border-radius: .25rem; }
+
+    [data-latw-bonus].latw-modal {
+      position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+      background: rgba(0,0,0,.35); padding: 1rem; z-index: 10000;
+    }
+    .latw-modal.open { display: flex; }
+    .latw-modal__content {
+      width: min(720px, 96vw); max-height: 85vh; overflow: auto;
+      background: #fffcf5; border-radius: 12px; border: 2px solid #699eb0; padding: 1rem 1rem 1.25rem;
+    }
+    .latw-modal__close { float: right; background: transparent; border: 0; font-size: 1.5rem; cursor: pointer; }
+    .latw-vault-title { margin: .25rem 0 .75rem; font-family: 'Baloo 2', system-ui, sans-serif; color: #237e6b; }
+    .latw-vault-list {
+      list-style: none; padding: 0; margin: .5rem 0 1rem;
+      display: grid; gap: .5rem; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    .latw-vault-item {
+      width: 100%; text-align: left; padding: .6rem .7rem; border: 1px solid #699eb0;
+      border-radius: .5rem; background: #fff; cursor: pointer; font-weight: 700;
+      font-family: "Poppins", system-ui, sans-serif;
+    }
+    .latw-vault-item:focus-visible { outline: 2px solid #699eb0; }
+    .latw-bonus-detail h3 { margin: .5rem 0 .25rem; font-family: 'Baloo 2', system-ui, sans-serif; color: #237e6b; }
+    .latw-bonus-detail p { margin: 0; font-family: "Poppins", system-ui, sans-serif; }
   </style>
 </head>
 <body>
@@ -333,34 +378,48 @@
       </div>
     </header>
 
-  <main>
-  <!-- Welcome screen -->
-  <section class="welcome-card" id="welcomeCard">
-    <h1>Welcome to <em>Laughing All the Way!</em></h1>
-    <p>Tap a square each day to reveal your game-of-the-day as you count down to Christmas! This advent calendar rotates through several games with a few prompts for each day. Each prompt is designed to bring you together through laughter and creativity. There's no right or wrong way to play, no winners, no losers... just simple family fun and connection!</p>
+    <!-- ⭐ Bonus info bar + Bonus Vault -->
+    <header class="latw-sticky" data-latw-bonus>
+      <div class="latw-sticky__inner">
+        <span class="latw-emoji" aria-hidden="true">🎁</span>
+        <span class="latw-sticky__text">
+          Look for ⭐ bonus icons for optional extra games! Tap any ⭐ to reveal a quick surprise. Open the "Bonus Fun" anytime for more games.
+        </span>
+        <button id="bonusVaultBtn" class="latw-btn" type="button">Bonus Fun!</button>
+      </div>
+    </header>
+    <div id="bonusVaultModal" class="latw-modal" aria-hidden="true" role="dialog" aria-labelledby="vaultTitle" data-latw-bonus></div>
 
-    <h2>✨ How to Play Each Game</h2>
-    <ul>
-      <li><strong>Who Can Sound Like</strong> — Take turns using just sounds to act out the prompt. No right or wrong answers!</li>
-      <li><strong>You Are</strong> — Use your body, sounds, and facial expressions to act it each prompt</li>
-      <li><strong>Make This Face</strong> — Create a dramatic facial expression for the prompt—no sound, just freeze your face!</li>
-      <li><strong>Would You Rather</strong> — Take turns answering each question. For extra fun, explain your answers!</li>
-      <li><strong>Plot Twist Story</strong> — Use the title to make up a silly, creative story together. Start with "Once upon a time... then trade off every few sentences! Challenge yourself to include the three plot twists that are mentioned.</li>
-      <li><strong>Truth or Merry Mischief</strong> — Choose TRUTH and answer, or MERRY MISCHIEF and do the challenge if you dare!</li>
-      <li><strong>Merry Mad Libs</strong> — Pick the silliest words you can think of to fill in the blanks, then tap to make your story!</li>
-    </ul>
+    <main>
+      <!-- Welcome screen -->
+      <section class="welcome-card" id="welcomeCard">
+        <h1>Welcome to <em>Laughing All the Way!</em></h1>
+        <p>Tap a square each day to reveal your game-of-the-day as you count down to Christmas! This advent calendar rotates through several games with a few prompts for each day. Each prompt is designed to bring you together through laughter and creativity. There's no right or wrong way to play, no winners, no losers... just simple family fun and connection!</p>
 
-    <button class="start-btn" id="startBtn">Start the Countdown!</button>
-    <p class="download-note">
-  Want the printable version, too? Here ya go!  
-  <a href="Laughing All the Way printable 2025.pdf" download class="download-link">Download the PDF</a>
-</p>
+        <h2>✨ How to Play Each Game</h2>
+        <ul>
+          <li><strong>Who Can Sound Like</strong> — Take turns using just sounds to act out the prompt. No right or wrong answers!</li>
+          <li><strong>You Are</strong> — Use your body, sounds, and facial expressions to act it each prompt</li>
+          <li><strong>Make This Face</strong> — Create a dramatic facial expression for the prompt—no sound, just freeze your face!</li>
+          <li><strong>Would You Rather</strong> — Take turns answering each question. For extra fun, explain your answers!</li>
+          <li><strong>Plot Twist Story</strong> — Use the title to make up a silly, creative story together. Start with "Once upon a time... then trade off every few sentences! Challenge yourself to include the three plot twists that are mentioned.</li>
+          <li><strong>Truth or Merry Mischief</strong> — Choose TRUTH and answer, or MERRY MISCHIEF and do the challenge if you dare!</li>
+          <li><strong>Merry Mad Libs</strong> — Pick the silliest words you can think of to fill in the blanks, then tap to make your story!</li>
+        </ul>
 
-  </section>
+        <!-- ⭐ New instruction line -->
+        <p class="instructions">Look for ⭐ on some days for an optional bonus game!</p>
 
-  <!-- Calendar grid -->
-  <section class="grid" id="grid" style="display:none;"></section>
-</main>
+        <button class="start-btn" id="startBtn">Start the Countdown!</button>
+        <p class="download-note">
+          Want the printable version, too? Here ya go!
+          <a href="Laughing All the Way printable 2025.pdf" download class="download-link">Download the PDF</a>
+        </p>
+      </section>
+
+      <!-- Calendar grid -->
+      <section class="grid" id="grid" style="display:none;"></section>
+    </main>
 
   </div>
 
@@ -544,225 +603,226 @@
     el.className = 'tile';
     el.type = 'button';
     el.textContent = day;
+    el.setAttribute('data-day', String(day)); // ⭐ allow bonus star targeting
     el.addEventListener('click', () => openViewer(day));
     return el;
   }
-function renderGrid(){
-  grid.innerHTML = '';
-  for (let i=0; i<25; i++) grid.appendChild(makeTile(i)); // Days 1–25
-}
+  function renderGrid(){
+    grid.innerHTML = '';
+    for (let i=0; i<25; i++) grid.appendChild(makeTile(i)); // Days 1–25
+  }
 
   renderGrid();
     // ----------------- Welcome screen toggle -----------------
-const welcomeCard = document.getElementById("welcomeCard");
-const gridSection = document.getElementById("grid");
-const startBtn = document.getElementById("startBtn");
+  const welcomeCard = document.getElementById("welcomeCard");
+  const gridSection = document.getElementById("grid");
+  const startBtn = document.getElementById("startBtn");
 
-if (startBtn) {
-  startBtn.addEventListener("click", () => {
-    welcomeCard.style.display = "none";
-    gridSection.style.display = "grid";
-  });
-}
+  if (startBtn) {
+    startBtn.addEventListener("click", () => {
+      welcomeCard.style.display = "none";
+      gridSection.style.display = "grid";
+    });
+  }
 
 
-/* ----------------- Generator helpers ----------------- */
-function pickNext(indexes){
-  const i = Math.floor(Math.random() * indexes.length);
-  return indexes.splice(i,1)[0];
-}
+  /* ----------------- Generator helpers ----------------- */
+  function pickNext(indexes){
+    const i = Math.floor(Math.random() * indexes.length);
+    return indexes.splice(i,1)[0];
+  }
 
-function prefixFor(title){
-  const t = (title || "").toLowerCase();
-  if (t.includes("who can sound like")) return "Who can sound like…";
-  if (t.includes("make this face"))     return "Make this face…";
-  if (t === "you are" || t.includes("you are")) return "You are…";
-  if (t.includes("would you rather"))   return "Would you rather…";
-  if (t.includes("plot twist"))         return "Plot twist…";
-  return title || "Today’s prompt";
-}
+  function prefixFor(title){
+    const t = (title || "").toLowerCase();
+    if (t.includes("who can sound like")) return "Who can sound like…";
+    if (t.includes("make this face"))     return "Make this face…";
+    if (t === "you are" || t.includes("you are")) return "You are…";
+    if (t.includes("would you rather"))   return "Would you rather…";
+    if (t.includes("plot twist"))         return "Plot twist…";
+    return title || "Today’s prompt";
+  }
 
-// Trim leading ellipses so the prefix reads cleanly
-function normalizePrompt(p){
-  return (p || "").replace(/^[.…\s]+/, "");
-}
+  // Trim leading ellipses so the prefix reads cleanly
+  function normalizePrompt(p){
+    return (p || "").replace(/^[.…\s]+/, "");
+  }
 
-// Short “how to play” line under the title
-function rulesFor(title){
-  const t = (title || "").toLowerCase();
-  if (t.includes("who can sound like"))
-    return "Take turns using just sounds to act out the prompt. No right or wrong answers, it's just for fun!";
-  if (t.includes("you are"))
-    return "Take turns using your body, sounds, and facial expressions to act out the prompt.";
-  if (t.includes("make this face"))
-    return "Take turns making a dramatic facial expression for the prompt. Try not to make any sound -- just freeze your face!";
-  if (t.includes("plot twist"))
-    return "Use this title as inspiration to make up a silly, creative story together. Trade off every few sentences. Tap for three unexpected plot twists to work in!";
- if (t.includes("would you rather"))
-  return "Take turns answering each question. For extra fun, explain your answers!";
-  if (t.includes("merry mischief"))
-    return "Take turns picking TRUTH or MERRY MISCHIEF. For TRUTH, simply answer the question. For MERRY MISCHIEF, complete the challenge if you dare!";
-  return "";
-}
+  // Short “how to play” line under the title
+  function rulesFor(title){
+    const t = (title || "").toLowerCase();
+    if (t.includes("who can sound like"))
+      return "Take turns using just sounds to act out the prompt. No right or wrong answers, it's just for fun!";
+    if (t.includes("you are"))
+      return "Take turns using your body, sounds, and facial expressions to act out the prompt.";
+    if (t.includes("make this face"))
+      return "Take turns making a dramatic facial expression for the prompt. Try not to make any sound -- just freeze your face!";
+    if (t.includes("plot twist"))
+      return "Use this title as inspiration to make up a silly, creative story together. Trade off every few sentences. Tap for three unexpected plot twists to work in!";
+    if (t.includes("would you rather"))
+      return "Take turns answering each question. For extra fun, explain your answers!";
+    if (t.includes("merry mischief"))
+      return "Take turns picking TRUTH or MERRY MISCHIEF. For TRUTH, simply answer the question. For MERRY MISCHIEF, complete the challenge if you dare!";
+    return "";
+  }
 
-function renderPromptGenerator(dayIndex){
-  const day = DAYS[dayIndex];
-  const title = day.title || "Today’s Prompts";
-  cardTitle.textContent = `Day ${dayIndex+1} — ${title}`;
+  function renderPromptGenerator(dayIndex){
+    const day = DAYS[dayIndex];
+    const title = day.title || "Today’s Prompts";
+    cardTitle.textContent = `Day ${dayIndex+1} — ${title}`;
 
-  // Insert the short rules line
-  const rules = rulesFor(title);
-  const titlePrefix = prefixFor(title);
+    // Insert the short rules line
+    const rules = rulesFor(title);
+    const titlePrefix = prefixFor(title);
 
-  // ---------- Day 23: Truth or Merry Mischief (cycle through ALL cards) ----------
-  if (day.pairs){
-    // Build independent buckets so every TRUTH and every MISCHIEF can be drawn once
-    const truths    = day.pairs.map(p => p.truth);
-    const mischiefs = day.pairs.map(p => p.dare);
-    const truthIdxs    = Array.from({length: truths.length}, (_,i)=>i);
-    const mischiefIdxs = Array.from({length: mischiefs.length}, (_,i)=>i);
+    // ---------- Day 23: Truth or Merry Mischief (cycle through ALL cards) ----------
+    if (day.pairs){
+      // Build independent buckets so every TRUTH and every MISCHIEF can be drawn once
+      const truths    = day.pairs.map(p => p.truth);
+      const mischiefs = day.pairs.map(p => p.dare);
+      const truthIdxs    = Array.from({length: truths.length}, (_,i)=>i);
+      const mischiefIdxs = Array.from({length: mischiefs.length}, (_,i)=>i);
+
+      cardBody.innerHTML = `
+        <div class="prompt">
+  ${rules ? `<div class="instructions">${rules}</div>` : ``}
+          <div class="madlib-actions" style="margin:.2rem 0 .6rem">
+            <button class="madlib-btn" id="drawTruth">Draw TRUTH</button>
+            <button class="madlib-btn secondary" id="drawMischief">Draw MERRY MISCHIEF</button>
+            <button class="madlib-btn" id="drawEither">Surprise me</button>
+          </div>
+          <div id="genOutput" class="madlib-output" style="display:none"></div>
+        </div>
+      `;
+
+      const out = document.getElementById('genOutput');
+
+      function drawTruth(){
+        if (truthIdxs.length === 0) {
+          out.textContent = "All TRUTH cards used.";
+          out.style.display = "block";
+          return;
+        }
+        const idx = pickNext(truthIdxs);
+        out.textContent = `TRUTH:\n${truths[idx]}`;
+        out.style.display = "block";
+      }
+
+      function drawMischief(){
+        if (mischiefIdxs.length === 0) {
+          out.textContent = "All MERRY MISCHIEF cards used.";
+          out.style.display = "block";
+          return;
+        }
+        const idx = pickNext(mischiefIdxs);
+        out.textContent = `MERRY MISCHIEF:\n${mischiefs[idx]}`;
+        out.style.display = "block";
+      }
+
+      function drawEither(){
+        // Choose from whatever remains across both buckets
+        const totalRemaining = truthIdxs.length + mischiefIdxs.length;
+        if (totalRemaining === 0){
+          out.textContent = "Way to play! That’s a wrap for today!";
+          out.style.display = "block";
+          return;
+        }
+        // Weight by remaining counts
+        const roll = Math.random() * totalRemaining;
+        if (roll < truthIdxs.length) drawTruth(); else drawMischief();
+      }
+
+      document.getElementById('drawTruth').onclick   = drawTruth;
+      document.getElementById('drawMischief').onclick= drawMischief;
+      document.getElementById('drawEither').onclick  = drawEither;
+      return;
+    }
+
+    // ---------- Regular generators (3 prompts): WCSL, Make This Face, You Are, WYR, Plot Twist ----------
+    const remaining = [0,1,2];
+
+    // Button label: call it “Next twist!” on Plot Twist days, otherwise “Next prompt!”
+    const isPlotTwist = (title.toLowerCase().includes("plot twist"));
+    const nextLabel = isPlotTwist ? "Next twist!" : "Next prompt!";
+    // For Plot Twist, extract the short story name shown inside the card
+    let plotStoryName = "";
+    if (isPlotTwist){
+      // Remove the leading label if present, keep the actual story name
+      plotStoryName = title.replace(/^Plot Twist Story\s*—\s*/i, "").trim();
+    }
 
     cardBody.innerHTML = `
       <div class="prompt">
-${rules ? `<div class="instructions">${rules}</div>` : ``}
-        <div class="madlib-actions" style="margin:.2rem 0 .6rem">
-          <button class="madlib-btn" id="drawTruth">Draw TRUTH</button>
-          <button class="madlib-btn secondary" id="drawMischief">Draw MERRY MISCHIEF</button>
-          <button class="madlib-btn" id="drawEither">Surprise me</button>
-        </div>
+        ${rules ? `<div class="instructions">${rules}</div>` : ``}
+        ${isPlotTwist ? `<div class="madlib-output" style="margin-top:.2rem; font-weight:700; font-family:'Baloo 2', system-ui; color:var(--teal)">${plotStoryName}</div>` : ``}
         <div id="genOutput" class="madlib-output" style="display:none"></div>
+        <div class="madlib-actions" style="margin-top:.6rem">
+          <button class="madlib-btn" id="nextPrompt">${nextLabel}</button>
+        </div>
       </div>
     `;
 
+
     const out = document.getElementById('genOutput');
+    const btn = document.getElementById('nextPrompt');
 
-    function drawTruth(){
-      if (truthIdxs.length === 0) {
-        out.textContent = "All TRUTH cards used.";
+    function next(){
+      if(remaining.length === 0){
+        out.innerHTML = `Way to play! That’s a wrap for today!`;
         out.style.display = "block";
+        btn.style.display = "none";
         return;
       }
-      const idx = pickNext(truthIdxs);
-      out.textContent = `TRUTH:\n${truths[idx]}`;
+      const idx = pickNext(remaining);
+      const text = normalizePrompt(day.prompts[idx]);
+
+      if (isPlotTwist){
+        // Show only the twist content under the repeated story title
+        out.innerHTML = `${text}`;
+      } else {
+        // Keep the green lead-in for other game types
+        out.innerHTML = `<em>${titlePrefix}</em> ${text}`;
+      }
+
       out.style.display = "block";
     }
 
-    function drawMischief(){
-      if (mischiefIdxs.length === 0) {
-        out.textContent = "All MERRY MISCHIEF cards used.";
-        out.style.display = "block";
-        return;
-      }
-      const idx = pickNext(mischiefIdxs);
-      out.textContent = `MERRY MISCHIEF:\n${mischiefs[idx]}`;
-      out.style.display = "block";
-    }
 
-    function drawEither(){
-      // Choose from whatever remains across both buckets
-      const totalRemaining = truthIdxs.length + mischiefIdxs.length;
-      if (totalRemaining === 0){
-        out.textContent = "Way to play! That’s a wrap for today!";
-        out.style.display = "block";
-        return;
-      }
-      // Weight by remaining counts
-      const roll = Math.random() * totalRemaining;
-      if (roll < truthIdxs.length) drawTruth(); else drawMischief();
-    }
-
-    document.getElementById('drawTruth').onclick   = drawTruth;
-    document.getElementById('drawMischief').onclick= drawMischief;
-    document.getElementById('drawEither').onclick  = drawEither;
-    return;
+    btn.onclick = next;
+    next(); // show the first on open
   }
-
-  // ---------- Regular generators (3 prompts): WCSL, Make This Face, You Are, WYR, Plot Twist ----------
-  const remaining = [0,1,2];
-
-  // Button label: call it “Next twist!” on Plot Twist days, otherwise “Next prompt!”
-  const isPlotTwist = (title.toLowerCase().includes("plot twist"));
-  const nextLabel = isPlotTwist ? "Next twist!" : "Next prompt!";
-  // For Plot Twist, extract the short story name shown inside the card
-let plotStoryName = "";
-if (isPlotTwist){
-  // Remove the leading label if present, keep the actual story name
-  plotStoryName = title.replace(/^Plot Twist Story\s*—\s*/i, "").trim();
-}
-
-cardBody.innerHTML = `
-  <div class="prompt">
-    ${rules ? `<div class="instructions">${rules}</div>` : ``}
-    ${isPlotTwist ? `<div class="madlib-output" style="margin-top:.2rem; font-weight:700; font-family:'Baloo 2', system-ui; color:var(--teal)">${plotStoryName}</div>` : ``}
-    <div id="genOutput" class="madlib-output" style="display:none"></div>
-    <div class="madlib-actions" style="margin-top:.6rem">
-      <button class="madlib-btn" id="nextPrompt">${nextLabel}</button>
-    </div>
-  </div>
-`;
-
-
-  const out = document.getElementById('genOutput');
-  const btn = document.getElementById('nextPrompt');
-
-function next(){
-  if(remaining.length === 0){
-    out.innerHTML = `Way to play! That’s a wrap for today!`;
-    out.style.display = "block";
-    btn.style.display = "none";
-    return;
-  }
-  const idx = pickNext(remaining);
-  const text = normalizePrompt(day.prompts[idx]);
-
-  if (isPlotTwist){
-    // Show only the twist content under the repeated story title
-    out.innerHTML = `${text}`;
-  } else {
-    // Keep the green lead-in for other game types
-    out.innerHTML = `<em>${titlePrefix}</em> ${text}`;
-  }
-
-  out.style.display = "block";
-}
-
-
-  btn.onclick = next;
-  next(); // show the first on open
-}
 
 
 
   /* ----------------- Viewer ----------------- */
-function openViewer(day){
-  viewer.classList.add('open');
+  function openViewer(day){
+    viewer.classList.add('open');
 
-  // Day 24 (Mad Libs)
-  if (day === 24){
-    cardTitle.textContent = "Day 24 — Merry Mad Libs";
-    renderMadLibsForm();
-    return;
+    // Day 24 (Mad Libs)
+    if (day === 24){
+      cardTitle.textContent = "Day 24 — Merry Mad Libs";
+      renderMadLibsForm();
+      return;
+    }
+
+    // 🎄 Day 25 — Final note
+    if (day === 25){
+      cardTitle.textContent = "Merry Christmas!";
+      cardBody.innerHTML = `
+        <div class="prompt">
+          <p>Thank you for playing along all month long. What an honor and joy to share this season of laughter and connection with you!</p>
+          <p>As we wrap up this countdown, I hope these little moments reminded you that play is one of the most powerful ways to stay connected, even during the busiest times.</p>
+          <p>Carry that playful energy into the new year with even more fun ideas and connection games inside the <strong>Playful Heart Parenting Bundle</strong>!</p>
+          <p><a href="https://www.playfulheartparenting.com/bundle-little-moments-tap-into-play-apps" target="_blank" class="cta-link">Tap here to explore the full bundle & save over 40%</a></p>
+          <p style="margin-top:1rem;font-weight:600;">Cheering you on always!</p>
+          <p style="margin-bottom:0;"><em>Love,<br>Mia</em></p>
+        </div>
+      `;
+      return;
+    }
+
+    // Regular tiles (Days 1–23)
+    renderPromptGenerator(day - 1);
   }
-
-  // 🎄 Day 25 — Final note
-  if (day === 25){
-    cardTitle.textContent = "Merry Christmas!";
-    cardBody.innerHTML = `
-      <div class="prompt">
-        <p>Thank you for playing along all month long. What an honor and joy to share this season of laughter and connection with you!</p>
-        <p>As we wrap up this countdown, I hope these little moments reminded you that play is one of the most powerful ways to stay connected, even during the busiest times.</p>
-        <p>Carry that playful energy into the new year with even more fun ideas and connection games inside the <strong>Playful Heart Parenting Bundle</strong>!</p>
-        <p><a href="https://www.playfulheartparenting.com/bundle-little-moments-tap-into-play-apps" target="_blank" class="cta-link">Tap here to explore the full bundle & save over 40%</a></p>
-        <p style="margin-top:1rem;font-weight:600;">Cheering you on always!</p>
-        <p style="margin-bottom:0;"><em>Love,<br>Mia</em></p>
-      </div>
-    `;
-    return;
-  }
-
-  // Regular tiles (Days 1–23)
-  renderPromptGenerator(day - 1);
-}
 
   function closeViewer(){
     viewer.classList.remove('open');
@@ -950,7 +1010,7 @@ I hope you have a wonderful holiday — and don’t forget to {20} as much as yo
         <input id="${f.key}" type="text">
       </div>`).join("");
 
-cardBody.innerHTML=`
+    cardBody.innerHTML=`
       <div class="instructions">
         Pick the silliest words you can think of! Fill in the blanks below, then tap ‘Make My Story’ to see your festive masterpiece.
       </div>
@@ -982,52 +1042,161 @@ cardBody.innerHTML=`
       form.style.display="grid";
     });
   }
-// --- Helper: safely escape text before inserting into HTML ---
-function escapeHTML(str){
-  return String(str)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#39;");
-}
-
-function renderMadLibsStory(values){
-  let story = MADLIBS_TEMPLATE;
-  for(let i=1; i<=20; i++){
-    const raw  = values[`f${i}`] || "_____";
-    const safe = escapeHTML(raw);
-    const bold = `<strong>${safe}</strong>`;
-    story = story.split(`{${i}}`).join(bold);
-  }
-  const out = document.getElementById("madlibOutput");
-  out.innerHTML = story;
-  out.style.display = "block";
-  document.getElementById("madlibEditBar").style.display = "flex";
-  document.getElementById("madlibForm").style.display = "none";
-  document.querySelector(".instructions")?.style.setProperty("display", "none");
-
-}
-</script>  <!-- ✅ close the main script here -->
-
-<!-- Service worker registration (separate script block) -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', async () => {
-      try {
-        const reg = await navigator.serviceWorker.register('./sw.js?v=2025-11-06-1');
-        if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-        navigator.serviceWorker.addEventListener('controllerchange', () => {
-          if (!window.__swReloaded) {
-            window.__swReloaded = true;
-            location.reload();
-          }
-        });
-      } catch {}
-    });
+  // --- Helper: safely escape text before inserting into HTML ---
+  function escapeHTML(str){
+    return String(str)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;")
+      .replace(/'/g,"&#39;");
   }
 
-</script>
+  function renderMadLibsStory(values){
+    let story = MADLIBS_TEMPLATE;
+    for(let i=1; i<=20; i++){
+      const raw  = values[`f${i}`] || "_____";
+      const safe = escapeHTML(raw);
+      const bold = `<strong>${safe}</strong>`;
+      story = story.split(`{${i}}`).join(bold);
+    }
+    const out = document.getElementById("madlibOutput");
+    out.innerHTML = story;
+    out.style.display = "block";
+    document.getElementById("madlibEditBar").style.display = "flex";
+    document.getElementById("madlibForm").style.display = "none";
+    document.querySelector(".instructions")?.style.setProperty("display", "none");
+
+  }
+  </script>  <!-- ✅ close the main script here -->
+
+  <!-- ⭐ Bonus Module (adds stars + modal, no changes to your logic) -->
+  <script>
+  (function () {
+    const BONUS_COPY = {
+      'serious-santa': { title:'Serious Santa', text:'Have a staring contest while saying Ho-Ho-Ho in different silly ways but without laughing!' },
+      'holly-handshake': { title:'Holly Jolly Handshake', text:'Create a creative holiday-themed handshake! Ideas to include: candy-cane-claps, snowman-snaps, jingle-bell-jumps... whatever you can think of!' },
+      'jingle-jargon': { title:'Jingle Jargon', text:'Make up an elf language! Have a gibberish-elf conversation with each other OR try to translate what the elf is trying to say.' },
+      'tinsel-twisters': { title:'Tinsel Twisters', text:'Try to these tongue twisters five times fast: Santa’s short suit shrunk... Red lolly yellow lolly... Toy boat!' },
+      'mind-meld': { title:'Holiday Mind Meld', text:'Count down from three, then try to say the same holiday-related word at the same time. Keep trying until you match!' },
+      'silent-singing': { title:'Silent Night Singing', text:'Lip-sync a carol without any sound while others guess the song. Bonus points for an extra-expressive face!' },
+      'santa-says': { title:'Santa Says', text:'Play Simon Says, but instead, make it Santa says - Say Ho! Ho! Ho!... SANTA SAYS... before giving your instructions.' },
+      'ventriloquism': { title:'Very Merry Ventriloquism', text:'Try to say holiday phrases while smiling but without moving your lips. Easy ones to try are: KRIS KRINGLE, I LIKE SINGING SONGS, and DO YOU LIKE CANDY CANES?' }
+    };
+
+    // Your chosen placement
+    const PLACEMENT = {
+      3:'serious-santa',
+      6:'holly-handshake',
+      10:'jingle-jargon',
+      13:'tinsel-twisters',
+      16:'mind-meld',
+      19:'silent-singing',
+      22:'santa-says',
+      24:'ventriloquism'
+    };
+
+    function qs(sel, root=document){ return root.querySelector(sel); }
+
+    function ensureModal() {
+      const host = qs('#bonusVaultModal');
+      if (!host) return;
+      host.innerHTML = `
+        <div class="latw-modal__content">
+          <button class="latw-modal__close" type="button" aria-label="Close">×</button>
+          <h2 id="vaultTitle" class="latw-vault-title">Bonus Vault</h2>
+          <ul class="latw-vault-list" role="list">
+            ${Object.entries(BONUS_COPY).map(([id, b]) => `
+              <li><button class="latw-vault-item" type="button" data-bonus-id="${id}">${b.title}</button></li>
+            `).join('')}
+          </ul>
+          <div id="latw-bonus-detail" class="latw-bonus-detail" aria-live="polite"></div>
+        </div>
+      `;
+    }
+
+    function openModal() {
+      const m = qs('#bonusVaultModal'); if (!m) return;
+      m.classList.add('open');
+      m.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      const m = qs('#bonusVaultModal'); if (!m) return;
+      m.classList.remove('open');
+      m.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      const d = qs('#latw-bonus-detail'); if (d) d.innerHTML = '';
+    }
+    function renderBonus(id) {
+      const b = BONUS_COPY[id]; if (!b) return;
+      const d = qs('#latw-bonus-detail'); if (!d) return;
+      d.innerHTML = `<h3>${b.title}</h3><p>${b.text}</p>`;
+    }
+
+    function injectStars(placement) {
+      Object.entries(placement).forEach(([day, id]) => {
+        const tile = document.querySelector(`.tile[data-day="${day}"]`);
+        if (!tile || tile.querySelector('.latw-star')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'latw-star';
+        btn.setAttribute('aria-label', `Open bonus ${BONUS_COPY[id]?.title || 'Bonus'}`);
+        btn.dataset.bonusId = id;
+        btn.textContent = '⭐';
+        if (!getComputedStyle(tile).position || getComputedStyle(tile).position === 'static') {
+          tile.style.position = 'relative';
+        }
+        tile.appendChild(btn);
+      });
+    }
+
+    function wireEvents() {
+      document.addEventListener('click', (e) => {
+        const t = e.target;
+        if (t.id === 'bonusVaultBtn') { openModal(); return; }
+        if (t.classList.contains('latw-modal__close')) { closeModal(); return; }
+        if (t.classList.contains('latw-star')) { renderBonus(t.dataset.bonusId); openModal(); return; }
+        if (t.classList.contains('latw-vault-item')) { renderBonus(t.dataset.bonusId); return; }
+        if (t.id === 'bonusVaultModal' && t.classList.contains('latw-modal')) { closeModal(); return; }
+      });
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+    }
+
+    function initBonus() {
+      ensureModal();
+      injectStars(PLACEMENT);
+      wireEvents();
+    }
+
+    // Run after DOM is ready and again when Start reveals the grid
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBonus);
+    } else {
+      initBonus();
+    }
+    const startBtn = document.getElementById('startBtn');
+    if (startBtn) startBtn.addEventListener('click', () => setTimeout(initBonus, 0));
+  })();
+  </script>
+
+  <!-- Service worker registration (separate script block) -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', async () => {
+        try {
+          const reg = await navigator.serviceWorker.register('./sw.js?v=2025-11-06-1');
+          if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          navigator.serviceWorker.addEventListener('controllerchange', () => {
+            if (!window.__swReloaded) {
+              window.__swReloaded = true;
+              location.reload();
+            }
+          });
+        } catch {}
+      });
+    }
+  </script>
 
 </body>
 </html>
