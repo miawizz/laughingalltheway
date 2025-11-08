@@ -314,6 +314,14 @@
   font-size:1rem; color:var(--teal); font-weight:700;
 }
 
+.mark-toggle{
+  background:transparent; border:0; color:#2b4a5e; font-weight:700;
+  cursor:pointer; margin-left:.5rem; padding:8px 10px; border-radius:10px;
+}
+.mark-toggle:hover{ background:#eef3f5; }
+@media (prefers-reduced-motion: no-preference){
+  .mark-toggle{ transition:background .15s ease; }
+}
     
   </style>
 </head>
@@ -364,6 +372,7 @@
     </div>
   </details>
 
+  
   <!-- Privacy / Courtesy overlay -->
   <section id="courtesyOverlay" role="dialog" aria-labelledby="courtesyTitle" aria-modal="true" style="position:fixed; inset:0; display:none; place-items:center; z-index:9999; background:rgba(0,0,0,.45);">
     <div class="courtesy-card" style="width:min(560px,92%); background:#fff; color:#3c3c3c; border-radius:18px; box-shadow:0 12px 40px rgba(0,0,0,.18); padding:22px; text-align:left;">
@@ -440,8 +449,12 @@
   <!-- Viewer -->
   <div class="viewer" id="viewer" aria-modal="true" role="dialog">
     <div class="card" id="card">
-      <button class="close" id="closeBtn">Close</button>
-      <h2 id="cardTitle"></h2>
+     <div style="display:flex; align-items:center; gap:.35rem; justify-content:flex-end">
+  <button class="close" id="closeBtn">Close</button>
+  <button class="mark-toggle" id="toggleViewedBtn" type="button">Mark unopened</button>
+</div>
+<h2 id="cardTitle"></h2>
+
       <div class="prompt" id="cardBody"></div>
     </div>
   </div>
@@ -605,6 +618,22 @@
   const cardTitle = document.getElementById('cardTitle');
   const cardBody  = document.getElementById('cardBody');
   const closeBtn  = document.getElementById('closeBtn');
+    let currentOpenDay = null;
+const toggleViewedBtn = document.getElementById('toggleViewedBtn');
+    if (toggleViewedBtn){
+  toggleViewedBtn.addEventListener('click', () => {
+    if (!currentOpenDay) return;
+    if (isViewed(currentOpenDay)){
+      unmarkViewed(currentOpenDay);
+      toggleViewedBtn.textContent = 'Mark opened';
+    } else {
+      markViewed(currentOpenDay);
+      toggleViewedBtn.textContent = 'Mark unopened';
+    }
+  });
+}
+
+
 
     // --- Viewed tiles persistence
 const OPENED_KEY = 'latw_opened_days_v1';
@@ -633,6 +662,16 @@ function applyViewedStates(){
     tile?.classList.add('viewed');
     tile?.setAttribute('aria-pressed','true');
   });
+}
+function isViewed(day){
+  return openedDays.has(day);
+}
+function unmarkViewed(day){
+  openedDays.delete(day);
+  saveOpened(openedDays);
+  const tile = document.querySelector(`.tile[data-day="${day}"]`);
+  tile?.classList.remove('viewed');
+  tile?.setAttribute('aria-pressed','false');
 }
 
     
@@ -871,14 +910,22 @@ if (startBtn) {
   /* ----------------- Viewer ----------------- */
 function openViewer(day){
   viewer.classList.add('open');
+    currentOpenDay = day;
+  if (toggleViewedBtn){
+    toggleViewedBtn.style.display = 'inline-block';
+    toggleViewedBtn.textContent = isViewed(day) ? 'Mark unopened' : 'Mark opened';
+  }
+
 
   // Day 24 (Mad Libs)
-  if (day === 24){
-    cardTitle.textContent = "Day 24 — Merry Mad Libs";
-    renderMadLibsForm();
-    markViewed(day);
-    return;
-  }
+if (day === 24){
+  cardTitle.textContent = "Day 24 — Merry Mad Libs";
+  renderMadLibsForm();
+  markViewed(day);
+  if (toggleViewedBtn) toggleViewedBtn.textContent = 'Mark unopened';  // added
+  return;
+}
+
 
   // Day 25 — Final note
   if (day === 25){
@@ -894,18 +941,21 @@ function openViewer(day){
       </div>
     `;
     markViewed(day);
+      if (toggleViewedBtn) toggleViewedBtn.textContent = 'Mark unopened';  // added
     return;
   }
 
-  // Regular tiles (Days 1–23)
-  renderPromptGenerator(day - 1);
-  markViewed(day);
+// Regular tiles (Days 1–23)
+renderPromptGenerator(day - 1);
+markViewed(day);
+if (toggleViewedBtn) toggleViewedBtn.textContent = 'Mark unopened';  // added
+
+
+
+function closeViewer(){
+  viewer.classList.remove('open');
+  if (toggleViewedBtn) toggleViewedBtn.style.display = 'none';  // added
 }
-
-
-  function closeViewer(){
-    viewer.classList.remove('open');
-  }
   viewer.addEventListener('click', (e) => { if (e.target === viewer) closeViewer(); });
   closeBtn.addEventListener('click', closeViewer);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
@@ -1222,12 +1272,14 @@ function injectStars(placement) {
     const tile = document.querySelector(`.tile[data-day="${day}"]`);
     if (!tile || tile.querySelector('.latw-star')) return;
 
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'latw-star';
-    btn.setAttribute('aria-label', `Open bonus ${BONUS_COPY[id]?.title || 'Bonus'}`);
-    btn.dataset.bonusId = id;
-    btn.textContent = '⭐';
+const btn = document.createElement('button');
+btn.type = 'button';
+btn.className = 'latw-star';
+btn.setAttribute('aria-label', `Open bonus ${BONUS_COPY[id]?.title || 'Bonus'}`);
+btn.setAttribute('aria-pressed','false');  // added
+btn.dataset.bonusId = id;
+btn.textContent = '⭐';
+
 
     // ensure positioning
     if (getComputedStyle(tile).position === 'static') {
