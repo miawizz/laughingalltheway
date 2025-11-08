@@ -322,6 +322,22 @@
 @media (prefers-reduced-motion: no-preference){
   .mark-toggle{ transition:background .15s ease; }
 }
+    /* Make tile stars big & obvious on touch screens, and add a label */
+.latw-star-label{display:none; margin-left:.25rem; font-weight:700;}
+
+@media (pointer:coarse){
+  .latw-star{
+    left:50%; top:55%; right:auto; /* center it instead of top-right */
+    transform:translate(-50%,-50%);
+    font-size:2rem;
+    padding:.35rem .6rem;
+    border:2px solid #699eb0;
+    border-radius:.75rem;
+    background:rgba(255,255,255,.9);
+  }
+  .latw-star-label{display:inline;}
+}
+
     
   </style>
 </head>
@@ -432,7 +448,7 @@
         <button class="start-btn" id="startBtn">Start the Countdown!</button>
         <p class="download-note">
           Want the printable version, too? Here ya go!
-          <a href="Laughing All the Way printable 2025.pdf" download class="download-link">Download the PDF</a>
+<a href="Laughing All the Way printable 2025.pdf" download rel="noopener" class="download-link">Download the PDF</a>
         </p>
       </section>
 
@@ -880,12 +896,31 @@ if (startBtn) {
     const btn = document.getElementById('nextPrompt');
 
     function next(){
-      if(remaining.length === 0){
-        out.innerHTML = `Way to play! That’s a wrap for today!`;
-        out.style.display = "block";
-        btn.style.display = "none";
-        return;
-      }
+if(remaining.length === 0){
+  out.innerHTML = `Way to play! That’s a wrap for today!`;
+  out.style.display = "block";
+  btn.style.display = "none";
+
+  // If this day has a bonus star, show an inline CTA star under the message
+  try {
+    const placement = window.__LATW_PLACEMENT || {};
+    const bonusId = placement[ (dayIndex+1).toString() ] || placement[ dayIndex+1 ];
+    if (bonusId) {
+      const title = (window.__LATW_BONUS_COPY && window.__LATW_BONUS_COPY[bonusId]?.title) || 'Bonus';
+      out.insertAdjacentHTML('beforeend',
+        `<div class="madlib-actions" style="margin-top:.85rem">
+           <button class="madlib-btn latw-star-inline" type="button"
+                   data-bonus-id="${bonusId}"
+                   aria-label="Open bonus ${title}">
+             ⭐ Tap to get a bonus game for today!
+           </button>
+         </div>`);
+    }
+  } catch(e){}
+
+  return;
+}
+
       const idx = pickNext(remaining);
       const text = normalizePrompt(day.prompts[idx]);
 
@@ -907,25 +942,23 @@ if (startBtn) {
 
 
 
-  /* ----------------- Viewer ----------------- */
+/* ----------------- Viewer ----------------- */
 function openViewer(day){
   viewer.classList.add('open');
-    currentOpenDay = day;
+  currentOpenDay = day;
   if (toggleViewedBtn){
     toggleViewedBtn.style.display = 'inline-block';
     toggleViewedBtn.textContent = isViewed(day) ? 'Mark unopened' : 'Mark opened';
   }
 
-
-  // Day 24 (Mad Libs)
-if (day === 24){
-  cardTitle.textContent = "Day 24 — Merry Mad Libs";
-  renderMadLibsForm();
-  markViewed(day);
-  if (toggleViewedBtn) toggleViewedBtn.textContent = 'Mark unopened';  // added
-  return;
-}
-
+  // Day 24 — Mad Libs
+  if (day === 24){
+    cardTitle.textContent = "Day 24 — Merry Mad Libs";
+    renderMadLibsForm();
+    markViewed(day);
+    if (toggleViewedBtn) toggleViewedBtn.textContent = 'Mark unopened';
+    return;
+  }
 
   // Day 25 — Final note
   if (day === 25){
@@ -941,24 +974,27 @@ if (day === 24){
       </div>
     `;
     markViewed(day);
-      if (toggleViewedBtn) toggleViewedBtn.textContent = 'Mark unopened';  // added
+    if (toggleViewedBtn) toggleViewedBtn.textContent = 'Mark unopened';
     return;
   }
 
-// Regular tiles (Days 1–23)
-renderPromptGenerator(day - 1);
-markViewed(day);
-if (toggleViewedBtn) toggleViewedBtn.textContent = 'Mark unopened';  // added
+  // Regular tiles (Days 1–23)
+  renderPromptGenerator(day - 1);
+  markViewed(day);
+  if (toggleViewedBtn) toggleViewedBtn.textContent = 'Mark unopened';
+}  /* ← this brace closes openViewer */
 
-
-
+/* Define closeViewer OUTSIDE of openViewer */
 function closeViewer(){
   viewer.classList.remove('open');
-  if (toggleViewedBtn) toggleViewedBtn.style.display = 'none';  // added
+  if (toggleViewedBtn) toggleViewedBtn.style.display = 'none';
 }
-  viewer.addEventListener('click', (e) => { if (e.target === viewer) closeViewer(); });
-  closeBtn.addEventListener('click', closeViewer);
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
+
+/* Wire listeners ONCE (outside openViewer) */
+viewer.addEventListener('click', (e) => { if (e.target === viewer) closeViewer(); });
+closeBtn.addEventListener('click', closeViewer);
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
+
 
   /* ----------------- Courtesy / Privacy Gate ----------------- */
   const COURTESY_KEY = 'latw_courtesy_v1';
@@ -1228,6 +1264,10 @@ I hope you have a wonderful holiday — and don’t forget to {20} as much as yo
       20: 'bawk-carol',
       22:'santa-says',
     };
+    // Expose to main script for inline “bonus” CTA
+window.__LATW_PLACEMENT = PLACEMENT;
+window.__LATW_BONUS_COPY = BONUS_COPY;
+
 
     function qs(sel, root=document){ return root.querySelector(sel); }
 
@@ -1276,9 +1316,11 @@ const btn = document.createElement('button');
 btn.type = 'button';
 btn.className = 'latw-star';
 btn.setAttribute('aria-label', `Open bonus ${BONUS_COPY[id]?.title || 'Bonus'}`);
-btn.setAttribute('aria-pressed','false');  // added
+btn.setAttribute('aria-pressed','false');
 btn.dataset.bonusId = id;
-btn.textContent = '⭐';
+// Show just a star by default; on touch screens the CSS reveals the label
+btn.innerHTML = '<span aria-hidden="true">⭐</span><span class="latw-star-label"> Bonus</span>';
+
 
 
     // ensure positioning
@@ -1319,10 +1361,16 @@ function wireEvents() {
       return;
     }
 
-    if (e.target.id === 'bonusVaultBtn') { openModal(); return; }
-    if (e.target.classList.contains('latw-modal__close')) { closeModal(); return; }
-    if (e.target.classList.contains('latw-vault-item')) { renderBonus(e.target.dataset.bonusId); return; }
-    if (e.target.id === 'bonusVaultModal' && e.target.classList.contains('latw-modal')) { closeModal(); return; }
+if (e.target.id === 'bonusVaultBtn') { openModal(); return; }
+if (e.target.classList.contains('latw-modal__close')) { closeModal(); return; }
+if (e.target.classList.contains('latw-vault-item')) { renderBonus(e.target.dataset.bonusId); return; }
+if (e.target.classList.contains('latw-star-inline')) {  // NEW: inline CTA inside the card
+  renderBonus(e.target.dataset.bonusId);
+  openModal();
+  return;
+}
+if (e.target.id === 'bonusVaultModal' && e.target.classList.contains('latw-modal')) { closeModal(); return; }
+
   });
 
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
