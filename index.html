@@ -157,19 +157,16 @@
     .madlib-field input{font:inherit;padding:.55rem .65rem;border:1px solid var(--line);border-radius:.55rem;background:#fff}
 
     /* Instruction bar */
-    .instructions{
-      background: var(--bg);
-      color: #fff;
-      font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      line-height: 1.4;
-      padding: 0.55rem 0.75rem;
-      border-radius: 10px;
-      margin: 0 0 0.8rem;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    }
+.instructions {
+  color: var(--teal);             /* dark green */
+  font-style: italic;             /* gentle reminder style */
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-top: 1rem;               /* spacing above it */
+  text-align: left;               /* keep aligned with prompts */
+  font-family: "Poppins", system-ui, sans-serif;
+}
+
 
     /* Welcome Card */
     .welcome-card {
@@ -711,17 +708,17 @@
       const truthIdxs    = Array.from({length: truths.length}, (_,i)=>i);
       const mischiefIdxs = Array.from({length: mischiefs.length}, (_,i)=>i);
 
-      cardBody.innerHTML = `
-        <div class="prompt">
-          ${rules ? `<div class="instructions">${rules}</div>` : ``}
-          <div class="madlib-actions" style="margin:.2rem 0 .6rem">
-            <button class="madlib-btn" id="drawTruth">Draw TRUTH</button>
-            <button class="madlib-btn secondary" id="drawMischief">Draw MERRY MISCHIEF</button>
-            <button class="madlib-btn" id="drawEither">Surprise me</button>
-          </div>
-          <div id="genOutput" class="madlib-output" style="display:none"></div>
-        </div>
-      `;
+cardBody.innerHTML = `
+  <div class="prompt">
+    ${isPlotTwist ? `<div class="madlib-output" style="margin-top:.2rem; font-weight:700; font-family:'Baloo 2', system-ui; color:var(--teal)">${plotStoryName}</div>` : ``}
+    <div id="genOutput" class="madlib-output" style="display:none"></div>
+    <div class="madlib-actions" style="margin-top:.6rem">
+      <button class="madlib-btn" id="nextPrompt">${nextLabel}</button>
+    </div>
+    ${rules ? `<div class="instructions">${rules}</div>` : ``}  <!-- Moved here -->
+  </div>
+`;
+
 
       const out = document.getElementById('genOutput');
       function drawTruth(){
