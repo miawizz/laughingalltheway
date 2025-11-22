@@ -800,10 +800,10 @@
       return;
     }
 
-    // Regular generators (3 prompts)
-    const remaining = [0,1,2];
-    const isPlotTwist = (title.toLowerCase().includes("plot twist"));
-    const nextLabel = isPlotTwist ? "Next twist!" : "Next prompt!";
+// Regular generators — use ALL prompts for this day
+const remaining = day.prompts ? day.prompts.map((_, i) => i) : [];
+const isPlotTwist = (title.toLowerCase().includes("plot twist"));
+const nextLabel = isPlotTwist ? "Next twist!" : "Next prompt!";
     let plotStoryName = "";
     if (isPlotTwist){
       plotStoryName = title.replace(/^Plot Twist Story\s*—\s*/i, "").trim();
