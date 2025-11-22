@@ -701,47 +701,63 @@
     const rules = rulesFor(title);
     const titlePrefix = prefixFor(title);
 
-    // Day 23: Truth or Merry Mischief
+    // Day 23: Truth or Merry Mischief (uses pairs)
     if (day.pairs){
       const truths    = day.pairs.map(p => p.truth);
       const mischiefs = day.pairs.map(p => p.dare);
       const truthIdxs    = Array.from({length: truths.length}, (_,i)=>i);
       const mischiefIdxs = Array.from({length: mischiefs.length}, (_,i)=>i);
 
-cardBody.innerHTML = `
-  <div class="prompt">
-    ${isPlotTwist ? `<div class="madlib-output" style="margin-top:.2rem; font-weight:700; font-family:'Baloo 2', system-ui; color:var(--teal)">${plotStoryName}</div>` : ``}
-    <div id="genOutput" class="madlib-output" style="display:none"></div>
-    <div class="madlib-actions" style="margin-top:.6rem">
-      <button class="madlib-btn" id="nextPrompt">${nextLabel}</button>
-    </div>
-    ${rules ? `<div class="instructions">${rules}</div>` : ``}  <!-- Moved here -->
-  </div>
-`;
-
+      cardBody.innerHTML = `
+        <div class="prompt">
+          ${rules ? `<div class="instructions">${rules}</div>` : ``}
+          <div id="genOutput" class="madlib-output" style="display:none"></div>
+          <div class="madlib-actions" style="margin-top:.6rem">
+            <button class="madlib-btn" id="drawTruth" type="button">Draw TRUTH</button>
+            <button class="madlib-btn secondary" id="drawMischief" type="button">Draw MERRY MISCHIEF</button>
+            <button class="madlib-btn secondary" id="drawEither" type="button">Surprise me</button>
+          </div>
+        </div>
+      `;
 
       const out = document.getElementById('genOutput');
+
       function drawTruth(){
-        if (!truthIdxs.length){ out.textContent = "All TRUTH cards used."; out.style.display="block"; return; }
+        if (!truthIdxs.length){
+          out.textContent = "All TRUTH cards used.";
+          out.style.display="block";
+          return;
+        }
         const idx = pickNext(truthIdxs);
         out.textContent = `TRUTH:\n${truths[idx]}`;
         out.style.display = "block";
       }
+
       function drawMischief(){
-        if (!mischiefIdxs.length){ out.textContent = "All MERRY MISCHIEF cards used."; out.style.display="block"; return; }
+        if (!mischiefIdxs.length){
+          out.textContent = "All MERRY MISCHIEF cards used.";
+          out.style.display="block";
+          return;
+        }
         const idx = pickNext(mischiefIdxs);
         out.textContent = `MERRY MISCHIEF:\n${mischiefs[idx]}`;
         out.style.display = "block";
       }
+
       function drawEither(){
         const total = truthIdxs.length + mischiefIdxs.length;
-        if (!total){ out.textContent = "Way to play! That’s a wrap for today!"; out.style.display="block"; return; }
+        if (!total){
+          out.textContent = "Way to play! That’s a wrap for today!";
+          out.style.display="block";
+          return;
+        }
         const roll = Math.random() * total;
         if (roll < truthIdxs.length) drawTruth(); else drawMischief();
       }
-      document.getElementById('drawTruth').onclick   = drawTruth;
-      document.getElementById('drawMischief').onclick= drawMischief;
-      document.getElementById('drawEither').onclick  = drawEither;
+
+      document.getElementById('drawTruth').onclick    = drawTruth;
+      document.getElementById('drawMischief').onclick = drawMischief;
+      document.getElementById('drawEither').onclick   = drawEither;
       return;
     }
 
@@ -757,11 +773,46 @@ cardBody.innerHTML = `
     cardBody.innerHTML = `
       <div class="prompt">
         ${rules ? `<div class="instructions">${rules}</div>` : ``}
-        ${isPlotTwist ? `<div class="madlib-output" style="margin-top:.2rem; font-weight:700; font-family:'Baloo 2', system-ui; color:var(--teal)">${plotStoryName}</div>` : ``}
+        ${isPlotTwist ? `
+          <div class="madlib-output"
+               style="margin-top:.2rem; font-weight:700; font-family:'Baloo 2', system-ui; color:var(--teal)">
+            ${plotStoryName}
+          </div>
+        ` : ``}
         <div id="genOutput" class="madlib-output" style="display:none"></div>
         <div class="madlib-actions" style="margin-top:.6rem">
-          <button class="madlib-btn" id="nextPrompt">${nextLabel}</button>
+          <button class="madlib-btn" id="nextPrompt" type="button">${nextLabel}</button>
         </div>
+
+        ${isPlotTwist ? `
+          <section id="ptRecorder"
+                   style="margin-top:1rem; padding:.75rem .85rem; border-radius:18px; border:1px solid var(--line); background:#fffef7;">
+            <h2 style="margin:0 0 .35rem; font-size:1.05rem; color:var(--teal); font-family:'Baloo 2', system-ui;">
+              Record your story
+            </h2>
+
+            <div id="recStatus"
+                 aria-live="polite"
+                 style="font-size:.9rem; margin-top:.15rem;">
+              Ready to record. Your audio stays on your device.
+            </div>
+
+            <div class="madlib-actions" style="margin-top:.55rem">
+              <button class="madlib-btn" id="btnRecStart" type="button">Start recording</button>
+              <button class="madlib-btn secondary" id="btnRecStop" type="button" disabled>Stop</button>
+              <button class="madlib-btn secondary" id="btnRecPlay" type="button" disabled>Play</button>
+              <button class="madlib-btn secondary" id="btnRecDownload" type="button" disabled>Download</button>
+            </div>
+
+            <p class="instructions" style="margin-top:.45rem;">
+              Tap to allow microphone access. This stays on your device.
+            </p>
+
+            <audio id="player"
+                   controls
+                   style="width:100%; margin-top:.35rem; display:none"></audio>
+          </section>
+        ` : ``}
       </div>
     `;
 
@@ -805,7 +856,147 @@ cardBody.innerHTML = `
 
     btn.onclick = next;
     next();
+
+    // Only set up recorder on Plot Twist Story days
+    if (isPlotTwist) {
+      initPlotTwistRecorder();
+    }
   }
+  function initPlotTwistRecorder() {
+    const recStart  = document.getElementById('btnRecStart');
+    const recStop   = document.getElementById('btnRecStop');
+    const recPlay   = document.getElementById('btnRecPlay');
+    const recDl     = document.getElementById('btnRecDownload');
+    const recStatus = document.getElementById('recStatus');
+    const player    = document.getElementById('player');
+
+    // If recorder UI or mic API not available, bail quietly
+    if (!recStart || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      return;
+    }
+
+    let mediaRecorder = null;
+    let mediaStream   = null;
+    let chunks        = [];
+    let lastBlobUrl   = null;
+
+    function pickSupportedMime(){
+      const list = [
+        "audio/mp4;codecs=aac",
+        "audio/mp4",
+        "audio/webm;codecs=opus",
+        "audio/webm"
+      ];
+      if (!window.MediaRecorder || !MediaRecorder.isTypeSupported) return "";
+      for (const t of list){
+        if (MediaRecorder.isTypeSupported(t)) return t;
+      }
+      return "";
+    }
+
+    function extFromMime(m){
+      const s = (m || "").toLowerCase();
+      if (s.includes("mp4"))  return "m4a";
+      if (s.includes("webm")) return "webm";
+      return "audio";
+    }
+
+    function cleanup() {
+      try {
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+        }
+      } catch(e){}
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(t => t.stop());
+        mediaStream = null;
+      }
+    }
+
+    // Expose cleanup so closeViewer can stop mic when card closes
+    window.__cleanupPlotTwistRecorder = cleanup;
+
+    recStart.addEventListener('click', async () => {
+      recStart.disabled = true;
+      recStatus.textContent = "Requesting microphone permission…";
+
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation:true,
+            noiseSuppression:true,
+            autoGainControl:true
+          },
+          video:false
+        });
+
+        const mime = pickSupportedMime();
+        mediaRecorder = new MediaRecorder(
+          mediaStream,
+          mime ? { mimeType: mime } : undefined
+        );
+        chunks = [];
+
+        mediaRecorder.ondataavailable = e => {
+          if (e.data && e.data.size) chunks.push(e.data);
+        };
+
+        mediaRecorder.onstart  = () => { recStatus.textContent = "Recording…"; };
+        mediaRecorder.onstop   = () => {
+          const type = mediaRecorder.mimeType || mime || "audio/webm";
+          const blob = new Blob(chunks, { type });
+
+          if (lastBlobUrl) URL.revokeObjectURL(lastBlobUrl);
+          lastBlobUrl = URL.createObjectURL(blob);
+
+          player.src = lastBlobUrl;
+          player.style.display = "block";
+          recPlay.disabled = false;
+          recDl.disabled   = false;
+          recStatus.textContent = "Recording ready to play or download";
+
+          if (mediaStream) {
+            mediaStream.getTracks().forEach(t => t.stop());
+            mediaStream = null;
+          }
+
+          const ext = extFromMime(type);
+          recDl.onclick = () => {
+            const a = document.createElement('a');
+            a.href = lastBlobUrl;
+            a.download = `laughing-all-the-way-plot-twist.${ext}`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          };
+        };
+
+        mediaRecorder.start();
+
+        recStart.disabled = true;
+        recStop.disabled  = false;
+        recPlay.disabled  = true;
+        recDl.disabled    = true;
+
+      } catch(err) {
+        recStatus.textContent = "Microphone not available or permission denied.";
+        recStart.disabled = false;
+      }
+    });
+
+    recStop.addEventListener('click', () => {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+      }
+      recStart.disabled = false;
+      recStop.disabled  = true;
+    });
+
+    recPlay.addEventListener('click', () => {
+      if (player.src) player.play();
+    });
+  }
+
 
   /* ----------------- Viewer ----------------- */
   function openViewer(day){
@@ -839,8 +1030,12 @@ cardBody.innerHTML = `
   }
 
   function closeViewer(){
+    if (window.__cleanupPlotTwistRecorder) {
+      try { window.__cleanupPlotTwistRecorder(); } catch(e){}
+    }
     viewer.classList.remove('open');
   }
+
   viewer.addEventListener('click', (e) => { if (e.target === viewer) closeViewer(); });
   closeBtn.addEventListener('click', closeViewer);
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeViewer(); });
